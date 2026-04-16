@@ -40,12 +40,18 @@ const Page = () => {
     return <div onClick={() => handleLogin()}>Login</div>;
   }
   if (status === "authenticated" && session.backendError) {
-    return <div>Err:{session.backendError}</div>;
+    return (
+      <div>
+        <div>Err:{session.backendError}</div>
+        <button type="button" onClick={() => signOut()}>
+          Logout
+        </button>
+      </div>
+    );
   }
   return (
     <div>
-      <p>{session?.backendError}</p>
-
+      <div>{session?.user.email}</div>
       <button type="button" onClick={() => signOut()}>
         Logout
       </button>

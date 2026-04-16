@@ -18,13 +18,16 @@ export const authOptions: NextAuthOptions = {
 
       if (account?.provider === "google") {
         try {
-          const res = await fetch(`http://127.0.0.1:8080/api/auth/google`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_token: "account.id_token",
-            }),
-          });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id_token: account.id_token,
+              }),
+            },
+          );
 
           const data = await res.json();
           console.log("DATA: ", data);

@@ -3,13 +3,18 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLazyTestApiQuery } from "./features/onboarding/testApi";
+import { ApiError } from "next/dist/server/api-utils";
 
 const Page = () => {
   const { data: session, status, update } = useSession();
   const route = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [
+    triggerTest,
+    { data: apiData, isLoading: apiLoading, error: apiError },
+  ] = useLazyTestApiQuery();
   const handleLogin = async () => {
     if (isLoading) return;
 
@@ -52,6 +57,16 @@ const Page = () => {
   return (
     <div>
       <div>{session?.user.email}</div>
+      <p>{session?.backendToken}</p>
+      <button type="button" onClick={() => triggerTest()}>
+        Click to test api
+      </button>
+      <p>{apiData?.email}</p>
+      {apiError ? (
+        <p>{"data" in apiError ? (apiError.data as any).error : "0"} </p>
+      ) : (
+        <div>llll</div>
+      )}
       <button type="button" onClick={() => signOut()}>
         Logout
       </button>

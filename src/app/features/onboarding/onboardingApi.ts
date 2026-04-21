@@ -1,5 +1,9 @@
 import { baseApi } from "@/app/api/baseApi";
-import { OnboardingPayload, OnboardingResponse } from "./types";
+import {
+  OnboardingPayload,
+  OnboardingResponse,
+  OtpValidationResponse,
+} from "./types";
 
 export const onboardingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +14,15 @@ export const onboardingApi = baseApi.injectEndpoints({
         body,
       }),
     }),
+    otpValidation: builder.mutation<OtpValidationResponse, number>({
+      query: (body) => ({
+        url: "/temp", //เดิ๋ยวมาเพิ่มตอน Backend คิดชื่อ api
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useSubmitOnboardingMutation } = onboardingApi;
+export const { useSubmitOnboardingMutation, useOtpValidationMutation } =
+  onboardingApi;

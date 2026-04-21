@@ -29,6 +29,7 @@ const Onboarding = () => {
   )?.zip_code;
 
   return (
+    //
     <div>
       <p>Hello onboardign</p>
       <label htmlFor="">จังหวัด </label>
@@ -48,7 +49,6 @@ const Onboarding = () => {
           </option>
         ))}
       </select>
-
       <label htmlFor=""> อำเภอ </label>
       <select
         name="district"
@@ -63,7 +63,6 @@ const Onboarding = () => {
           </option>
         ))}
       </select>
-
       <label htmlFor=""> ตำบล </label>
       <select
         name="subdistrict"

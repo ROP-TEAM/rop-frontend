@@ -23,5 +23,4 @@ export interface OnboardingPayload {
   addressLine2: string | null;
   postalCode: string;
   tel: string;
-  carQuatity: number;
 }

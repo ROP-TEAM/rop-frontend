@@ -9,9 +9,13 @@ export enum CompanyType {
   OTHER = "other",
 }
 
-export interface OtpValidationResponse {}
+export interface OtpValidationResponse {
+  message: string;
+}
 
-export interface OnboardingResponse {}
+export interface OnboardingResponse {
+  message: string;
+}
 
 export interface OnboardingPayload {
   companyName: string;
@@ -19,8 +23,8 @@ export interface OnboardingPayload {
   province: string;
   district: string;
   subDistrict: string;
-  addressLine1: string;
-  addressLine2: string | null;
+  address: string;
+  alley?: string | null;
   postalCode: string;
   tel: string;
 }

@@ -14,7 +14,7 @@ export const onboardingApi = baseApi.injectEndpoints({
         body,
       }),
     }),
-    otpValidation: builder.mutation<OtpValidationResponse, number>({
+    otpValidation: builder.mutation<OtpValidationResponse, string>({
       query: (body) => ({
         url: "/temp", //เดิ๋ยวมาเพิ่มตอน Backend คิดชื่อ api
         method: "POST",

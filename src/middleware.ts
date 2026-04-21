@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 //login can access
-const protectRoutes = ["/isProtect"];
+const protectRoutes = ["/isProtect", "/onboarding"];
 //not login can access
 const authRoutes = ["/login"];
 export const middleware = async (req: NextRequest) => {

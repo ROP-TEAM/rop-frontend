@@ -1,19 +1,19 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLazyTestApiQuery } from "../features/onboarding/testApi";
-import { getToken } from "next-auth/jwt";
+
 const Page = () => {
-  const { data: session, status, update } = useSession();
-  const route = useRouter();
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [
     triggerTest,
     { data: apiData, isLoading: apiLoading, error: apiError },
   ] = useLazyTestApiQuery();
+
   const handleLogin = async () => {
     if (isLoading) return;
 
@@ -21,54 +21,52 @@ const Page = () => {
     setError("");
 
     try {
-      await signIn("google", { redirect: false });
-
-      const newSession = await update();
-
-      console.log("SESSION:", newSession);
-
-      if (newSession?.backendError) {
-        setError(newSession.backendError);
-        return;
-      }
-
-      route.push("/");
-    } catch (error) {
-      console.log("something went wrong");
-    } finally {
+      await signIn("google", {
+        callbackUrl: "/",
+      });
+    } catch (err) {
+      console.log("login error", err);
+      setError("Login failed");
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     console.log("TOKEN:", session?.backendToken);
   }, [session]);
 
+  if (status === "loading") return <div>Loading...</div>;
+
   if (status === "unauthenticated") {
-    return <div onClick={() => handleLogin()}>Login</div>;
+    return <div onClick={handleLogin}>Login</div>;
   }
-  if (status === "authenticated" && session.backendError) {
+
+  if (session?.backendError) {
     return (
       <div>
-        <div>Err:{session.backendError}</div>
-        <button type="button" onClick={() => signOut()}>
-          Logout
-        </button>
+        <p>{session.backendToken}</p>
+        <div>Err: {session.backendError}</div>
+        {apiError && (
+          <p>{"data" in apiError ? (apiError.data as any).error : "0"}</p>
+        )}
+        <button onClick={() => signOut()}>Logout</button>
       </div>
     );
   }
+
   return (
     <div>
-      <div>{session?.user.email}</div>
-      <button type="button" onClick={() => triggerTest()}>
-        Click to test api
-      </button>
+      <div>{session?.user?.email}</div>
+
+      <button onClick={() => triggerTest()}>Click to test api</button>
+
       <p>{apiData?.email}</p>
+
       {apiError && (
-        <p>{"data" in apiError ? (apiError.data as any).error : "0"} </p>
+        <p>{"data" in apiError ? (apiError.data as any).error : "0"}</p>
       )}
-      <button type="button" onClick={() => signOut()}>
-        Logout
-      </button>
+
+      <button onClick={() => signOut()}>Logout</button>
     </div>
   );
 };

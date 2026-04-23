@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
           token.backendToken = data.token;
           token.id = data.id || data.user_id;
           token.backendError = undefined;
+          token.needOnboarding = data.needOnboarding;
         } catch (err) {
           token.backendError = "FAIL_TO_FETCH";
         }
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
           id: token.id as string,
           googleId: token.googleId as string,
         },
+        needOnboarding: token.needOnboarding as boolean,
         backendToken: token.backendToken as string,
         backendError: token.backendError as string,
       };

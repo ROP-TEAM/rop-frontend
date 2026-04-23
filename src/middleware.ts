@@ -17,7 +17,16 @@ export const middleware = async (req: NextRequest) => {
   if (isProtectRoute && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
+  if (token && token.backendError) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
   if (isAuthRoute && token) {
+    return NextResponse.redirect(new URL("/isProtect", req.url));
+  }
+  if (token && token.needOnboarding && pathname !== "/onboarding") {
+    return NextResponse.redirect(new URL("/onboarding", req.url));
+  }
+  if (token && !token.needOnboarding && pathname == "/onboarding") {
     return NextResponse.redirect(new URL("/isProtect", req.url));
   }
   return NextResponse.next();

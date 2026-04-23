@@ -9,6 +9,7 @@ import province from "@/data/province.json";
 import district from "@/data/district.json";
 import subDistrict from "@/data/sub_district.json";
 import { useSubmitOnboardingMutation } from "@/app/features/onboarding/onboardingApi";
+import { useSession } from "next-auth/react";
 const Onboarding = () => {
   const [companyName, setCompanyName] = useState("");
   const [companyType, setCompanyType] = useState<CompanyType | null>(null);
@@ -18,9 +19,10 @@ const Onboarding = () => {
   const [address, setAddress] = useState("");
   const [alley, setAlley] = useState("");
   const [tel, setTel] = useState("");
+  const [reqError, setReqError] = useState("");
   const [submitOnboarding, { isLoading, error }] =
     useSubmitOnboardingMutation();
-
+  const { data: session, status } = useSession();
   const filterDistrict = district.filter(
     (d) => d.province_id === Number(selectProvince),
   );
@@ -29,12 +31,12 @@ const Onboarding = () => {
     (s) => s.district_id === Number(selectDistrict),
   );
 
-  const zipCode = subDistrict.find(
-    (s) => s.id === Number(selectSubDistrict),
-  )?.zip_code;
+  const zipCode = String(
+    subDistrict.find((s) => s.id === Number(selectSubDistrict))?.zip_code,
+  );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Hello world");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!companyType) return;
     const onboardingPayload: OnboardingPayload = {
       companyName,
@@ -47,15 +49,30 @@ const Onboarding = () => {
       postalCode: zipCode,
       tel,
     };
-    e.preventDefault();
+    try {
+      const res = await submitOnboarding(onboardingPayload);
+      console.log(JSON.stringify(onboardingPayload));
+      console.log(res.data?.message);
+    } catch (error) {
+      console.error(error);
+      setReqError("error");
+    }
   };
 
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <p>Hello onboardign</p>
+        <p>{session?.needOnboarding ? "0" : "1"}</p>
+        <p>token: {session?.backendToken}</p>
         <label htmlFor="companyName">companyName</label>
-        <input type="text" name="" id="company" placeholder="กรอกชื่อบริษัท" />
+        <input
+          type="text"
+          name=""
+          id="company"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+          placeholder="กรอกชื่อบริษัท"
+        />
         <label htmlFor="">ประเภทบริษัท</label>
         <select
           value={companyType ?? ""}

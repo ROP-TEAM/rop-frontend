@@ -3,4 +3,5 @@ interface OtpInputProps {
     value?: string;
     onChange?: (value: string) => void;
     onComplete?: (otp: string) => void;
+    placeholder?: string; 
 }

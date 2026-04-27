@@ -10,6 +10,7 @@ import { Route } from "@/app/types/route";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OrderManager from "./component/OrderManager";
+import OtpInput from "./component/otpInput/OtpInput";
 const WorkSpace = () => {
   const [routeEditID, setRouteEditID] = useState(-1);
   const [isHideRoutes, setIsHideRoutes] = useState(true);
@@ -22,12 +23,16 @@ const WorkSpace = () => {
   const [maxTask, setMaxTask] = useState<string>("");
   const routeSlice = useSelector((state: RootState) => state.route);
   const [isEditRoute, setIsEditRoute] = useState<boolean>(false);
+  const [otp, setOtp] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const formatStringTime = (hour: string, minute: string): string => {
     const hh = hour.padStart(2, "0");
     const mm = minute.padStart(2, "0");
 
     return `${hh}.${mm}`;
+  };
+   const handleOtpComplete = (completedOtp: string) => {
+    console.log("OTP:", completedOtp);
   };
   const handlerCreateRoute = () => {
     const startTime = formatStringTime(startHour, startminute);
@@ -170,6 +175,7 @@ const WorkSpace = () => {
       <br />
       <section>
         <OrderManager></OrderManager>
+        <OtpInput value={otp} onChange={setOtp} onComplete={handleOtpComplete}/>
       </section>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useRef} from 'react';
 import styles from './OtpInput.module.scss';
-const OtpInput = ({ length = 4,value = '', onChange }: OtpInputProps) => {
+const OtpInput = ({ length = 4,value = '', onChange, onComplete }: OtpInputProps) => {
     const values = Array.from({ length }, (_, i) => value[i] || '');
     const inputsRef = useRef<HTMLInputElement[]>([]);
     
@@ -8,7 +8,13 @@ const OtpInput = ({ length = 4,value = '', onChange }: OtpInputProps) => {
         const val = e.target.value.replace(/\D/g, '').slice(-1);
         const newValues = [...values];
         newValues[index] = val;
-        onChange && onChange(newValues.join(''));
+        const newOtp = newValues.join('');
+        onChange && onChange(newOtp);
+
+         if (newOtp.length === length && onComplete) {
+        onComplete(newOtp);
+        }
+
         if (val && index < length - 1) {
             inputsRef.current[index + 1]?.focus();
         }

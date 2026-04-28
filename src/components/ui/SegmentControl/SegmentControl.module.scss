@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    gap: 1.5rem;
+    border-bottom: 0.1rem solid var(--primary-200) ;
+    width: 100%;
+    padding-left: 2rem;
+}
+
+.item{
+        display:flex;
+        align-items:center;
+        gap:0.7rem;
+        padding: 0 0.2rem;
+        border-bottom: 0.2rem solid transparent;
+        margin-bottom: -0.1rem;
+         line-height: 1; 
+    }
+
+.active{
+    border-bottom: 0.2rem solid var(--secondary-600);
+    color:var(--secondary-600);
+}

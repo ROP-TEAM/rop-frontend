@@ -12,6 +12,18 @@
   --primary-900: #141414;
   --primary-1000: #000000;
 
+  --secondary-0: #ffffff;
+  --secondary-100: #d1e1f7;
+  --secondary-200: #a3c3f0;
+  --secondary-300: #75a5e8;
+  --secondary-400: #4787e1;
+  --secondary-500: #1a69d9;
+  --secondary-600: #1868db;
+  --secondary-700: #1251ae;
+  --secondary-800: #0d3b82;
+  --secondary-900: #092757;
+  --secondary-1000: #05152f;
+
   --p-0: var(--primary-0);
   --p-50: var(--primary-50);
   --p-100: var(--primary-100);
@@ -24,6 +36,18 @@
   --p-800: var(--primary-800);
   --p-900: var(--primary-900);
   --p-1000: var(--primary-1000);
+
+  --s-0: var(--secondary-0);
+  --s-100: var(--secondary-100);
+  --s-200: var(--secondary-200);
+  --s-300: var(--secondary-300);
+  --s-400: var(--secondary-400);
+  --s-500: var(--secondary-500);
+  --s-600: var(--secondary-600);
+  --s-700: var(--secondary-700);
+  --s-800: var(--secondary-800);
+  --s-900: var(--secondary-900);
+  --s-1000: var(--secondary-1000);
 }
 
 :global([data-theme="dark"]) {

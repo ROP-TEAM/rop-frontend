@@ -9,7 +9,8 @@ import {
 import { Route } from "@/app/types/route";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TimeInput from "../../../components/form/TimeInputT/TimeInput";
+import TimeInput from "../../../components/form/TimeInput/TimeInput";
+import { SegmentControl } from "@/components/ui/SegmentControl/SegmentControl";
 const WorkSpace = () => {
   const [routeEditID, setRouteEditID] = useState(-1);
   const [isHideRoutes, setIsHideRoutes] = useState(true);
@@ -175,6 +176,7 @@ const WorkSpace = () => {
       <br />
       <section>
         <TimeInput value={time} onChange={setTime}></TimeInput> 
+        <SegmentControl></SegmentControl>
       </section>
     </div>
   );

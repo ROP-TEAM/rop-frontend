@@ -1,4 +1,4 @@
-import { CardOrder } from "./componets/CardOrder";
+import { CardOrder } from "./componets/CardOrder/CardOrder";
 const VehicleBoard = () => {
   return (
     <div>

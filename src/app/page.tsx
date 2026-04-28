@@ -32,7 +32,9 @@ const Page = () => {
         </FloatingCard>
       </div>
       <TextInput
+        color="var(--p-500)"
         label="ชื่อรถ"
+        width="16rem"
         placeholder="ยังไม่ได้กรอกชื่อรถ"
         onChange={setVehicleName}
         value={vehicleName}

@@ -3,6 +3,7 @@ export interface TextInputProps {
   placeholder: string;
   value: string;
   fontSize?: string;
+  color?: string;
   width?: string;
   onChange: (value: string) => void;
 }

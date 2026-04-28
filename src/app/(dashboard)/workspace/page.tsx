@@ -9,9 +9,7 @@ import {
 import { Route } from "@/app/types/route";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import OrderManager from "./component/OrderManager";
-import OtpInput from "./component/otpInput/OtpInput";
-import TimeInput from "./component/timeInput/TimeInput";
+import TimeInput from "../../../components/form/TimeInputT/TimeInput";
 const WorkSpace = () => {
   const [routeEditID, setRouteEditID] = useState(-1);
   const [isHideRoutes, setIsHideRoutes] = useState(true);
@@ -176,8 +174,6 @@ const WorkSpace = () => {
       )}
       <br />
       <section>
-        <OrderManager></OrderManager>
-        <OtpInput value={otp} onChange={setOtp} onComplete={handleOtpComplete}/>
         <TimeInput value={time} onChange={setTime}></TimeInput> 
       </section>
     </div>

@@ -1,20 +1,35 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
-
+import { useState } from "react";
+import { FloatingCard } from "../components/ui/FloatCard/FloatCard";
+import { useClickOutSide } from "@/hook/useClickOutSide";
 const Page = () => {
-  const { data: session, status } = useSession();
-
-  if (status === "unauthenticated") {
-    return <div onClick={() => signIn("google")}>Login</div>;
-  }
-
+  const [isActive, setIsActive] = useState(false);
   return (
-    <div>
-      <p>{session?.user?.name}</p>
-      <button type="button" onClick={() => signOut()}>
-        Logout
-      </button>
+    <div style={{ height: "300px" }}>
+      <div style={{ margin: "2rem auto", width: "fit-content" }}>
+        <FloatingCard
+          setIsActive={setIsActive}
+          isActive={isActive}
+          isOnTop={false}
+          trigger={
+            <button type="button" onClick={() => setIsActive((prev) => !prev)}>
+              check Is out
+            </button>
+          }
+        >
+          <FloatingCard.body
+            isHasLine={false}
+            onClick={() => console.log("Hello")}
+          >
+            HI
+          </FloatingCard.body>
+          <FloatingCard.body isHasLine={true}>
+            สวัสดีครับ floating Line
+          </FloatingCard.body>
+          <FloatingCard.body isHasLine={false}>hello</FloatingCard.body>
+        </FloatingCard>
+      </div>
     </div>
   );
 };

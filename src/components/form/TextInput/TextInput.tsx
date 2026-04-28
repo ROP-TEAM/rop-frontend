@@ -12,7 +12,7 @@ export const TextInput = ({
 }: TextInputProps) => {
   return (
     <div>
-      {label && <p className={styles.label}>{label}</p>}
+      {label && <h5 className={styles.label}>{label}</h5>}
       <input
         className={styles.input}
         value={value}

@@ -9,7 +9,6 @@ import {
 import { Route } from "@/app/types/route";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TimeInput from "../../../components/form/TimeInputT/TimeInput";
 const WorkSpace = () => {
   const [routeEditID, setRouteEditID] = useState(-1);
   const [isHideRoutes, setIsHideRoutes] = useState(true);
@@ -23,7 +22,7 @@ const WorkSpace = () => {
   const routeSlice = useSelector((state: RootState) => state.route);
   const [isEditRoute, setIsEditRoute] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
-  const [time, setTime] = useState({hours: "",minutes: "",});
+  const [time, setTime] = useState({ hours: "", minutes: "" });
   const dispatch = useDispatch<AppDispatch>();
   const formatStringTime = (hour: string, minute: string): string => {
     const hh = hour.padStart(2, "0");
@@ -31,7 +30,7 @@ const WorkSpace = () => {
 
     return `${hh}.${mm}`;
   };
-   const handleOtpComplete = (completedOtp: string) => {
+  const handleOtpComplete = (completedOtp: string) => {
     console.log("OTP:", completedOtp);
   };
   const handlerCreateRoute = () => {
@@ -173,9 +172,7 @@ const WorkSpace = () => {
         </section>
       )}
       <br />
-      <section>
-        <TimeInput value={time} onChange={setTime}></TimeInput> 
-      </section>
+      <section></section>
     </div>
   );
 };

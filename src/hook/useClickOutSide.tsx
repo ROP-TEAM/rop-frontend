@@ -7,12 +7,12 @@ export const useClickOutSide = <T extends HTMLElement>(
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && ref.current.contains(e.target as Node)) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         callback();
       }
     };
     document.addEventListener("mousedown", handler);
-    return document.removeEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [callback]);
   return ref;
 };

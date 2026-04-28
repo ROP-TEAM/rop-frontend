@@ -5,6 +5,7 @@ const TimeInput = ({
   value = { hours: "", minutes: "" },
   onChange,
   placeholder = "- -",
+  width = "100%",
 }: TimeInputProps) => {
   const hourRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
@@ -101,11 +102,11 @@ const TimeInput = ({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container}  style={{width}}>
       <input
         ref={hourRef}
         value={hours}
-        onChange={handleHourChange}
+        onChange={(e) => handleHourChange(e)} 
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e, "hour")}
         onFocus={handleFocus}
@@ -114,7 +115,7 @@ const TimeInput = ({
       <input
         ref={minuteRef}
         value={minutes}
-        onChange={handleMinuteChange}
+        onChange={(e) => handleMinuteChange(e)} 
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e, "minute")}
         onFocus={handleFocus}

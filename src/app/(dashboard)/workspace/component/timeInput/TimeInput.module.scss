@@ -1,6 +1,10 @@
 .container{
     display:flex;
-    gaP:0.1rem;
+    gap:0.1rem;
+    border: 0.0625rem solid;
+    padding: 0.1rem;
+    box-sizing: border-box;
+
     input{
         border:none;
         width: 2ch;

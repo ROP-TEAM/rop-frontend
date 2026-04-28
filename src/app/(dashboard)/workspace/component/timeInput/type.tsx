@@ -7,4 +7,5 @@ type TimeInputProps = {
   value: TimeValue;
   onChange?: (val: TimeValue) => void;
   placeholder?: string;
+  width?: string;
 };

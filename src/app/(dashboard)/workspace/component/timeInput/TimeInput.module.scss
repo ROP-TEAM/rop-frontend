@@ -1,0 +1,12 @@
+.container{
+    display:flex;
+    gaP:0.1rem;
+    input{
+        border:none;
+        width: 2ch;
+        outline: none;
+        &::placeholder{
+            text-align: center;
+        }
+    }
+}

@@ -14,13 +14,28 @@ export const FloatingCard = ({
   });
 
   return (
-    <div ref={floatRef}>
+    <div className={styles.warpper} ref={floatRef}>
       <div>{trigger}</div>
-      <div>{isActive && <div>{children}</div>}</div>
+      {isActive && <div className={styles.floating}>{children}</div>}
     </div>
   );
 };
 
-FloatingCard.body = ({ isHasLine, children }: FloatingCardBodyProps) => {
-  return <div>{children}</div>;
+FloatingCard.body = ({
+  isHasLine = false,
+  children,
+  onClick = () => {},
+}: FloatingCardBodyProps) => {
+  return (
+    <div>
+      {isHasLine && <hr />}
+      <button
+        onClick={() => onClick()}
+        className={styles.floatingBody}
+        type="button"
+      >
+        {children}
+      </button>
+    </div>
+  );
 };

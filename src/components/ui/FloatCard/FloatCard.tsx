@@ -1,4 +1,4 @@
-import { FloatingCardBodyProps, FloatingCardProps } from "./types";
+import { FloatingCardBodyProps, FloatingCardProps } from "./Floating.types";
 import styles from "./FloatCard.module.scss";
 import { useClickOutSide } from "@/hook/useClickOutSide";
 

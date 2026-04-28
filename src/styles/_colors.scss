@@ -1,7 +1,7 @@
 :root {
   --primary-0: #ffffff;
   --primary-50: #f8f8f8;
-  --primary-100: #edeef0;
+  --primary-100: #edeff0;
   --primary-200: #e1e2e6;
   --primary-300: #a9abaf;
   --primary-400: #75777b;
@@ -25,7 +25,8 @@
   --p-900: var(--primary-900);
   --p-1000: var(--primary-1000);
 }
-[data-theme="dark"] {
+
+:global([data-theme="dark"]) {
   --p-0: var(--primary-1000);
   --p-50: var(--primary-900);
   --p-100: var(--primary-800);

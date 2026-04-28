@@ -84,17 +84,15 @@ const TimeInput = ({
       }
     }
 
-    if (e.key === "ArrowLeft") {
-      if (field === "minute" && input.selectionStart === 0) {
-        hourRef.current?.focus();
-      }
-    }
+    if (e.key === "ArrowLeft" && field === "minute") {
+    e.preventDefault();
+    hourRef.current?.focus();
+  }
 
-    if (e.key === "ArrowRight") {
-      if (field === "hour" && input.selectionStart === input.value.length) {
-        minuteRef.current?.focus();
-      }
-    }
+      if (e.key === "ArrowRight" && field === "hour") {
+    e.preventDefault();
+    minuteRef.current?.focus();
+  }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {

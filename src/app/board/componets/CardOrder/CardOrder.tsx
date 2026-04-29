@@ -5,7 +5,10 @@ import styles from "./CardOrder.module.scss";
 export const CardOrder = ({ title, description }: CardOrderProps) => {
   const [showInfo, setShowInfo] = useState(false);
   return (
-    <div onClick={() => setShowInfo((prev) => !prev)}>
+    <div
+      className={styles.wrapper}
+      onClick={() => setShowInfo((prev) => !prev)}
+    >
       <section className={styles.header}>
         <h3>{title}</h3>
         <p>{description}</p>

@@ -1,10 +1,10 @@
 import { CardOrder } from "../CardOrder/CardOrder";
-
+import styles from "./OrderContainer.module.scss";
 export const CardContainer = () => {
   return (
-    <div>
-      <section>
-        <h4>มหากาพย์น้ำแข็งลุกป๊อก</h4>
+    <div className={styles.container}>
+      <section className={styles.header}>
+        <h3>มหากาพย์น้ำแข็งลุกป๊อก</h3>
       </section>
       <section>
         <CardOrder

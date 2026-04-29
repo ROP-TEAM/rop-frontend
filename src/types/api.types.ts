@@ -51,7 +51,6 @@ interface OrderRun extends Order {
 
 export interface Runs {
   id: number;
-  name: string;
   totalRunsDistance: number;
   totalRunsTime: number;
   vehicleRuns: VehicleRun[];

@@ -1,4 +1,4 @@
 export interface CardOrderProps {
   title: string;
-  description: string;
+  description?: string;
 }

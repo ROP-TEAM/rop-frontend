@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  padding-left: 2rem;
+  min-width: 0;
+  position: relative;
+  overflow: visible;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.1rem;
+    background: var(--primary-200);
+  }
+}
+
+.item {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem 0.2rem 0;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+
+  span{
+    border:1px solid var(--primary-100);
+    background-color:var(--primary-100);
+    padding: 0.0625rem 0.6rem; 
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.2rem;
+    background: transparent;
+  }
+
+  &:hover::after {
+    background: var(--secondary-600);
+  }
+}
+
+.active {
+  color: var(--secondary-600);
+
+  &::after {
+    background: var(--secondary-600);
+  }
+}
+
+.hiddenTab {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.moreWrapper {
+  flex-shrink: 0;
+  display: flex;
+}
+

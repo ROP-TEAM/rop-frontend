@@ -24,7 +24,8 @@ const WorkSpace = () => {
   const routeSlice = useSelector((state: RootState) => state.route);
   const [isEditRoute, setIsEditRoute] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
-  const [time, setTime] = useState({hours: "",minutes: "",});
+  const [tab, setTab] = useState("ยานพาหนะ");
+  const [time, setTime] = useState({ hours: "", minutes: "" });
   const dispatch = useDispatch<AppDispatch>();
   const formatStringTime = (hour: string, minute: string): string => {
     const hh = hour.padStart(2, "0");
@@ -32,7 +33,7 @@ const WorkSpace = () => {
 
     return `${hh}.${mm}`;
   };
-   const handleOtpComplete = (completedOtp: string) => {
+  const handleOtpComplete = (completedOtp: string) => {
     console.log("OTP:", completedOtp);
   };
   const handlerCreateRoute = () => {
@@ -175,8 +176,37 @@ const WorkSpace = () => {
       )}
       <br />
       <section>
-        <TimeInput value={time} onChange={setTime}></TimeInput> 
-        <SegmentControl></SegmentControl>
+        <TimeInput value={time} onChange={setTime}></TimeInput>
+        <SegmentControl
+          segments={[
+            {
+              value: "ยานพาหนะ",
+              label: "ยานพาหนะ",
+              icon: "/icon/car.svg",
+              onClick: () => console.log("ยานพาหนะ"),
+            },
+            {
+              value: "ออเดอร์",
+              label: "ออเดอร์",
+              icon: "/icon/order.svg",
+              onClick: () => console.log("ออเดอร์"),
+            },
+            {
+              value: "การ์ด",
+              label: "การ์ด",
+              icon: "/icon/card.svg",
+              onClick: () => console.log("การ์ด"),
+            },
+            {
+              value: "ไทม์ไลน์",
+              label: "ไทม์ไลน์",
+              icon: "/icon/timeline.svg",
+              onClick: () => console.log("ไทม์ไลน์"),
+            },
+          ]}
+          value={tab}
+          onChange={setTab}
+        />
       </section>
     </div>
   );

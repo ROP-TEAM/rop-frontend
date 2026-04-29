@@ -9,6 +9,8 @@ import {
 import { Route } from "@/app/types/route";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import TimeInput from "../../../components/form/TimeInput/TimeInput";
+import { SegmentControl } from "@/components/ui/SegmentControl/SegmentControl";
 const WorkSpace = () => {
   const [routeEditID, setRouteEditID] = useState(-1);
   const [isHideRoutes, setIsHideRoutes] = useState(true);
@@ -22,6 +24,7 @@ const WorkSpace = () => {
   const routeSlice = useSelector((state: RootState) => state.route);
   const [isEditRoute, setIsEditRoute] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
+  const [tab, setTab] = useState("ยานพาหนะ");
   const [time, setTime] = useState({ hours: "", minutes: "" });
   const dispatch = useDispatch<AppDispatch>();
   const formatStringTime = (hour: string, minute: string): string => {
@@ -172,7 +175,39 @@ const WorkSpace = () => {
         </section>
       )}
       <br />
-      <section></section>
+      <section>
+        <TimeInput value={time} onChange={setTime}></TimeInput>
+        <SegmentControl
+          segments={[
+            {
+              value: "ยานพาหนะ",
+              label: "ยานพาหนะ",
+              icon: "/icon/car.svg",
+              onClick: () => console.log("ยานพาหนะ"),
+            },
+            {
+              value: "ออเดอร์",
+              label: "ออเดอร์",
+              icon: "/icon/order.svg",
+              onClick: () => console.log("ออเดอร์"),
+            },
+            {
+              value: "การ์ด",
+              label: "การ์ด",
+              icon: "/icon/card.svg",
+              onClick: () => console.log("การ์ด"),
+            },
+            {
+              value: "ไทม์ไลน์",
+              label: "ไทม์ไลน์",
+              icon: "/icon/timeline.svg",
+              onClick: () => console.log("ไทม์ไลน์"),
+            },
+          ]}
+          value={tab}
+          onChange={setTab}
+        />
+      </section>
     </div>
   );
 };

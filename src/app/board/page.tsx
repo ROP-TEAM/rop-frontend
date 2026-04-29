@@ -1,13 +1,11 @@
 import { CardOrder } from "./componets/CardOrder/CardOrder";
+import { CardContainer } from "./componets/OrderContainer/OrderContainer";
 const VehicleBoard = () => {
   return (
     <div>
       Hello Order
       <div>
-        <CardOrder
-          title={"IDX41587K"}
-          description="กระบอกไม้ไผ่หรือนี่กระไรจะไปเทียบกับช้างเจ้าสมุทเวหา ผู้พิทักษ์ทั้ง 12 ราตรีนิรันด์"
-        ></CardOrder>
+        <CardContainer></CardContainer>
       </div>
     </div>
   );

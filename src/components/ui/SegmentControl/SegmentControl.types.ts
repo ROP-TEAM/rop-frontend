@@ -1,11 +1,11 @@
-interface SegmentProp {
+export interface SegmentProp {
   value: string;
   label: string;
   icon: string;
   onClick?: () => void;
 }
 
-interface SegmentControlProps {
+export interface SegmentControlProps {
   segments: SegmentProp[];
   value?: string;
   onChange?: (value: string) => void;

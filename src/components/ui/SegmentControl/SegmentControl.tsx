@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SegmentControl.module.scss";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { FloatingCard } from "../FloatCard/FloatCard";
-
+import { SegmentControlProps, SegmentProp } from "./SegmentControl.types";
 const GAP_PX = 24;
 
 export const SegmentControl = ({
@@ -18,8 +18,8 @@ export const SegmentControl = ({
   const [open, setOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const moreRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const moreRef = useRef<HTMLButtonElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const active = value ?? internalActive;
 
@@ -77,7 +77,7 @@ export const SegmentControl = ({
   return (
     <div className={styles.container} ref={containerRef}>
       {segments.map((item, i) => (
-        <div
+        <button
           key={item.value}
           ref={(el) => {
             tabRefs.current[i] = el;
@@ -94,11 +94,11 @@ export const SegmentControl = ({
           {item.icon && (
             <IconSvgMono src={item.icon} size={20} className={styles.icon} />
           )}
-          <p>{item.label}</p>
-        </div>
+          <p className={styles.label}>{item.label}</p>
+        </button>
       ))}
 
-      <div
+      <button
         ref={moreRef}
         className={styles.moreWrapper}
         style={{
@@ -131,7 +131,7 @@ export const SegmentControl = ({
             </FloatingCard.body>
           ))}
         </FloatingCard>
-      </div>
+      </button>
     </div>
   );
 };

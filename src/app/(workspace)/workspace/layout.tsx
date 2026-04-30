@@ -1,10 +1,15 @@
 "use client";
-
+import styles from "./workspace.module.scss";
 import { SegmentControl } from "@/components/ui/SegmentControl/SegmentControl";
 import { SegmentProp } from "@/components/ui/SegmentControl/SegmentControl.types";
 import { usePathname } from "next/navigation";
+import { UseDispatch, useSelector } from "react-redux";
 import { ReactNode } from "react";
+import { RootState } from "@/app/store";
 const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
+  const isShow = useSelector(
+    (state: RootState) => state.sidePopupReducer.isShow,
+  );
   const pathname = usePathname().split("/")[2];
   const segments: SegmentProp[] = [
     {
@@ -29,9 +34,17 @@ const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
     },
   ];
   return (
-    <div>
-      <p>{pathname}</p>S{children}
-      <SegmentControl value={pathname} segments={segments}></SegmentControl>
+    <div className={styles.layout}>
+      <section className={styles.space}>
+        <p>{pathname}</p>
+        <SegmentControl value={pathname} segments={segments}></SegmentControl>
+        <div className={styles.space}>{children}</div>
+      </section>
+      {isShow && (
+        <section className={styles.popup}>
+          <div className={styles.popup}>Hello</div>
+        </section>
+      )}
     </div>
   );
 };

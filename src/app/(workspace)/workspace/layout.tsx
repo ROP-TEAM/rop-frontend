@@ -13,9 +13,19 @@ const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
       label: "ยานพาหนะ",
     },
     {
+      icon: "/icon/order.svg",
+      value: "order",
+      label: "ออเดอร์",
+    },
+    {
       icon: "/icon/card.svg",
       value: "board",
       label: "การ์ด",
+    },
+    {
+      icon: "/icon/timeline.svg",
+      value: "plan",
+      label: "แผนเดินรถ",
     },
   ];
   return (

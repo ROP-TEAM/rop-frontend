@@ -92,12 +92,7 @@ export const SegmentControl = ({
             .join(" ")}
         >
           {item.icon && (
-            <IconSvgMono
-              src={item.icon}
-              color={active === item.value ? "var(--s-600)" : "var(--p-700)"}
-              size={20}
-              className={styles.icon}
-            />
+            <IconSvgMono src={item.icon} size={20} className={styles.icon} />
           )}
           <h4 className={styles.label}>{item.label}</h4>
         </button>

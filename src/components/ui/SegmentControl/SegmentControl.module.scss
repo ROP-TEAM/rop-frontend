@@ -24,10 +24,9 @@
   flex-shrink: 0;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.8rem 0.2rem 0;
+  padding: 0.5rem 0.2rem;
   white-space: nowrap;
   position: relative;
-  z-index: 1;
   margin-bottom: -0.1rem;
   border-bottom: 0.1rem solid var(--primary-100);
 
@@ -36,10 +35,16 @@
     background-color: var(--primary-100);
     padding: 0.0625rem 0.6rem;
   }
-
-  &:not(.active):hover {
-    z-index: 3;
-    border-bottom: 0.3rem solid var(--secondary-600);
+  &:hover::after {
+    content: "";
+    height: 0.2rem;
+    background-color: var(--secondary-600);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    transition: background-color 0.5s ease;
   }
 }
 .label {
@@ -47,10 +52,18 @@
 }
 
 .active {
-  z-index: 2;
-  border-bottom: 0.3rem solid var(--secondary-600);
   .label {
     color: var(--s-600);
+  }
+  ::after {
+    content: "";
+    height: 0.2rem;
+    background-color: var(--secondary-600);
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    left: 0;
+    right: 0;
   }
 }
 

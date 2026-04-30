@@ -1,0 +1,13 @@
+.container {
+    width: 75%;
+}
+.bar{
+    display:flex;
+    flex-direction: column;
+    gap:0.6rem;
+    h1{
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 1;
+    }
+}

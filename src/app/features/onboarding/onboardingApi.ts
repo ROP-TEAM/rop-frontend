@@ -12,14 +12,14 @@ export const onboardingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     submitOnboarding: builder.mutation<OnboardingResponse, OnboardingPayload>({
       query: (body) => ({
-        url: "/onboarding",
+        url: "/api/onboarding",
         method: "POST",
         body,
       }),
     }),
     getOtp: builder.mutation<GetOtpResponse, GetOtpPayload>({
       query: (body) => ({
-        url: "/auth/otp",
+        url: "/api/auth/otp",
         method: "POST",
         body,
       }),
@@ -34,5 +34,8 @@ export const onboardingApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useSubmitOnboardingMutation, useOtpValidationMutation } =
-  onboardingApi;
+export const {
+  useSubmitOnboardingMutation,
+  useOtpValidationMutation,
+  useGetOtpMutation,
+} = onboardingApi;

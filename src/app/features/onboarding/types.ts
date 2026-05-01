@@ -10,14 +10,14 @@ export enum CompanyType {
 }
 
 export interface GetOtpPayload {
-  Tel: string;
+  tel: string;
 }
 export interface GetOtpResponse {
-  RefNo: string;
+  refNo: string;
 }
 export interface OtpValidatePayload {
   refNO: String;
-  OtpCode: string;
+  otpCode: string;
 }
 
 export interface OtpValidationResponse {
@@ -37,4 +37,5 @@ export interface OnboardingPayload {
   address: string;
   alley?: string | null;
   postalCode: string;
+  tel: string;
 }

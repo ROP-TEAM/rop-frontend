@@ -59,6 +59,7 @@ const Onboarding = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setOnboardingState((prev) => prev + 1);
     if (onboardingState == 0) {
       if (!companyType) return;
       const onboardingPayload: OnboardingPayload = {

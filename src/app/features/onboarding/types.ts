@@ -9,6 +9,17 @@ export enum CompanyType {
   OTHER = "other",
 }
 
+export interface GetOtpPayload {
+  Tel: string;
+}
+export interface GetOtpResponse {
+  RefNo: string;
+}
+export interface OtpValidatePayload {
+  refNO: String;
+  OtpCode: string;
+}
+
 export interface OtpValidationResponse {
   message: string;
 }
@@ -26,5 +37,4 @@ export interface OnboardingPayload {
   address: string;
   alley?: string | null;
   postalCode: string;
-  tel: string;
 }

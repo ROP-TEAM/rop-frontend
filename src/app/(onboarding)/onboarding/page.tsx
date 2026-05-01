@@ -20,6 +20,7 @@ const Onboarding = () => {
   const [alley, setAlley] = useState("");
   const [tel, setTel] = useState("");
   const [reqError, setReqError] = useState("");
+  const [onboardingState, setOnboardingState] = useState(0);
   const [submitOnboarding, { isLoading, error }] =
     useSubmitOnboardingMutation();
   const { data: session, status } = useSession();
@@ -37,31 +38,43 @@ const Onboarding = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!companyType) return;
-    const onboardingPayload: OnboardingPayload = {
-      companyName,
-      companyType,
-      province: selectProvince,
-      district: selectDistrict,
-      subDistrict: selectSubDistrict,
-      address,
-      alley,
-      postalCode: zipCode,
-      tel,
-    };
-    try {
-      const res = await submitOnboarding(onboardingPayload);
-      console.log(JSON.stringify(onboardingPayload));
-      console.log(res.data?.message);
-    } catch (error) {
-      console.error(error);
-      setReqError("error");
+    if (onboardingState == 1) {
+      if (!companyType) return;
+      const onboardingPayload: OnboardingPayload = {
+        companyName,
+        companyType,
+        province: selectProvince,
+        district: selectDistrict,
+        subDistrict: selectSubDistrict,
+        address,
+        alley,
+        postalCode: zipCode,
+      };
+      try {
+        const res = await submitOnboarding(onboardingPayload);
+        console.log(JSON.stringify(onboardingPayload));
+        console.log(res.data?.message);
+      } catch (error) {
+        console.error(error);
+        setReqError("error");
+      }
+    } else if (onboardingState == 2) {
+      try {
+        // const res =
+      } catch (err) {
+        setReqError("error");
+      }
     }
   };
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form
+        onSubmit={(e) => {
+          setOnboardingState((prev) => prev + 1);
+          handleSubmit(e);
+        }}
+      >
         <p>{session?.needOnboarding ? "0" : "1"}</p>
         <p>token: {session?.backendToken}</p>
         <label htmlFor="companyName">companyName</label>
@@ -154,18 +167,19 @@ const Onboarding = () => {
         />
         <br />
         <br />
-        <label htmlFor="tel">เบอร์โทรศัพท์</label>
-        <input
-          value={tel}
-          onChange={(e) => setTel(e.target.value)}
-          type="tel"
-          placeholder="เบอร์โทรศัพท์"
-          pattern="^0[0-9]{9}$"
-          required
-        />
-        <br></br>
-        <br></br>
-
+        {onboardingState == 1 && (
+          <>
+            <label htmlFor="tel">เบอร์โทรศัพท์</label>
+            <input
+              value={tel}
+              onChange={(e) => setTel(e.target.value)}
+              type="tel"
+              placeholder="เบอร์โทรศัพท์"
+              pattern="^0[0-9]{9}$"
+              required
+            />
+          </>
+        )}
         <button type="submit">SEND</button>
       </form>
     </div>

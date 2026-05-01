@@ -4,7 +4,7 @@ import {
   CompanyType,
   OnboardingPayload,
 } from "@/app/features/onboarding/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import province from "@/data/province.json";
 import district from "@/data/district.json";
 import subDistrict from "@/data/sub_district.json";
@@ -42,8 +42,21 @@ const Onboarding = () => {
   const zipCode = String(
     subDistrict.find((s) => s.id === Number(selectSubDistrict))?.zip_code,
   );
+  const token = session?.backendToken;
 
-  //
+  useEffect(() => {
+    if (token) {
+      try {
+        const base64 = token.split(".")[1];
+        const decoded = JSON.parse(atob(base64));
+        console.log(decoded);
+        console.log(token);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [token]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (onboardingState == 0) {
@@ -84,7 +97,6 @@ const Onboarding = () => {
           handleSubmit(e);
         }}
       >
-        <p>token: {session?.expires}</p>
         <label htmlFor="companyName">companyName</label>
         <input
           type="text"

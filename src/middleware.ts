@@ -2,22 +2,35 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 //login can access
-const protectRoutes = ["/ksdk"];
+const protectRoutes = ["/onboarding"];
 //not login can access
-const authRoutes = ["/haha"];
+const authRoutes = ["/login"];
+
+function decodeJwt(token: string) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+
+  return JSON.parse(Buffer.from(base64, "base64").toString());
+}
+
 export const middleware = async (req: NextRequest) => {
   let token = await getToken({
     req,
   });
-  const isExpired =
-    typeof token?.exp === "string" || typeof token?.exp === "number"
-      ? Date.now() >= new Date(token.exp).getTime()
-      : false;
+  let isExpired = false;
+  const backendToken = token?.backendToken as string;
+  try {
+    const paylod = decodeJwt(backendToken);
+    isExpired = Date.now() >= paylod.exp * 1000;
+  } catch {
+    isExpired = true;
+  }
   const { pathname } = req.nextUrl;
   const isProtectRoute = protectRoutes.some((route) =>
     pathname.startsWith(route),
   );
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+
   if (isExpired) {
     token = null;
   }

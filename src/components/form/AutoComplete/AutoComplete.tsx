@@ -74,6 +74,7 @@ export const Autocomplete = ({
           {filtered.map((item) => (
             <div
               key={getValue(item)}
+              onMouseDown={(e) => e.preventDefault()} 
               onClick={() => {
                 onChange(getValue(item));
                 setOpen(false);

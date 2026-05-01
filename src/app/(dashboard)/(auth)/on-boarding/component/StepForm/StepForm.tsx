@@ -2,8 +2,13 @@ import { TextInput } from "@/components/form/TextInput/TextInput";
 import { useState } from "react";
 import styles from "./StepForm.module.scss";
 import { Autocomplete } from "@/components/form/AutoComplete/AutoComplete";
+import { OnboardingPayload } from "@/app/types/onboarding";
 
-export const StepForm = ({ onNext }: { onNext: () => void }) => {
+export const StepForm = ({
+  onNext,
+}: {
+  onNext: (data: OnboardingPayload) => Promise<void> | void;
+}) => {
   const [companyName, setCompanyName] = useState("");
   const [touched, setTouched] = useState(false);
   const companyError = touched && companyName.trim() === "";
@@ -66,6 +71,52 @@ export const StepForm = ({ onNext }: { onNext: () => void }) => {
     setProvince(val);
     setDistrict("");
     setSubdistrict("");
+    setZipCode("");
+  };
+
+  const handleDistrictChange = (val: string) => {
+    setDistrict(val);
+    setSubdistrict("");
+    setZipCode("");
+  };
+
+  const isFormValid =
+    companyName.trim() !== "" &&
+    category.trim() !== "" &&
+    province.trim() !== "" &&
+    district.trim() !== "" &&
+    subdistrict.trim() !== "";
+
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmit = async () => {
+    setTouched(true);
+    setCategoryTouched(true);
+    setProviceTouched(true);
+    setDistrictTouched(true);
+    setSubdistrictTouched(true);
+
+    setSubmitError("");
+
+    if (!isFormValid) return;
+
+    const payload: OnboardingPayload = {
+      companyName,
+      companyType: category,
+      province,
+      district,
+      subDistrict: subdistrict,
+      address: "",
+      alley: null,
+      postalCode: zipCode,
+    };
+
+    try {
+      await onNext(payload);
+      console.log("payload", payload);
+    } catch (err) {
+      setSubmitError("เกิดข้อผิดพลาด:ไม่สามารถเชื่อมต่อ server ได้");
+    }
   };
 
   return (
@@ -93,8 +144,10 @@ export const StepForm = ({ onNext }: { onNext: () => void }) => {
         />
         <div className={styles.line}></div>
       </div>
+
       <div className={styles.bottom_container}>
         <h2>ตำแหน่งที่ตั้ง</h2>
+
         <div>
           <div className={styles.input}>
             <Autocomplete
@@ -111,13 +164,14 @@ export const StepForm = ({ onNext }: { onNext: () => void }) => {
               label="อำเภอ"
               placeholder="กรุณาเลือกอำเภอ"
               value={district}
-              onChange={setDistrict}
+              onChange={handleDistrictChange}
               options={districtOptions}
               isError={districtError}
               errorMessage="*กรุณาเลือกอำเภอ"
               onBlur={() => setDistrictTouched(true)}
             />
           </div>
+
           <div className={styles.input}>
             <Autocomplete
               label="ตำบล"
@@ -139,7 +193,12 @@ export const StepForm = ({ onNext }: { onNext: () => void }) => {
           </div>
         </div>
       </div>
-      <button onClick={onNext}>ถัดไป</button>
+
+      <p className={styles.submitError}>{submitError && `*${submitError}`}</p>
+
+      <button onClick={handleSubmit} className={styles.button}>
+        ขั้นตอนถัดไป
+      </button>
     </div>
   );
 };

@@ -14,7 +14,7 @@ export const TextInput = ({
   errorMessage = "",
   onBlur,
   onFocus,
-  readOnly
+  readOnly,
 }: TextInputProps) => {
   return (
     <div className={styles.container}>
@@ -41,9 +41,7 @@ export const TextInput = ({
         }
         type="text"
       />
-      {isError && errorMessage && (
-        <p className={styles.errorText}>{errorMessage}</p>
-      )}
+      <p className={styles.errorText}>{isError ? errorMessage : ""}</p>
     </div>
   );
 };

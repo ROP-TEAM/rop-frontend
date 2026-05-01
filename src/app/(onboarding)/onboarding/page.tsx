@@ -8,7 +8,12 @@ import { useState } from "react";
 import province from "@/data/province.json";
 import district from "@/data/district.json";
 import subDistrict from "@/data/sub_district.json";
-import { useSubmitOnboardingMutation } from "@/app/features/onboarding/onboardingApi";
+import { getToken } from "next-auth/jwt";
+import {
+  useSubmitOnboardingMutation,
+  useOtpValidationMutation,
+  useGetOtpMutation,
+} from "@/app/features/onboarding/onboardingApi";
 import { useSession } from "next-auth/react";
 const Onboarding = () => {
   const [companyName, setCompanyName] = useState("");
@@ -23,7 +28,9 @@ const Onboarding = () => {
   const [onboardingState, setOnboardingState] = useState(0);
   const [submitOnboarding, { isLoading, error }] =
     useSubmitOnboardingMutation();
-  const { data: session, status } = useSession();
+  const [submitTel] = useGetOtpMutation();
+  const { data: session } = useSession();
+
   const filterDistrict = district.filter(
     (d) => d.province_id === Number(selectProvince),
   );
@@ -35,10 +42,11 @@ const Onboarding = () => {
   const zipCode = String(
     subDistrict.find((s) => s.id === Number(selectSubDistrict))?.zip_code,
   );
+
   //
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (onboardingState == 1) {
+    if (onboardingState == 0) {
       if (!companyType) return;
       const onboardingPayload: OnboardingPayload = {
         companyName,
@@ -49,6 +57,7 @@ const Onboarding = () => {
         address,
         alley,
         postalCode: zipCode,
+        tel: "0615804472",
       };
       try {
         const res = await submitOnboarding(onboardingPayload);
@@ -58,9 +67,10 @@ const Onboarding = () => {
         console.error(error);
         setReqError("error");
       }
-    } else if (onboardingState == 2) {
+    } else if (onboardingState == 1) {
       try {
-        // const res =
+        const res = await submitTel({ tel: tel });
+        console.log(res.data?.refNo);
       } catch (err) {
         setReqError("error");
       }
@@ -71,12 +81,10 @@ const Onboarding = () => {
     <div>
       <form
         onSubmit={(e) => {
-          setOnboardingState((prev) => prev + 1);
           handleSubmit(e);
         }}
       >
-        <p>{session?.needOnboarding ? "0" : "1"}</p>
-        <p>token: {session?.backendToken}</p>
+        <p>token: {session?.expires}</p>
         <label htmlFor="companyName">companyName</label>
         <input
           type="text"

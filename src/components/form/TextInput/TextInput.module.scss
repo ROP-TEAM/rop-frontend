@@ -44,3 +44,9 @@
   margin-top: 0.4rem;
   color:var(--t-600);
 }
+
+.readOnly{
+  background-color:var(--p-200);
+  cursor: not-allowed;
+  pointer-events: none;
+}

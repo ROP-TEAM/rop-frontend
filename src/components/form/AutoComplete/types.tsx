@@ -1,7 +1,8 @@
+type Option = string | { label: string; value: string };
 type AutocompleteProps = {
   value: string;
   onChange: (value: string) => void;
-  options: string[];
+   options: Option[];
 
   label?: string;
   placeholder?: string;

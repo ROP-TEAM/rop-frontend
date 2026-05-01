@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TextInput } from "../TextInput/TextInput";
-import styles from "./AutoComplete.module.scss"
+import styles from "./AutoComplete.module.scss";
 import Image from "next/image";
 
 export const Autocomplete = ({
@@ -13,62 +13,74 @@ export const Autocomplete = ({
   errorMessage,
   onBlur,
 }: AutocompleteProps) => {
-  const [filtered, setFiltered] = useState<string[]>([]);
+  const [filtered, setFiltered] = useState<Option[]>([]);
   const [open, setOpen] = useState(false);
+  const getLabel = (o: Option) => (typeof o === "string" ? o : o.label);
+
+  const getValue = (o: Option) => (typeof o === "string" ? o : o.value);
 
   const handleChange = (val: string) => {
     onChange(val);
 
     const result = options.filter((o) =>
-      o.toLowerCase().includes(val.toLowerCase()),
+      getLabel(o).toLowerCase().includes(val.toLowerCase()),
     );
-
     setFiltered(result);
     setOpen(true);
   };
 
   const handleFocus = () => {
-  setFiltered(options); 
-  setOpen(true);
-};
+    const result = options.filter((o) =>
+      getLabel(o).toLowerCase().includes(value.toLowerCase()),
+    );
+    setFiltered(result);
+    setOpen(true);
+  };
+
+  const displayValue = (() => {
+    const found = options.find((o) => getValue(o) === value);
+    return found ? getLabel(found) : value;
+  })();
 
   return (
     <div className={styles.container}>
       <TextInput
         label={label}
-        value={value}
+        value={displayValue}
         onChange={handleChange}
         placeholder={placeholder}
         isError={isError}
         IsActiveStyle
         errorMessage={errorMessage}
-        onFocus={handleFocus} 
+        onFocus={handleFocus}
         onBlur={() => {
-          setTimeout(() => setOpen(false), 100);
-          onBlur?.();
+          setTimeout(() => {
+            setOpen(false);
+            onBlur?.();
+          }, 150);
         }}
       />
 
       <Image
-                src="/icon/dropdown.svg"
-                alt="dropdown"
-                width={30}
-                height={30}
-                className={styles.icon}
-              />
+        src="/icon/dropdown.svg"
+        alt="dropdown"
+        width={30}
+        height={30}
+        className={styles.icon}
+      />
 
       {open && filtered.length > 0 && (
         <div className={styles.dropdown}>
           {filtered.map((item) => (
             <div
-              key={item}
+              key={getValue(item)}
               onClick={() => {
-                onChange(item);
+                onChange(getValue(item));
                 setOpen(false);
               }}
               className={styles.item}
             >
-              {item}
+              {getLabel(item)}
             </div>
           ))}
         </div>

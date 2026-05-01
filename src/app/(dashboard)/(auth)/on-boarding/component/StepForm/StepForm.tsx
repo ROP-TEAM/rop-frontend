@@ -6,37 +6,139 @@ import { Autocomplete } from "@/components/form/AutoComplete/AutoComplete";
 export const StepForm = ({ onNext }: { onNext: () => void }) => {
   const [companyName, setCompanyName] = useState("");
   const [touched, setTouched] = useState(false);
-
   const companyError = touched && companyName.trim() === "";
 
   const [category, setCategory] = useState("");
   const [categoryTouched, setCategoryTouched] = useState(false);
   const categoryOptions = ["ขนส่ง 1", "กนส่ง 2", "คนส่ง 3", "ขนส่ง 4"];
-
   const categoryError = categoryTouched && category.trim() === "";
+
+  const [province, setProvince] = useState("");
+  const [proviceTouched, setProviceTouched] = useState(false);
+  const proviceOptions = [
+    { label: "ลพบุรี", value: "lopburi" },
+    { label: "ขอนแก่น", value: "khonkaen" },
+    { label: "กรุงเทพ", value: "bangkok" },
+  ];
+  const provinceError = proviceTouched && province.trim() === "";
+
+  const [district, setDistrict] = useState("");
+  const [districtTouced, setDistrictTouched] = useState(false);
+  const districtMap: Record<string, { label: string; value: string }[]> = {
+    lopburi: [
+      { label: "อำเภอเมือง", value: "muang" },
+      { label: "อำเภอพัฒนานิคม", value: "phatthana" },
+    ],
+    khonkaen: [{ label: "อำเภอเมือง", value: "muang" }],
+    bangkok: [
+      { label: "เขตบางนา", value: "bangna" },
+      { label: "เขตลาดกระบัง", value: "ladkrabang" },
+    ],
+  };
+  const districtOptions = districtMap[province] || [];
+  const districtError = districtTouced && district.trim() === "";
+
+  const [subdistrict, setSubdistrict] = useState("");
+  const [subdistrictTouched, setSubdistrictTouched] = useState(false);
+  const subdistrictError = subdistrictTouched && subdistrict.trim() === "";
+
+  const subdistrictMap: Record<
+    string,
+    { label: string; value: string; zip: string }[]
+  > = {
+    muang: [
+      { label: "ในเมือง", value: "nai_mueang", zip: "12314" },
+      { label: "ศิลา", value: "sila", zip: "15645" },
+    ],
+    bangna: [{ label: "บางนาเหนือ", value: "bangna_nuea", zip: "12348" }],
+  };
+  const subdistrictOptions = subdistrictMap[district] || [];
+
+  const [zipCode, setZipCode] = useState("");
+  const handleSubdistrictChange = (val: string) => {
+    setSubdistrict(val);
+
+    const found = subdistrictOptions.find((o) => o.value === val);
+    setZipCode(found?.zip || "");
+  };
+
+  const handleProvinceChange = (val: string) => {
+    setProvince(val);
+    setDistrict("");
+    setSubdistrict("");
+  };
 
   return (
     <div className={styles.container}>
-      <TextInput
-        label="ชื่อบริษัท"
-        placeholder="กรอกชื่อบริษัทที่ใช้งานร่วมกับโปรแกรม"
-        value={companyName}
-        onChange={setCompanyName}
-        IsActiveStyle
-        isError={companyError}
-        errorMessage="*กรุณากรอกชื่อบริษัทให้ครบถ้วน"
-        onBlur={() => setTouched(true)}
-      />
-      <Autocomplete
-        label="ประเภทของบริษัท"
-        placeholder="เลือกประเภทการทำงานของบริษัท"
-        value={category}
-        onChange={setCategory}
-        options={categoryOptions}
-        isError={categoryError}
-        errorMessage="*กรุณาเลือกประเภทบริษัท"
-        onBlur={() => setCategoryTouched(true)}
-      />
+      <div className={styles.top_container}>
+        <TextInput
+          label="ชื่อบริษัท"
+          placeholder="กรอกชื่อบริษัทที่ใช้งานร่วมกับโปรแกรม"
+          value={companyName}
+          onChange={setCompanyName}
+          IsActiveStyle
+          isError={companyError}
+          errorMessage="*กรุณากรอกชื่อบริษัทให้ครบถ้วน"
+          onBlur={() => setTouched(true)}
+        />
+        <Autocomplete
+          label="ประเภทของบริษัท"
+          placeholder="เลือกประเภทการทำงานของบริษัท"
+          value={category}
+          onChange={setCategory}
+          options={categoryOptions}
+          isError={categoryError}
+          errorMessage="*กรุณาเลือกประเภทบริษัท"
+          onBlur={() => setCategoryTouched(true)}
+        />
+        <div className={styles.line}></div>
+      </div>
+      <div className={styles.bottom_container}>
+        <h2>ตำแหน่งที่ตั้ง</h2>
+        <div>
+          <div className={styles.input}>
+            <Autocomplete
+              label="จังหวัด"
+              placeholder="กรุณาเลือกจังหวัด"
+              value={province}
+              onChange={handleProvinceChange}
+              options={proviceOptions}
+              isError={provinceError}
+              errorMessage="*กรุณาเลือกจังหวัด"
+              onBlur={() => setProviceTouched(true)}
+            />
+            <Autocomplete
+              label="อำเภอ"
+              placeholder="กรุณาเลือกอำเภอ"
+              value={district}
+              onChange={setDistrict}
+              options={districtOptions}
+              isError={districtError}
+              errorMessage="*กรุณาเลือกอำเภอ"
+              onBlur={() => setDistrictTouched(true)}
+            />
+          </div>
+          <div className={styles.input}>
+            <Autocomplete
+              label="ตำบล"
+              placeholder="กรุณาเลือกตำบล"
+              value={subdistrict}
+              onChange={handleSubdistrictChange}
+              options={subdistrictOptions}
+              isError={subdistrictError}
+              errorMessage="*กรุณาเลือกตำบล"
+              onBlur={() => setSubdistrictTouched(true)}
+            />
+            <TextInput
+              label="รหัสไปรษณีย์"
+              value={zipCode}
+              placeholder=""
+              readOnly
+              IsActiveStyle
+            />
+          </div>
+        </div>
+      </div>
       <button onClick={onNext}>ถัดไป</button>
     </div>
   );

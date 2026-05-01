@@ -5,11 +5,12 @@ export interface TextInputProps {
   fontSize?: string;
   color?: string;
   width?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 
   isError?: boolean;
   errorMessage?: string;
   IsActiveStyle?: boolean;
   onBlur?: () => void;
   onFocus?: () => void;
+  readOnly?: boolean;
 }

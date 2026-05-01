@@ -14,6 +14,7 @@ export const TextInput = ({
   errorMessage = "",
   onBlur,
   onFocus,
+  readOnly
 }: TextInputProps) => {
   return (
     <div className={styles.container}>
@@ -24,9 +25,10 @@ export const TextInput = ({
     ${value ? styles.hasValue : ""}
     ${isError ? styles.error : ""}
     ${IsActiveStyle ? styles.active : ""}
+    ${readOnly ? styles.readOnly : ""}
   `}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
         onBlur={onBlur}
         onFocus={onFocus}

@@ -1,7 +1,7 @@
 import { ProgressBar } from "@/components/form/ProgressBar/ProgressBar"
 import styles from "./OnboardingForm.module.scss"
 import { useState } from "react";
-import { StepForm } from "../StepForm";
+import { StepForm } from "../StepForm/StepForm";
 import { StepOTP } from "../StepOtp";
 import { StepPhone } from "../StepPhone";
 

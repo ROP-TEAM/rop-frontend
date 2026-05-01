@@ -1,8 +1,15 @@
+.container{
+  width:100%;
+}
+
 .label {
   font-size: 1.2em;
+  font-weight: 400;
+  margin-bottom: 0.3rem;
 }
 
 .input {
+  box-sizing: border-box;
   padding: 0.5rem 0;
   color: var(--color-outFocus);
   background-color: var(--p-0);
@@ -13,6 +20,27 @@
   &:focus {
     outline-color: var(--s-500);
     padding: 0.5rem 1rem;
-    color: var(--p-700);
+    color: var(--p-800);
   }
+}
+
+.input.hasValue {
+  color: var(--p-700);
+}
+
+.active{
+  outline: 0.1rem solid var(--p-200);
+  padding: 0.5rem 1rem;
+  border-radius: 0.1rem;
+}
+
+.error{
+  outline: 0.1rem solid var(--t-600);
+  padding: 0.5rem 1rem;
+  border-radius: 0.1rem;
+}
+
+.errorText{
+  margin-top: 0.4rem;
+  color:var(--t-600);
 }

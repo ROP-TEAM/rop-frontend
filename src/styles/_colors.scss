@@ -1,17 +1,16 @@
 //จะเพิ่มสีถามก่อน
+
 :root {
   --primary-0: #ffffff;
   --primary-50: #f8f8f8;
-  --primary-100: #edeff0;
-  --primary-200: #e1e2e6;
-  --primary-300: #a9abaf;
-  --primary-400: #75777b;
-  --primary-500: #5c5f62;
-  --primary-600: #44474a;
-  --primary-700: #2e3134;
-  --primary-800: #191c1f;
-  --primary-900: #141414;
-  --primary-1000: #000000;
+  --primary-100: #e4e4e7;
+  --primary-200: #d4d4d8;
+  --primary-300: #a1a1aa;
+  --primary-400: #71717a;
+  --primary-500: #52525b;
+  --primary-600: #3f3f46;
+  --primary-700: #27272a;
+  --primary-800: #18181b;
 
   --secondary-0: #ffffff;
   --secondary-100: #d1e1f7;
@@ -23,7 +22,6 @@
   --secondary-700: #1251ae;
   --secondary-800: #0d3b82;
   --secondary-900: #092757;
-  --secondary-1000: #05152f;
 
   --p-0: var(--primary-0);
   --p-50: var(--primary-50);
@@ -36,7 +34,6 @@
   --p-700: var(--primary-700);
   --p-800: var(--primary-800);
   --p-900: var(--primary-900);
-  --p-1000: var(--primary-1000);
 
   --s-0: var(--secondary-0);
   --s-100: var(--secondary-100);
@@ -51,17 +48,15 @@
   --s-1000: var(--secondary-1000);
 }
 
-:global([data-theme="dark"]) {
-  --p-0: var(--primary-1000);
-  --p-50: var(--primary-900);
-  --p-100: var(--primary-800);
-  --p-200: var(--primary-700);
-  --p-300: var(--primary-600);
-  --p-400: var(--primary-500);
-  --p-500: var(--primary-400);
-  --p-600: var(--primary-300);
-  --p-700: var(--primary-200);
-  --p-800: var(--primary-100);
-  --p-900: var(--primary-50);
-  --p-1000: var(--primary-0);
+[data-theme="dark"] {
+  --p-0: var(--primary-800);
+  --p-50: var(--primary-700);
+  --p-100: var(--primary-600);
+  --p-200: var(--primary-500);
+  --p-300: var(--primary-400);
+  --p-400: var(--primary-300);
+  --p-500: var(--primary-200);
+  --p-600: var(--primary-100);
+  --p-700: var(--primary-50);
+  --p-800: var(--primary-0);
 }

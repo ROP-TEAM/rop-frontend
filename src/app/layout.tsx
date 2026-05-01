@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.scss";
+import "./../styles/globals.scss";
 import { Noto_Sans_Thai } from "next/font/google";
 import { AuthProvider } from "./provider";
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html data-theme="dark" lang="en">
       <body className={noto.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>

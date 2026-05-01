@@ -35,7 +35,7 @@ const Onboarding = () => {
   const zipCode = String(
     subDistrict.find((s) => s.id === Number(selectSubDistrict))?.zip_code,
   );
-
+  //
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (onboardingState == 1) {

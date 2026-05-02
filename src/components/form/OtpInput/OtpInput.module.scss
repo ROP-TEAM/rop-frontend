@@ -8,7 +8,7 @@
     height: 2.5rem;
     text-align: center;
     font-size: 1rem;
-    border: 0.0625rem solid ;
+    border: 0.09rem solid var(--p-800) ;
     border-radius: 0.2rem;
     &::placeholder {
          font-size: 0.75rem; 
@@ -17,4 +17,8 @@
      &:focus::placeholder {
         color: transparent;
     }
+}
+
+.error .input {
+  border-color: var(--t-500);
 }

@@ -1,6 +1,6 @@
 import { useRef} from 'react';
 import styles from './OtpInput.module.scss';
-const OtpInput = ({ length = 4,value = '', onChange, onComplete, placeholder="◯" }: OtpInputProps) => {
+const OtpInput = ({ length = 4,value = '', onChange, onComplete, placeholder="◯", error }: OtpInputProps) => {
     const values = Array.from({ length }, (_, i) => value[i] || '');
     const inputsRef = useRef<HTMLInputElement[]>([]);
     
@@ -37,7 +37,7 @@ const OtpInput = ({ length = 4,value = '', onChange, onComplete, placeholder="�
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${error ? styles.error : ""}`}>
             {values.map((val, index) => (
                 <input
                     key={index}

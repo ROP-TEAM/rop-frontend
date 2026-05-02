@@ -1,0 +1,67 @@
+"use client";
+
+import {
+  GoogleMap,
+  useJsApiLoader,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
+import { useCallback, useState } from "react";
+const MapWorkspace = () => {
+  const containerStyle = {
+    width: "60vw",
+    height: "60vh",
+  };
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY ?? "",
+  });
+
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({
+    lat: 16.441879460231092,
+    lng: 102.8275588872729,
+  });
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+
+  const onLoad = useCallback(function callback(map: google.maps.Map) {
+    // This is just an example of getting and using the map instance!!! don't just blindly copy!
+    const bounds = new window.google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
+
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(function callback(map: google.maps.Map) {
+    setMap(null);
+  }, []);
+  return isLoaded ? (
+    <div>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={13}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onRightClick={(e) => {
+          const lat = e.latLng?.lat();
+          const lng = e.latLng?.lng();
+          console.log({ lat, lng });
+        }}
+      >
+        {/* Child components, such as markers, info windows, etc. */}
+        <></>
+      </GoogleMap>
+      <button
+        type="button"
+        onClick={() =>
+          setCenter({ lat: 16.45186394238676, lng: 102.81304349058645 })
+        }
+      >
+        click
+      </button>
+    </div>
+  ) : (
+    <></>
+  );
+};
+
+export default MapWorkspace;

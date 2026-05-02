@@ -5,10 +5,11 @@
 .input {
   padding: 0.5rem 0;
   color: var(--color-outFocus);
+  background-color: var(--p-0);
   border: none;
   background-color: var(--p-100);
   &:hover:not(:focus) {
-    background-color: var(--p-100);
+    background-color: var(--p-50);
   }
   &:focus {
     outline-color: var(--s-500);

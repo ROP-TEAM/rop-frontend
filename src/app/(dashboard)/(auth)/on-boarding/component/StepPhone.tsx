@@ -1,18 +1,20 @@
 import { useState } from "react";
+import { PhoneInput } from "@/components/form/PhoneInput/PhoneInput";
 
 export const StepPhone = ({ onNext }: { onNext: (phone: string) => void }) => {
     const [phone, setPhone] = useState("");
-
-    const handleNext = () => {
-        if (!phone) return; 
-        onNext(phone);
-    };
+    const [touched, setTouched] = useState(false);
 
     return (
         <div>
-            <h2>เบอร์โทรศัพท์</h2>
-
-            <button onClick={handleNext} disabled={!phone}>
+            <PhoneInput
+                value={phone}
+                onChange={(raw) => {
+                    setPhone(raw);
+                    if (!touched) setTouched(true);
+                }}
+            />
+            <button onClick={() => onNext(phone)} disabled={phone.length < 10}>
                 ถัดไป
             </button>
         </div>

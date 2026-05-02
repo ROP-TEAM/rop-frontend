@@ -18,6 +18,10 @@ export const StepForm = ({
   const categoryOptions = ["ขนส่ง 1", "กนส่ง 2", "คนส่ง 3", "ขนส่ง 4"];
   const categoryError = categoryTouched && category.trim() === "";
 
+  const [address,setAddress] = useState("");
+  const [addressTouced, setAddressTouched] = useState(false);
+  const addressError = addressTouced && address.trim() === "";
+
   const [province, setProvince] = useState("");
   const [proviceTouched, setProviceTouched] = useState(false);
   const proviceOptions = [
@@ -83,6 +87,7 @@ export const StepForm = ({
   const isFormValid =
     companyName.trim() !== "" &&
     category.trim() !== "" &&
+    address.trim() !== "" &&
     province.trim() !== "" &&
     district.trim() !== "" &&
     subdistrict.trim() !== "";
@@ -92,6 +97,7 @@ export const StepForm = ({
   const handleSubmit = async () => {
     setTouched(true);
     setCategoryTouched(true);
+    setAddressTouched(true);
     setProviceTouched(true);
     setDistrictTouched(true);
     setSubdistrictTouched(true);
@@ -103,11 +109,10 @@ export const StepForm = ({
     const payload: OnboardingPayload = {
       companyName,
       companyType: category,
+      address,
       province,
       district,
       subDistrict: subdistrict,
-      address: "",
-      alley: null,
       postalCode: zipCode,
     };
 
@@ -149,6 +154,16 @@ export const StepForm = ({
         <h2>ตำแหน่งที่ตั้ง</h2>
 
         <div>
+          <TextInput
+            label="ที่อยู่"
+            placeholder="กรอกที่อยู่ของบริษัท"
+            value={address}
+            onChange={setAddress}
+            IsActiveStyle
+            isError={addressError}
+            errorMessage="*กรุณากรอกที่อยู่บริษัทให้ครบถ้วน"
+            onBlur={() => setTouched(true)}
+          />
           <div className={styles.input}>
             <Autocomplete
               label="จังหวัด"

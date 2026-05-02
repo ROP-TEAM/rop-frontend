@@ -5,6 +5,5 @@ export interface OnboardingPayload {
   district: string;
   subDistrict: string;
   address: string;
-  alley: string | null;
   postalCode: string;
 }

@@ -3,7 +3,7 @@ import styles from "./OnboardingForm.module.scss"
 import { useState } from "react";
 import { StepForm } from "../StepForm/StepForm";
 import { StepOTP } from "../StepOtp";
-import { StepPhone } from "../StepPhone";
+import { StepPhone } from "../StepPhone/StepPhone";
 import { OnboardingPayload } from "@/app/types/onboarding";
 
 export const OnboardingForm = () => {
@@ -27,6 +27,11 @@ const handlePhone = (phone: string) => {
   setPhone(phone);
   setStep((prev) => prev + 1);
 }
+
+const handleBack = () => {
+  setStep((prev) => Math.max(prev - 1, 1));
+};
+
     return (
         <div className={styles.container}>
             <div className={styles.bar}>
@@ -35,8 +40,8 @@ const handlePhone = (phone: string) => {
                 <ProgressBar current={step}></ProgressBar>
             </div>
             <div>
-                {step === 1 && <StepForm onNext={handleOnboarding} />}
-                {step === 2 && <StepPhone onNext={handlePhone}/>}
+                {step === 2 && <StepForm onNext={handleOnboarding} />}
+                {step === 1 && <StepPhone onNext={handlePhone} onBack={handleBack}/>}
                 {step === 3 && <StepOTP/>}
             </div>
         </div>

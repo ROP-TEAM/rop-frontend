@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import "./../styles/globals.scss";
 import { Noto_Sans_Thai } from "next/font/google";
+import "./../styles/globals.scss";
 import { AuthProvider } from "./provider";
-
 export const metadata: Metadata = {
   title: "rop-frontend",
   description: "route-optimize-frontend",

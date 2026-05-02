@@ -1,4 +1,5 @@
 "use client";
+import { Topbar } from "@/components/navigation/Topbar/Topbar";
 import styles from "./workspace.module.scss";
 import { SegmentControl } from "@/components/ui/SegmentControl/SegmentControl";
 import { SegmentProp } from "@/components/ui/SegmentControl/SegmentControl.types";
@@ -34,17 +35,19 @@ const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
     },
   ];
   return (
-    <div className={styles.layout}>
-      <section className={styles.space}>
-        <p>{pathname}</p>
-        <SegmentControl value={pathname} segments={segments}></SegmentControl>
-        <div className={styles.space}>{children}</div>
-      </section>
-      {isShow && (
-        <section className={styles.popup}>
-          <div className={styles.popup}>Hello</div>
+    <div>
+      <div className={styles.layout}>
+        <section className={styles.space}>
+          <p>{pathname}</p>
+          <SegmentControl value={pathname} segments={segments}></SegmentControl>
+          <div className={styles.space}>{children}</div>
         </section>
-      )}
+        {isShow && (
+          <section className={styles.popup}>
+            <div className={styles.popup}>Hello</div>
+          </section>
+        )}
+      </div>
     </div>
   );
 };

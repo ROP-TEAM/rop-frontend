@@ -2,6 +2,7 @@ export interface TextInputProps {
   label?: string;
   placeholder: string;
   value: string;
+  labelFontSize?: string; 
   fontSize?: string;
   color?: string;
   width?: string;

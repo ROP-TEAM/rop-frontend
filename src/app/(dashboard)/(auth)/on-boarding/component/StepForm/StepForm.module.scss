@@ -7,12 +7,11 @@
 
 .line {
   border: 0.05rem solid var(--p-100);
-  margin-top: 1rem;
 }
 
 .bottom_container {
   h2 {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 400;
     margin-bottom: 1.5rem;
 
@@ -22,7 +21,6 @@
 .input {
   display: flex;
   gap: 2.5rem;
-  margin-top: 1rem;
 }
 
 .submitError {

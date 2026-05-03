@@ -64,8 +64,8 @@ export const Autocomplete = ({
       <Image
         src="/icon/dropdown.svg"
         alt="dropdown"
-        width={30}
-        height={30}
+        width={25}
+        height={25}
         className={styles.icon}
       />
       {open && filtered.length > 0 && (

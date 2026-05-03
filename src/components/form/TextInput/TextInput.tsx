@@ -6,7 +6,8 @@ export const TextInput = ({
   placeholder = "",
   value,
   color = "var(--p-200)",
-  fontSize = "1rem",
+  labelFontSize = "1rem",
+  fontSize = "0.825rem",
   width = "100%",
   onChange,
   isError = false,
@@ -18,7 +19,11 @@ export const TextInput = ({
 }: TextInputProps) => {
   return (
     <div className={styles.container}>
-      {label && <h5 className={styles.label}>{label}</h5>}
+      {label && (
+        <h5 className={styles.label} style={{ fontSize: labelFontSize }}>
+          {label}
+        </h5>
+      )}
       <input
         className={`
     ${styles.input}

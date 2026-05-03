@@ -3,7 +3,13 @@ import styles from "@/components/form/PhoneInput/PhoneInput.module.scss";
 import { PhoneInputProps } from "./types";
 import Image from "next/image";
 
-export const PhoneInput = ({ value, onChange }: PhoneInputProps) => {
+export const PhoneInput = ({
+  value,
+  onChange,
+  isError,
+  onBlur,
+  errorMessage,
+}: PhoneInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,12 +51,16 @@ export const PhoneInput = ({ value, onChange }: PhoneInputProps) => {
                     ${styles.input}
                     ${value.length > 0 ? styles.hasValue : ""}
                     ${value.length === 10 ? styles.success : ""}
+                    ${isError ? styles.error : ""}
                 `}
         value={isFocused || value.length > 0 ? format(value) : ""}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          onBlur?.();
+        }}
         placeholder="___-___-____"
         type="text"
       />
@@ -63,6 +73,10 @@ export const PhoneInput = ({ value, onChange }: PhoneInputProps) => {
           height={25}
           className={styles.icon}
         />
+      )}
+
+      {isError && errorMessage && (
+        <p className={styles.errorMessage}>{errorMessage}</p>
       )}
     </div>
   );

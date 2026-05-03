@@ -12,9 +12,19 @@ export const StepPhone = ({
 }) => {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
+  const [touched, setTouched] = useState(false);
+
+  const validate = (val: string) => {
+    if (val.length !== 10) return "*กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก";
+    return "";
+  };
+
   const handleNext = () => {
-    if (phone.length !== 10) {
-      setError("*กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก");
+    setTouched(true);
+    const err = validate(phone);
+
+    if (err) {
+      setError(err);
       return;
     }
 
@@ -26,18 +36,25 @@ export const StepPhone = ({
     <div className={styles.section}>
       <div className={styles.container}>
         <label>เบอร์โทรศัพท์</label>
+
         <PhoneInput
           value={phone}
           onChange={(raw) => {
             setPhone(raw);
-            setError("");
+            setError(touched ? validate(raw) : "");
           }}
+          onBlur={() => {
+            setTouched(true);
+            setError(validate(phone));
+          }}
+          isError={!!error}
+          errorMessage={error}
         />
-        {error && <p className={styles.error}>{error}</p>}
       </div>
+
       <div className={styles.actions}>
         <button onClick={onBack} className={styles.backButton}>
-          <Image src="/icon/arrow.svg" alt="check" width={10} height={10} />
+          <Image src="/icon/arrow.svg" alt="back" width={10} height={10} />
         </button>
 
         <button onClick={handleNext} className={styles.button}>

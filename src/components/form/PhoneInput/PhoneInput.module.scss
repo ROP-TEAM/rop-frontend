@@ -30,6 +30,16 @@
     outline-color: var(--g-500);
 }
 
+.input.error {
+    outline-color: var(--t-500);  
+}
+
+.errorMessage {
+    color: var(--t-500);
+    font-size: 0.825rem;
+    margin-top: 0.25rem;
+}
+
 .icon{
     position: absolute;
     right: 1rem;      

@@ -12,22 +12,24 @@ import companyTypes from "@/data/companyTypes.json";
 
 export const StepForm = ({
   onNext,
+  defaultData,
 }: {
   onNext: (data: OnboardingPayload) => Promise<void> | void;
+  defaultData?: OnboardingPayload;
 }) => {
-  const [companyName, setCompanyName] = useState("");
+  const [companyName, setCompanyName] = useState(defaultData?.companyName || "");
   const [touched, setTouched] = useState(false);
   const companyError = touched && companyName.trim() === "";
 
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(defaultData?.companyType || "");
   const [categoryTouched, setCategoryTouched] = useState(false);
   const categoryError = categoryTouched && category.trim() === "";
 
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(defaultData?.address || "");
   const [addressTouced, setAddressTouched] = useState(false);
   const addressError = addressTouced && address.trim() === "";
 
-  const [province, setProvince] = useState("");
+  const [province, setProvince] = useState(defaultData?.province || "");
   const [proviceTouched, setProviceTouched] = useState(false);
   const provinceOptions = provinces
     .map((p) => ({
@@ -37,7 +39,7 @@ export const StepForm = ({
     .sort((a, b) => a.label.localeCompare(b.label, "th"));
   const provinceError = proviceTouched && province.trim() === "";
 
-  const [district, setDistrict] = useState("");
+  const [district, setDistrict] = useState(defaultData?.district || "");
   const [districtTouced, setDistrictTouched] = useState(false);
   const districtOptions = districts
     .filter((d) => d.province_id.toString() === province)
@@ -48,7 +50,7 @@ export const StepForm = ({
     .sort((a, b) => a.label.localeCompare(b.label, "th"));
   const districtError = districtTouced && district.trim() === "";
 
-  const [subdistrict, setSubdistrict] = useState("");
+  const [subdistrict, setSubdistrict] = useState(defaultData?.subDistrict || "");
   const [subdistrictTouched, setSubdistrictTouched] = useState(false);
   const subdistrictError = subdistrictTouched && subdistrict.trim() === "";
 
@@ -61,7 +63,7 @@ export const StepForm = ({
     }))
     .sort((a, b) => a.label.localeCompare(b.label, "th"));
 
-  const [zipCode, setZipCode] = useState("");
+  const [zipCode, setZipCode] = useState(defaultData?.postalCode || "");
   const handleSubdistrictChange = (val: string) => {
     setSubdistrict(val);
 
@@ -139,7 +141,7 @@ export const StepForm = ({
           placeholder="เลือกประเภทการทำงานของบริษัท"
           value={category}
           onChange={setCategory}
-           options={companyTypes}
+          options={companyTypes}
           isError={categoryError}
           errorMessage="*กรุณาเลือกประเภทบริษัท"
           onBlur={() => setCategoryTouched(true)}
@@ -194,7 +196,7 @@ export const StepForm = ({
             />
           </div>
           <TextInput
-            label="ที่อยู่"
+            label="ที่อยู่บริษัท"
             placeholder="กรอกที่อยู่ของบริษัท"
             value={address}
             onChange={setAddress}

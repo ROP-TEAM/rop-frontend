@@ -30,6 +30,16 @@ export const OnboardingForm = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
+  const [formData, setFormData] = useState<OnboardingPayload>({
+    companyName: "",
+    companyType: "",
+    address: "",
+    province: "",
+    district: "",
+    subDistrict: "",
+    postalCode: "",
+  });
+
   const formatPhone = (phone: string) =>
     phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 
@@ -43,7 +53,15 @@ export const OnboardingForm = () => {
         <ProgressBar current={step}></ProgressBar>
       </div>
       <div>
-        {step === 1 && <StepForm onNext={handleOnboarding} />}
+        {step === 1 && (
+          <StepForm
+            onNext={(data) => {
+              setFormData(data);
+              handleOnboarding(data);
+            }}
+            defaultData={formData}
+          />
+        )}
         {step === 2 && <StepPhone onNext={handlePhone} onBack={handleBack} />}
         {step === 3 && (
           <StepOTP

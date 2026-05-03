@@ -14,4 +14,5 @@ export interface TextInputProps {
   onBlur?: () => void;
   onFocus?: () => void;
   readOnly?: boolean;
+  noText?: boolean; 
 }

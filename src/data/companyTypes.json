@@ -1,0 +1,8 @@
+[
+  { "label": "ขนส่ง", "value": "transport" },
+  { "label": "โลจิสติกส์", "value": "logistics" },
+  { "label": "ก่อสร้าง", "value": "construction" },
+  { "label": "ค้าปลีก", "value": "retail" },
+  { "label": "ไอที / ซอฟต์แวร์", "value": "it" },
+  { "label": "การผลิต", "value": "manufacturing" }
+]

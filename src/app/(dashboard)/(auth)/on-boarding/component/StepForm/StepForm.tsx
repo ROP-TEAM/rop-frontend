@@ -7,6 +7,8 @@ import { OnboardingPayload } from "@/app/types/onboarding";
 import provinces from "@/data/province.json";
 import districts from "@/data/district.json";
 import subDistricts from "@/data/sub_district.json";
+import { SelectInput } from "@/components/form/SelectInput/SelectInput";
+import companyTypes from "@/data/companyTypes.json";
 
 export const StepForm = ({
   onNext,
@@ -19,7 +21,6 @@ export const StepForm = ({
 
   const [category, setCategory] = useState("");
   const [categoryTouched, setCategoryTouched] = useState(false);
-  const categoryOptions = ["ขนส่ง 1", "กนส่ง 2", "คนส่ง 3", "ขนส่ง 4"];
   const categoryError = categoryTouched && category.trim() === "";
 
   const [address, setAddress] = useState("");
@@ -134,12 +135,12 @@ export const StepForm = ({
           errorMessage="*กรุณากรอกชื่อบริษัทให้ครบถ้วน"
           onBlur={() => setTouched(true)}
         />
-        <Autocomplete
+        <SelectInput
           label="ประเภทของบริษัท"
           placeholder="เลือกประเภทการทำงานของบริษัท"
           value={category}
           onChange={setCategory}
-          options={categoryOptions}
+           options={companyTypes}
           isError={categoryError}
           errorMessage="*กรุณาเลือกประเภทบริษัท"
           onBlur={() => setCategoryTouched(true)}

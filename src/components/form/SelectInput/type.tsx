@@ -1,5 +1,6 @@
-export type Option = string | { label: string; value: string };
-export interface AutocompleteProps {
+import { Option } from "../AutoComplete/types";
+
+export interface SelectInputProps {
   value: string;
   onChange: (value: string) => void;
   options: Option[];
@@ -8,4 +9,4 @@ export interface AutocompleteProps {
   isError?: boolean;
   errorMessage?: string;
   onBlur?: () => void;
-};
+}

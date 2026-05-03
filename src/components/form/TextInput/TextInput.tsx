@@ -16,6 +16,7 @@ export const TextInput = ({
   onBlur,
   onFocus,
   readOnly,
+  noText
 }: TextInputProps) => {
   return (
     <div className={styles.container}>
@@ -31,6 +32,7 @@ export const TextInput = ({
     ${isError ? styles.error : ""}
     ${IsActiveStyle ? styles.active : ""}
     ${readOnly ? styles.readOnly : ""}
+    ${noText ? styles.noText : ""}
   `}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}

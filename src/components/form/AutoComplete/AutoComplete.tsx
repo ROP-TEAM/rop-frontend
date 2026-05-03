@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextInput } from "../TextInput/TextInput";
 import styles from "./AutoComplete.module.scss";
 import Image from "next/image";
+import { AutocompleteProps ,Option } from "./types";
 
 export const Autocomplete = ({
   value,

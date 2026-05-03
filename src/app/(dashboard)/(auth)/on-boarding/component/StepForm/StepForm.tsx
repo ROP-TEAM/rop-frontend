@@ -116,7 +116,6 @@ export const StepForm = ({
 
     try {
       await onNext(payload);
-      console.log("payload", payload);
     } catch (err) {
       setSubmitError("เกิดข้อผิดพลาด:ไม่สามารถเชื่อมต่อ server ได้");
     }

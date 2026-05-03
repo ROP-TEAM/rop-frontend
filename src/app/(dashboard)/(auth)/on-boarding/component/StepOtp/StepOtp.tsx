@@ -33,7 +33,6 @@ export const StepOTP = ({ phone, onBack, timeLeft, setTimeLeft, canResend, setCa
   };
 
   const handleComplete = async (value: string) => {
-    console.log("otp:", value);
 
     const isValid = value === "1234"; // mock ไว้ก่อน
 

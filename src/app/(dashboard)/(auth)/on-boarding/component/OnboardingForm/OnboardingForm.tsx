@@ -13,8 +13,6 @@ export const OnboardingForm = () => {
   const [canResend, setCanResend] = useState(false);
   // const next = () => setStep((prev) => prev + 1);
   const handleOnboarding = async (data: OnboardingPayload) => {
-    console.log("ส่งข้อมูล:", data);
-
     // test error
     // throw new Error("test error");
 
@@ -24,7 +22,6 @@ export const OnboardingForm = () => {
   };
 
   const handlePhone = (phone: string) => {
-    console.log("phone:", phone);
     setPhone(phone);
     setStep((prev) => prev + 1);
   };

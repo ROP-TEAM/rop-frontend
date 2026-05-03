@@ -4,6 +4,10 @@ import styles from "./StepForm.module.scss";
 import { Autocomplete } from "@/components/form/AutoComplete/AutoComplete";
 import { OnboardingPayload } from "@/app/types/onboarding";
 
+import provinces from "@/data/province.json";
+import districts from "@/data/district.json";
+import subDistricts from "@/data/sub_district.json";
+
 export const StepForm = ({
   onNext,
 }: {
@@ -24,52 +28,45 @@ export const StepForm = ({
 
   const [province, setProvince] = useState("");
   const [proviceTouched, setProviceTouched] = useState(false);
-  const proviceOptions = [
-    { label: "ลพบุรี", value: "lopburi" },
-    { label: "ขอนแก่น", value: "khonkaen" },
-    { label: "กรุงเทพ", value: "bangkok" },
-  ];
+  const provinceOptions = provinces
+  .map((p) => ({
+    label: p.name_th,
+    value: p.id.toString(),
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label, "th"));
   const provinceError = proviceTouched && province.trim() === "";
 
   const [district, setDistrict] = useState("");
   const [districtTouced, setDistrictTouched] = useState(false);
-  const districtMap: Record<string, { label: string; value: string }[]> = {
-    lopburi: [
-      { label: "อำเภอเมือง", value: "muang" },
-      { label: "อำเภอพัฒนานิคม", value: "phatthana" },
-    ],
-    khonkaen: [{ label: "อำเภอเมือง", value: "muang" }],
-    bangkok: [
-      { label: "เขตบางนา", value: "bangna" },
-      { label: "เขตลาดกระบัง", value: "ladkrabang" },
-    ],
-  };
-  const districtOptions = districtMap[province] || [];
+  const districtOptions = districts
+  .filter((d) => d.province_id.toString() === province)
+  .map((d) => ({
+    label: d.name_th,
+    value: d.id.toString(),
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label, "th"));
   const districtError = districtTouced && district.trim() === "";
 
   const [subdistrict, setSubdistrict] = useState("");
   const [subdistrictTouched, setSubdistrictTouched] = useState(false);
   const subdistrictError = subdistrictTouched && subdistrict.trim() === "";
 
-  const subdistrictMap: Record<
-    string,
-    { label: string; value: string; zip: string }[]
-  > = {
-    muang: [
-      { label: "ในเมือง", value: "nai_mueang", zip: "12314" },
-      { label: "ศิลา", value: "sila", zip: "15645" },
-    ],
-    bangna: [{ label: "บางนาเหนือ", value: "bangna_nuea", zip: "12348" }],
-  };
-  const subdistrictOptions = subdistrictMap[district] || [];
+  const subdistrictOptions = subDistricts
+  .filter((s) => s.district_id.toString() === district)
+  .map((s) => ({
+    label: s.name_th,
+    value: s.id.toString(),
+    zip: s.zip_code.toString(),
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label, "th"));
 
   const [zipCode, setZipCode] = useState("");
   const handleSubdistrictChange = (val: string) => {
-    setSubdistrict(val);
+  setSubdistrict(val);
 
-    const found = subdistrictOptions.find((o) => o.value === val);
-    setZipCode(found?.zip || "");
-  };
+  const found = subdistrictOptions.find((s) => s.value === val);
+  setZipCode(found?.zip || "");
+};
 
   const handleProvinceChange = (val: string) => {
     setProvince(val);
@@ -160,7 +157,7 @@ export const StepForm = ({
               placeholder="กรุณาเลือกจังหวัด"
               value={province}
               onChange={handleProvinceChange}
-              options={proviceOptions}
+              options={provinceOptions}
               isError={provinceError}
               errorMessage="*กรุณาเลือกจังหวัด"
               onBlur={() => setProviceTouched(true)}

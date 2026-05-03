@@ -9,6 +9,8 @@ import { OnboardingPayload } from "@/app/types/onboarding";
 export const OnboardingForm = () => {
   const [step, setStep] = useState(1);
   const [phone, setPhone] = useState("");
+  const [timeLeft, setTimeLeft] = useState(300);
+  const [canResend, setCanResend] = useState(false);
   // const next = () => setStep((prev) => prev + 1);
   const handleOnboarding = async (data: OnboardingPayload) => {
     console.log("ส่งข้อมูล:", data);
@@ -47,7 +49,14 @@ export const OnboardingForm = () => {
         {step === 1 && <StepForm onNext={handleOnboarding} />}
         {step === 2 && <StepPhone onNext={handlePhone} onBack={handleBack} />}
         {step === 3 && (
-          <StepOTP phone={formatPhone(phone)} onBack={handleBack} />
+          <StepOTP
+            phone={phone}
+            onBack={handleBack}
+            timeLeft={timeLeft}
+            setTimeLeft={setTimeLeft}
+            canResend={canResend}
+            setCanResend={setCanResend}
+          />
         )}
       </div>
     </div>

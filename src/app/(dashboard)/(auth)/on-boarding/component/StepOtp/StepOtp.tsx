@@ -1,13 +1,11 @@
-import { OtpPorps } from "./types";
 import styles from "./StepOtp.module.scss";
 import OtpInput from "@/components/form/OtpInput/OtpInput";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { OtpProps } from "./types";
 
-export const StepOTP = ({ phone, onBack }: OtpPorps) => {
+export const StepOTP = ({ phone, onBack, timeLeft, setTimeLeft, canResend, setCanResend }: OtpProps) => {
   const [otp, setOtp] = useState("");
-  const [timeLeft, setTimeLeft] = useState(300);
-  const [canResend, setCanResend] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -75,7 +73,7 @@ export const StepOTP = ({ phone, onBack }: OtpPorps) => {
           </button>
 
           {!canResend ? (
-            <button className={styles.button}>
+            <button disabled className={styles.button}>
               ขอใหม่อีกครั้งใน {formatTime(timeLeft)} วินาที
             </button>
           ) : (

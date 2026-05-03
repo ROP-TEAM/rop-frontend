@@ -154,16 +154,6 @@ export const StepForm = ({
         <h2>ตำแหน่งที่ตั้ง</h2>
 
         <div>
-          <TextInput
-            label="ที่อยู่"
-            placeholder="กรอกที่อยู่ของบริษัท"
-            value={address}
-            onChange={setAddress}
-            IsActiveStyle
-            isError={addressError}
-            errorMessage="*กรุณากรอกที่อยู่บริษัทให้ครบถ้วน"
-            onBlur={() => setTouched(true)}
-          />
           <div className={styles.input}>
             <Autocomplete
               label="จังหวัด"
@@ -206,6 +196,16 @@ export const StepForm = ({
               IsActiveStyle
             />
           </div>
+          <TextInput
+            label="ที่อยู่"
+            placeholder="กรอกที่อยู่ของบริษัท"
+            value={address}
+            onChange={setAddress}
+            IsActiveStyle
+            isError={addressError}
+            errorMessage="*กรุณากรอกที่อยู่บริษัทให้ครบถ้วน"
+            onBlur={() => setTouched(true)}
+          />
         </div>
       </div>
 

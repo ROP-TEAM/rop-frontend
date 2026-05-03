@@ -39,7 +39,6 @@ export const StepOTP = ({ phone, onBack, timeLeft, setTimeLeft, canResend, setCa
 
     if (!isValid) {
       setError("เกิดข้อผิดพลาด รหัส OTP ผิดพลาด");
-      setOtp("");
       return;
     }
 

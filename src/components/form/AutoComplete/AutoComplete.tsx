@@ -43,7 +43,8 @@ export const Autocomplete = ({
   })();
 
   return (
-    <div className={styles.container}>
+  <div className={styles.container}>
+    <div className={styles.inputWrapper}>
       <TextInput
         label={label}
         value={displayValue}
@@ -60,7 +61,6 @@ export const Autocomplete = ({
           }, 150);
         }}
       />
-
       <Image
         src="/icon/dropdown.svg"
         alt="dropdown"
@@ -68,13 +68,12 @@ export const Autocomplete = ({
         height={30}
         className={styles.icon}
       />
-
       {open && filtered.length > 0 && (
         <div className={styles.dropdown}>
           {filtered.map((item) => (
             <div
               key={getValue(item)}
-              onMouseDown={(e) => e.preventDefault()} 
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 onChange(getValue(item));
                 setOpen(false);
@@ -87,5 +86,6 @@ export const Autocomplete = ({
         </div>
       )}
     </div>
-  );
+  </div>
+);
 };

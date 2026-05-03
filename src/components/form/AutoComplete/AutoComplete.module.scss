@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+.inputWrapper {   
+    position: relative;
+    width: 100%;
+}
+
 .dropdown{
     position:absolute;
     width: 100%;
@@ -12,6 +17,9 @@
     border-radius: 0.3rem;
     padding: 0.5rem 1rem;
     z-index:1;
+    top: 90;  
+    height: 10rem;
+    overflow-y: scroll;
 }
 
 .item{

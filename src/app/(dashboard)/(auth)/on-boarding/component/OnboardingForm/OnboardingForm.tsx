@@ -65,7 +65,7 @@ export const OnboardingForm = () => {
         {step === 2 && <StepPhone onNext={handlePhone} onBack={handleBack} />}
         {step === 3 && (
           <StepOTP
-            phone={phone}
+            phone={formatPhone(phone)}
             onBack={handleBack}
             timeLeft={timeLeft}
             setTimeLeft={setTimeLeft}

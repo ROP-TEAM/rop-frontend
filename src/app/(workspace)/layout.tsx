@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/navigation/Sidebar/Sidebar";
 const PlanLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className={styles.sidebarWrapper}>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className={styles.body}>
         <Topbar></Topbar>
         {children}

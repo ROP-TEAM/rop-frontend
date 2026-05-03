@@ -35,7 +35,7 @@ const MapWorkspace = () => {
   }, []);
   return isLoaded ? (
     <div>
-      <GoogleMap
+    <GoogleMap,
         mapContainerStyle={containerStyle}
         center={center}
         zoom={13}

@@ -1,0 +1,18 @@
+.container {
+  height: 100%;
+  width: 22rem;
+  border-left: $border-subtle;
+}
+.control {
+  padding: 0.725rem 1.25rem;
+  border-bottom: $border-subtle;
+  .info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .editAt {
+    border-left: $border-subtle;
+    padding: 0.25rem 0.5rem;
+  }
+}

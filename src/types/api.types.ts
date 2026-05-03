@@ -1,11 +1,11 @@
-interface Location {
+export interface Location {
   lat: number;
   lng: number;
 }
 
-interface TimePeriod {
-  start: Date;
-  end: Date;
+export interface TimePeriod {
+  start: number;
+  end: number;
 }
 
 export interface Vehicle {

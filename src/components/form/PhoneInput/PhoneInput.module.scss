@@ -1,3 +1,7 @@
+.container{
+  position: relative;
+  width:100%;
+}
 .input {
   box-sizing: border-box;
   width: 100%;
@@ -28,8 +32,8 @@
 
 .icon{
     position: absolute;
-    left: 560;
-    top:215;
+    right: 1rem;      
+    top: 5;
 }
 
 

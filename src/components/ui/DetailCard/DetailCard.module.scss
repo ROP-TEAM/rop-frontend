@@ -90,7 +90,47 @@
     }
   }
 }
-
+.property {
+  .propertyContent {
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: $border-subtle;
+    .propertyInfo {
+      margin-top: 1rem;
+      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      h3 {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .caution {
+    padding: 0rem 1rem 0rem 1.25rem;
+    display: flex;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--s-100);
+    margin-bottom: 1rem;
+    .bar {
+      left: 0;
+      position: absolute;
+      width: 0.5rem;
+      height: 4rem;
+      background-color: var(--s-500);
+    }
+    .cautionText {
+      color: var(--s-500);
+    }
+  }
+  .propertyContent {
+    margin-top: 1rem;
+  }
+}
 .orderCard {
   border-radius: 0.25rem;
   padding: 1rem;

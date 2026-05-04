@@ -3,12 +3,15 @@ import styles from "./DetailCard.module.scss";
 import { useDispatch } from "react-redux";
 import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
+import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 import React, { useState } from "react";
+import { TextInput } from "@/components/form/TextInput/TextInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
 export const DetailCard = () => {
   const [detailState, setDetailState] = useState("property");
   const [isShowOverview, setIsShowOverview] = useState(true);
   const [isShowOrder, setIsShowOrder] = useState(true);
+  const [maxTask, setMaxTask] = useState<number>(0);
   const segments: SegmentProp[] = [
     {
       value: "property",
@@ -58,8 +61,44 @@ export const DetailCard = () => {
         ></SegmentControl>
         <section className={styles.body}>
           {detailState == "property" ? (
-            <div>
-              <h3>คุณสมบัติ</h3>
+            <div className={styles.property}>
+              <div className={styles.caution}>
+                <div className={styles.bar}></div>
+                <IconSvgMono
+                  size={60}
+                  src="/icon/caution.svg"
+                  color="var(--s-500)"
+                ></IconSvgMono>
+                <p className={styles.cautionText}>
+                  การแก้ไขข้อมูลในหน้าต่างนี้จะใช้เป็นข้อมูลเพียงการจัดรอบรถครั้งนี้เท่านั้น
+                </p>
+                <IconSvgMono
+                  size={20}
+                  src="/icon/cross.svg"
+                  color="var(--s-500)"
+                ></IconSvgMono>
+              </div>
+              <div className={styles.propertyContent}>
+                <h3>คุณสมบัติ</h3>
+                <div className={styles.propertyInfo}>
+                  <div>
+                    <p className="">เวลาทำการ</p>
+                    <h3>09.00 น. - 18.00 น.</h3>
+                  </div>
+                  <div>
+                    <p className="">เวลาพักทำการ</p>
+                    <h3>09.00 น. - 18.00 น.</h3>
+                  </div>
+                  <NumberInput
+                    value={maxTask}
+                    onChange={setMaxTask}
+                    color="var(--p-800)"
+                    labelColor="var(--p-500)"
+                    labelSize="0.725rem"
+                    label="จำนวนออเดอร์สูงสุด"
+                  ></NumberInput>
+                </div>
+              </div>
             </div>
           ) : (
             <div className={styles.detailContent}>

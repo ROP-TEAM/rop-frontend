@@ -1,3 +1,1 @@
-export interface DetailCardProps {
-  handleCloseDetail: () => void;
-}
+export interface DetailCardProps {}

@@ -3,14 +3,23 @@ import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { DetailCard } from "@/components/ui/DetailCard/DetailCard";
 import { useCallback, useState } from "react";
 import styles from "./map.module.scss";
-import { VehicleCard } from "./Component/VehicleCard/VehicleCard";
+import { VehicleCard } from "./Component/VehicleCard/ControlCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  controlClose,
+  detailClose,
+  detailOpen,
+} from "@/app/features/sidePopup/sidePopupSlide";
+import { RootState } from "@/app/store";
 const MapWorkspace = () => {
+  const sidePopupSlice = useSelector(
+    (state: RootState) => state.sidePopupReducer,
+  );
+  const dispatch = useDispatch();
   const [manageState, setManageState] = useState<"vehicle" | "order">(
     "vehicle",
   );
-  const [isShowDetail, setIsShowDetail] = useState(true);
-  const [isShowSidebar, setIsShowSidebar] = useState(true);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 16.441879460231092,
@@ -38,11 +47,11 @@ const MapWorkspace = () => {
 
   return (
     <div className={styles.map}>
-      {isShowSidebar && (
+      {sidePopupSlice.isShowControl && (
         <div className={styles.management}>
           <div className={styles.header}>
             <h3>รอบรถวันสงกรานต์</h3>
-            <button type="button">
+            <button onClick={() => dispatch(controlClose())} type="button">
               <IconSvgMono size={16} src="/icon/pip-down.svg"></IconSvgMono>
             </button>
           </div>
@@ -50,12 +59,12 @@ const MapWorkspace = () => {
             <button type="button">ยานพาหนะ</button>
             <button type="button">ออเดอร์</button>
           </div>
-          <div
-            onClick={() => setIsShowDetail((prev) => !prev)}
+          <button
+            onClick={() => dispatch(detailOpen())}
             className={styles.vehicleContainer}
           >
             <VehicleCard></VehicleCard>
-          </div>
+          </button>
         </div>
       )}
       <div className={styles.containerMap}>
@@ -79,13 +88,6 @@ const MapWorkspace = () => {
           <div>wait for map response</div>
         )}
       </div>
-      {isShowDetail && (
-        <div>
-          <DetailCard
-            handleCloseDetail={() => setIsShowDetail(false)}
-          ></DetailCard>
-        </div>
-      )}
     </div>
   );
 };

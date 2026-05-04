@@ -1,5 +1,5 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import styles from "./VehicleCard.module.scss";
+import styles from "./ControlCard.module.scss";
 export const VehicleCard = () => {
   return (
     <div className={styles.container}>

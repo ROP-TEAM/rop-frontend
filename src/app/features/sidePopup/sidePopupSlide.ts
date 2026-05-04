@@ -1,27 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface sidePopupSlide {
-  isShow: boolean;
+  isShowControl: boolean;
+  isShowDetail: boolean;
 }
 
 const initialState: sidePopupSlide = {
-  isShow: false,
+  isShowControl: true,
+  isShowDetail: false,
 };
 const sidePopupSlide = createSlice({
   name: "sidePopup",
   initialState,
   reducers: {
-    openPopup: (state) => {
-      state.isShow = true;
+    controlOpen: (state) => {
+      state.isShowControl = true;
     },
-    closePopup: (state) => {
-      state.isShow = false;
+    detailOpen: (state) => {
+      state.isShowDetail = true;
     },
-    togglePopup: (state) => {
-      state.isShow = !state.isShow;
+    controlClose: (state) => {
+      state.isShowControl = false;
+    },
+    detailClose: (state) => {
+      state.isShowDetail = false;
+    },
+    controlToggle: (state) => {
+      state.isShowControl = !state.isShowControl;
+    },
+    DetailToggle: (state) => {
+      state.isShowDetail = !state.isShowDetail;
     },
   },
 });
 
-export const { openPopup, closePopup, togglePopup } = sidePopupSlide.actions;
+export const {
+  detailClose,
+  detailOpen,
+  DetailToggle,
+  controlClose,
+  controlOpen,
+  controlToggle,
+} = sidePopupSlide.actions;
 export default sidePopupSlide.reducer;

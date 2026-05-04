@@ -1,12 +1,30 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
-import { DetailCardProps } from "./DetailCard.types";
-export const DetailCard = ({ handleCloseDetail }: DetailCardProps) => {
+import { useDispatch } from "react-redux";
+import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
+import { SegmentControl } from "../SegmentControl/SegmentControl";
+import React, { useState } from "react";
+import { SegmentProp } from "../SegmentControl/SegmentControl.types";
+export const DetailCard = () => {
+  const [detailState, setDetailState] = useState("property");
+  const [isShowOverview, setIsShowOverview] = useState(true);
+  const [isShowOrder, setIsShowOrder] = useState(true);
+  const segments: SegmentProp[] = [
+    {
+      value: "property",
+      label: "คุณสมบัติ",
+    },
+    {
+      value: "planInfo",
+      label: "แผนเดินรถ",
+    },
+  ];
+  const dispatch = useDispatch();
   return (
     <div className={styles.container}>
       <div className={styles.control}>
         <div className={styles.info}>
-          <button onClick={() => handleCloseDetail()}>
+          <button onClick={() => dispatch(detailClose())}>
             <IconSvgMono
               src="/icon/cross.svg"
               size={12}
@@ -15,7 +33,136 @@ export const DetailCard = ({ handleCloseDetail }: DetailCardProps) => {
           </button>
           <h4 className={styles.editAt}>แก้ไขล่าสุด 05-03-2026</h4>
         </div>
-        <div></div>
+      </div>
+      <div className={styles.detail}>
+        <div className={styles.detailHeader}>
+          <div className={styles.imageContainer}></div>
+          <div>
+            <h2>สมชายแซ่ตั้งรถขนของเย็น</h2>
+            <div className={styles.detailCarContainer}>
+              <div className={styles.detailCar}>
+                <p>หมาเลขทะเบียน</p>
+                <h4>กขค 123</h4>
+              </div>
+              <div className={styles.detailCar}>
+                <p>รุ่น</p>
+                <h4>TOYOTA V OAT</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <SegmentControl
+          segments={segments}
+          value={detailState}
+          onChange={setDetailState}
+        ></SegmentControl>
+        <section className={styles.body}>
+          {detailState == "property" ? (
+            <div>
+              <h3>คุณสมบัติ</h3>
+            </div>
+          ) : (
+            <div className={styles.detailContent}>
+              <div>
+                <div className={styles.title}>
+                  <h3>ภาพรวม</h3>
+                  <button
+                    onClick={() => setIsShowOverview((prev) => !prev)}
+                    type="button"
+                  >
+                    <IconSvgMono
+                      size={20}
+                      color="var(--p-500)"
+                      src="/icon/scale-down.svg"
+                    ></IconSvgMono>
+                  </button>
+                </div>
+                {isShowOverview && (
+                  <div className={styles.overviewContent}>
+                    <div className={styles.content}>
+                      <div className={styles.capacityTitle}>
+                        <p>ความจุน้ำหนัก</p>
+                        <h4 className={styles.capacityPercent}>
+                          {((123 / 456) * 100).toFixed(1)}%
+                        </h4>
+                      </div>
+                      <div
+                        className={styles.maxCapacity}
+                        style={
+                          {
+                            "--capacityRadio": `${(123 / 456) * 100}%`,
+                          } as React.CSSProperties
+                        }
+                      ></div>
+                      <p>123 กก./456 กก.</p>
+                    </div>
+                    <div className={styles.content}>
+                      <p>ระยะเวลารวม</p>
+                      <h4>11 ชั่วโมง 2 นาที</h4>
+                    </div>
+                    <div className={styles.content}>
+                      <p>ระยะทางรวม</p>
+                      <h4>{40.5} กก.</h4>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className={styles.order}>
+                <div className={styles.title}>
+                  <h3>ออเดอร์ที่บรรทุก</h3>
+                  <button
+                    onClick={() => setIsShowOrder((prev) => !prev)}
+                    type="button"
+                  >
+                    <IconSvgMono
+                      size={20}
+                      color="var(--p-500)"
+                      src="/icon/scale-down.svg"
+                    ></IconSvgMono>
+                  </button>
+                </div>
+
+                <div className={styles.orderCard}>
+                  <div>
+                    <h3>#ID1567IO45</h3>
+                  </div>
+                  <p className={styles.note}>
+                    น้ำโค้ก 15 แพ็ค , น้ำอัดลม 75 ขวด , เบียร์
+                    16ลัง,ดีน่าโปรตีนนมผงแบบลัง 15 แพ็ค
+                  </p>
+                  <div className={styles.orderCardFooter}>
+                    <div className={styles.orderCardFooterRight}>
+                      <div className={styles.iconContainer}>
+                        <IconSvgMono
+                          color="var(--s-500)"
+                          size={20}
+                          src="/icon/clock-people.svg"
+                        ></IconSvgMono>
+                        <p className={styles.travelTime}>15 นาที</p>
+                      </div>
+                      <div className={styles.iconContainer}>
+                        <IconSvgMono
+                          color="var(--p-500)"
+                          size={20}
+                          src="/icon/way.svg"
+                        ></IconSvgMono>
+                        <p>32.7 กก. </p>
+                      </div>
+                    </div>
+                    <div className={styles.iconContainer}>
+                      <IconSvgMono
+                        color="var(--p-500)"
+                        size={20}
+                        src="/icon/flag.svg"
+                      ></IconSvgMono>
+                      <p>16.09 น. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );

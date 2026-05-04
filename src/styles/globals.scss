@@ -21,10 +21,11 @@ select {
 }
 
 button {
+  text-align: start;
   outline: none;
   border: none;
   width: auto;
-  background-color: var(--p-0);
+  background-color: transparent;
   cursor: pointer;
   color: var(--p-700);
 }

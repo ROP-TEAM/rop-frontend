@@ -8,7 +8,6 @@ import IconSvgMono from "@/components/Icon/SvgIcon";
 import { useDispatch, useSelector } from "react-redux";
 import {
   controlClose,
-  detailClose,
   detailOpen,
 } from "@/app/features/sidePopup/sidePopupSlide";
 import { RootState } from "@/app/store";

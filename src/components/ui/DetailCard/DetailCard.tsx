@@ -1,10 +1,12 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
+import { Location } from "@/types/api.types";
 import { useDispatch } from "react-redux";
 import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 import React, { useState } from "react";
+import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
 export const DetailCard = () => {
@@ -13,7 +15,7 @@ export const DetailCard = () => {
   const [isShowOrder, setIsShowOrder] = useState(true);
   const [maxTask, setMaxTask] = useState<number>(0);
   const [maxCapacity, setMaxCapacity] = useState<number>(0);
-
+  const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
   const segments: SegmentProp[] = [
     {
       value: "property",
@@ -108,6 +110,14 @@ export const DetailCard = () => {
                     labelSize="0.725rem"
                     label="จำนวนน้ำหนักสูงสุด(ตัน)"
                   ></NumberInput>
+                  <LocationInput
+                    color="var(--s-500)"
+                    labelColor="var(--p-500)"
+                    labelSize="0.725rem"
+                    onChange={setStartLoc}
+                    value={startLoc}
+                    label="ตำแหน่งเริ่มต้น"
+                  />
                 </div>
               </div>
             </div>

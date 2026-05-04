@@ -24,7 +24,8 @@ export const NumberInput = ({
   return (
     <div>
       {label && (
-        <h5
+        <label
+          htmlFor={label}
           className={styles.label}
           style={
             {
@@ -34,9 +35,10 @@ export const NumberInput = ({
           }
         >
           {label}
-        </h5>
+        </label>
       )}
       <input
+        id={label}
         min={0}
         className={styles.input}
         value={Number(value).toString()}

@@ -2,6 +2,7 @@ import { NumberInputProps } from "./NumberInput.types";
 import styles from "./NumberInput.module.scss";
 import React, { ChangeEvent } from "react";
 export const NumberInput = ({
+  isFloat = true,
   labelColor = "var(--p-800)",
   labelSize = "1rem",
   label = "",
@@ -13,6 +14,13 @@ export const NumberInput = ({
   width = "100%",
   onChange,
 }: NumberInputProps) => {
+  const handleNumberInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    if (!isFloat && raw.includes(".")) {
+      return;
+    }
+    onChange(Number(raw));
+  };
   return (
     <div>
       {label && (
@@ -29,9 +37,10 @@ export const NumberInput = ({
         </h5>
       )}
       <input
+        min={0}
         className={styles.input}
         value={Number(value).toString()}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => handleNumberInput(e)}
         placeholder={placeholder}
         style={
           {

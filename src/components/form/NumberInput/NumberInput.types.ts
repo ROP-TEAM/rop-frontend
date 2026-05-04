@@ -1,4 +1,5 @@
 export interface NumberInputProps {
+  isFloat?: boolean;
   labelColor?: string;
   labelSize?: string;
   label?: string;

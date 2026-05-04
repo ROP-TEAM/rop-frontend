@@ -12,6 +12,8 @@ export const DetailCard = () => {
   const [isShowOverview, setIsShowOverview] = useState(true);
   const [isShowOrder, setIsShowOrder] = useState(true);
   const [maxTask, setMaxTask] = useState<number>(0);
+  const [maxCapacity, setMaxCapacity] = useState<number>(0);
+
   const segments: SegmentProp[] = [
     {
       value: "property",
@@ -90,12 +92,21 @@ export const DetailCard = () => {
                     <h3>09.00 น. - 18.00 น.</h3>
                   </div>
                   <NumberInput
+                    isFloat={false}
                     value={maxTask}
                     onChange={setMaxTask}
                     color="var(--p-800)"
                     labelColor="var(--p-500)"
                     labelSize="0.725rem"
                     label="จำนวนออเดอร์สูงสุด"
+                  ></NumberInput>
+                  <NumberInput
+                    value={maxCapacity}
+                    onChange={setMaxCapacity}
+                    color="var(--p-800)"
+                    labelColor="var(--p-500)"
+                    labelSize="0.725rem"
+                    label="จำนวนน้ำหนักสูงสุด(ตัน)"
                   ></NumberInput>
                 </div>
               </div>

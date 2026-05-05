@@ -9,5 +9,6 @@ export interface LocationInputProps {
   fontSize?: string;
   color?: string;
   width?: string;
+  inputId?: string;
   onChange: (value: Location) => void;
 }

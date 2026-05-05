@@ -16,6 +16,8 @@ export const DetailCard = () => {
   const [maxTask, setMaxTask] = useState<number>(0);
   const [maxCapacity, setMaxCapacity] = useState<number>(0);
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
+  const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
+
   const segments: SegmentProp[] = [
     {
       value: "property",
@@ -111,12 +113,22 @@ export const DetailCard = () => {
                     label="จำนวนน้ำหนักสูงสุด(ตัน)"
                   ></NumberInput>
                   <LocationInput
+                    inputId="startLocation"
                     color="var(--s-500)"
                     labelColor="var(--p-500)"
                     labelSize="0.725rem"
                     onChange={setStartLoc}
                     value={startLoc}
                     label="ตำแหน่งเริ่มต้น"
+                  />
+                  <LocationInput
+                    inputId="endLocation"
+                    color="var(--s-500)"
+                    labelColor="var(--p-500)"
+                    labelSize="0.725rem"
+                    onChange={setEndLoc}
+                    value={endLoc}
+                    label="ตำแหน่งสิ้นสุด"
                   />
                 </div>
               </div>

@@ -2,7 +2,6 @@
 import { LocationInputProps } from "./LocationInput.types";
 import styles from "./LocationInput.module.scss";
 import React, { ChangeEvent, useEffect, useRef } from "react";
-import { Location } from "@/types/api.types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -17,6 +16,7 @@ export const LocationInput = ({
   color = "var(--p-200)",
   fontSize = "1rem",
   width = "100%",
+  inputId = "locationInput",
   onChange,
 }: LocationInputProps) => {
   const latFocused = useRef(false);
@@ -27,7 +27,7 @@ export const LocationInput = ({
   };
   const [latRaw, setLatRaw] = useState<string>(value?.lat?.toFixed(6));
   const [lngRaw, setLngRaw] = useState<string>(value?.lng?.toFixed(6));
-  const { isOnFocus, lat, lng } = useSelector(
+  const { isOnFocus, elementInputId, lat, lng } = useSelector(
     (root: RootState) => root.mapClick,
   );
   const dispatch = useDispatch();
@@ -36,10 +36,10 @@ export const LocationInput = ({
     if (!latFocused.current) setLatRaw(value?.lat?.toFixed(6) ?? "0");
   }, [value]);
   useEffect(() => {
-    if (isOnFocus) {
-      setLatRaw(lat.toFixed(6));
-      setLngRaw(lng.toFixed(6));
-    }
+    if (!isOnFocus || inputId !== elementInputId) return;
+    setLatRaw(lat.toFixed(6));
+    setLngRaw(lng.toFixed(6));
+    onChange({ lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) });
   }, [lat, lng]);
   return (
     <div>
@@ -63,7 +63,7 @@ export const LocationInput = ({
           id={label}
           onFocus={(e) => {
             e.preventDefault();
-            dispatch(setOnFocus(true));
+            dispatch(setOnFocus({ isOnFocus: true, elementInputId: inputId }));
             latFocused.current = true;
           }}
           className={styles.lat}
@@ -82,7 +82,13 @@ export const LocationInput = ({
           onBlur={(e) => {
             const raw = e.target.value;
             const num = parseFloat(raw);
-            setTimeout(() => dispatch(setOnFocus(false)), 200);
+            setTimeout(
+              () =>
+                dispatch(
+                  setOnFocus({ isOnFocus: false, elementInputId: inputId }),
+                ),
+              200,
+            );
             if (isNaN(Number(lngRaw))) {
               setLngRaw("0");
               return;
@@ -99,12 +105,14 @@ export const LocationInput = ({
             e.preventDefault();
             const text = e.clipboardData.getData("text").trim();
             if (text.includes(",")) {
-              const parts = text.split(",").map((s) => s.trim());
+              const [lat, lng] = text.split(",").map((s) => s.trim());
+              setLatRaw(lat);
+              setLngRaw(lng);
 
-              setLatRaw(parts[0]);
-              setLngRaw(parts[1]);
+              onChange({ lat: Number(lng), lng: Number(lng) });
             } else {
               setLatRaw(text);
+              onChange({ ...value, lat: Number(text) });
             }
           }}
           placeholder={placeholder}
@@ -122,6 +130,7 @@ export const LocationInput = ({
         <input
           className={styles.lng}
           onFocus={() => {
+            dispatch(setOnFocus({ isOnFocus: true, elementInputId: inputId }));
             lngFocused.current = true;
           }}
           value={lngRaw}
@@ -139,6 +148,13 @@ export const LocationInput = ({
           }}
           onBlur={(e) => {
             const raw = e.target.value;
+            setTimeout(
+              () =>
+                dispatch(
+                  setOnFocus({ isOnFocus: false, elementInputId: inputId }),
+                ),
+              200,
+            );
             const num = parseFloat(raw);
             if (isNaN(num)) {
               setLngRaw("0");
@@ -150,12 +166,14 @@ export const LocationInput = ({
             e.preventDefault();
             const text = e.clipboardData.getData("text").trim();
             if (text.includes(",")) {
-              const parts = text.split(",").map((s) => s.trim());
+              const [lat, lng] = text.split(",").map((s) => s.trim());
+              setLatRaw(lat);
+              setLngRaw(lng);
 
-              setLatRaw(parts[0]);
-              setLngRaw(parts[1]);
+              onChange({ lat: Number(lng), lng: Number(lng) });
             } else {
-              setLatRaw(text);
+              setLngRaw(text);
+              onChange({ ...value, lng: Number(text) });
             }
           }}
           placeholder={placeholder}

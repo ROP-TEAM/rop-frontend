@@ -11,10 +11,9 @@ import {
   detailOpen,
 } from "@/app/features/sidePopup/sidePopupSlide";
 import { RootState } from "@/app/store";
+import { setLatLng } from "@/app/features/mapClick/mapClickSlice";
 const MapWorkspace = () => {
-  const sidePopupSlice = useSelector(
-    (state: RootState) => state.sidePopupReducer,
-  );
+  const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   const dispatch = useDispatch();
   const [manageState, setManageState] = useState<"vehicle" | "order">(
     "vehicle",
@@ -75,9 +74,10 @@ const MapWorkspace = () => {
             onLoad={onLoad}
             onUnmount={onUnmount}
             onRightClick={(e) => {
-              const lat = e.latLng?.lat();
-              const lng = e.latLng?.lng();
-              console.log({ lat, lng });
+              const lat = e.latLng?.lat() ?? 0;
+              const lng = e.latLng?.lng() ?? 0;
+              dispatch(setLatLng({ lat, lng }));
+              console.log(lat, lng);
             }}
           >
             {/* Child components, such as markers, info windows, etc. */}

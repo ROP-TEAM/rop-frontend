@@ -7,9 +7,7 @@ import { DetailCard } from "@/components/ui/DetailCard/DetailCard";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 const PlanLayout = ({ children }: { children: ReactNode }) => {
-  const sidePopupSlice = useSelector(
-    (state: RootState) => state.sidePopupReducer,
-  );
+  const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   return (
     <div className={styles.sidebarWrapper}>
       {sidePopupSlice.isShowControl && <Sidebar />}

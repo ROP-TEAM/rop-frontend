@@ -4,6 +4,9 @@ import styles from "./LocationInput.module.scss";
 import React, { ChangeEvent, useEffect, useRef } from "react";
 import { Location } from "@/types/api.types";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { setOnFocus } from "@/app/features/mapClick/mapClickSlice";
 export const LocationInput = ({
   labelColor = "var(--p-800)",
   labelSize = "1rem",
@@ -24,11 +27,20 @@ export const LocationInput = ({
   };
   const [latRaw, setLatRaw] = useState<string>(value?.lat?.toFixed(6));
   const [lngRaw, setLngRaw] = useState<string>(value?.lng?.toFixed(6));
-
+  const { isOnFocus, lat, lng } = useSelector(
+    (root: RootState) => root.mapClick,
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!lngFocused.current) setLngRaw(value?.lng?.toFixed(6) ?? "0");
     if (!latFocused.current) setLatRaw(value?.lat?.toFixed(6) ?? "0");
   }, [value]);
+  useEffect(() => {
+    if (isOnFocus) {
+      setLatRaw(lat.toFixed(6));
+      setLngRaw(lng.toFixed(6));
+    }
+  }, [lat, lng]);
   return (
     <div>
       {label && (
@@ -49,7 +61,9 @@ export const LocationInput = ({
         <input
           ref={latRef}
           id={label}
-          onFocus={() => {
+          onFocus={(e) => {
+            e.preventDefault();
+            dispatch(setOnFocus(true));
             latFocused.current = true;
           }}
           className={styles.lat}
@@ -68,6 +82,7 @@ export const LocationInput = ({
           onBlur={(e) => {
             const raw = e.target.value;
             const num = parseFloat(raw);
+            setTimeout(() => dispatch(setOnFocus(false)), 200);
             if (isNaN(Number(lngRaw))) {
               setLngRaw("0");
               return;

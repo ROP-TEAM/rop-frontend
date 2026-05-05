@@ -8,7 +8,7 @@ import { UseDispatch, useSelector } from "react-redux";
 import { ReactNode } from "react";
 import { RootState } from "@/app/store";
 const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
-  const isShow = useSelector((state: RootState) => state.sidePopupReducer);
+  const isShow = useSelector((state: RootState) => state.sidePopup);
   const pathname = usePathname().split("/")[2];
   const segments: SegmentProp[] = [
     {

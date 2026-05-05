@@ -1,0 +1,32 @@
+.label {
+  color: var(--label-color);
+  font-size: var(--label-size);
+}
+
+.active {
+  box-sizing: border-box;
+  outline: 0.125rem solid var(--s-500);
+  border: 0.125rem solid var(--p-100);
+
+  padding: 0.3rem;
+  border-radius: 0.1rem;
+  &:empty {
+    height: 1.6rem;
+  }
+}
+
+.noSkill {
+  padding: 0;
+}
+.input {
+  width: 100%;
+  .trigger {
+    width: 100%;
+  }
+  .skillPillContainer {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}

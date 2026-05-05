@@ -2,6 +2,9 @@
   height: 100%;
   width: 22rem;
   border-left: $border-subtle;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3rem;
 }
 .control {
   padding: 0.725rem 1.25rem;
@@ -17,9 +20,12 @@
   }
 }
 .detail {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
   .detailHeader {
     padding: 1.25rem;
-
     display: flex;
     align-items: center;
     gap: 1rem;

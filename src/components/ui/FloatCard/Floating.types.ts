@@ -10,5 +10,6 @@ export interface FloatingCardProps {
 export interface FloatingCardBodyProps {
   isHasLine?: boolean;
   children: ReactNode;
+  isHasCheck?: boolean;
   onClick?: () => void;
 }

@@ -1,24 +1,35 @@
 .warpper {
+  width: 100%;
   position: relative;
 }
 .floating {
   position: absolute;
-  right: 0;
-  top: 0;
-  margin: 2rem 0;
+  left: 0;
+  top: auto;
+  bottom: 100%;
+  margin: 1rem 0;
   z-index: 10;
-  width: fit-content;
-  padding: 0.8rem 0;
+  width: 100%;
+  white-space: nowrap;
   border-radius: 0.2rem;
   background-color: var(--p-0);
-  box-shadow:
-    rgba(0, 0, 0, 0.12) 0rem 0.0625rem 0.1875rem,
-    rgba(0, 0, 0, 0.24) 0rem 0.0625rem 0.125rem;
+  border: $border-subtle;
 }
 
 .floatingBody {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
   padding: 0.4rem 0.8rem;
   &:hover {
     background-color: var(--p-100);
   }
+}
+.line {
+  margin: 0.25rem 0;
+  padding: 0;
+  border: none;
+  height: 0.1rem;
+  background-color: var(--p-200);
 }

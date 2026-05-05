@@ -6,9 +6,10 @@ import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 import React, { useState } from "react";
+import { SkillInput } from "@/components/form/SkillInput/SkillInput";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
-import { TextInput } from "@/components/form/TextInput/TextInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
+import { SkillPillProps } from "../SkillPill/SkillPill.types";
 export const DetailCard = () => {
   const [detailState, setDetailState] = useState("property");
   const [isShowOverview, setIsShowOverview] = useState(true);
@@ -17,6 +18,25 @@ export const DetailCard = () => {
   const [maxCapacity, setMaxCapacity] = useState<number>(0);
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
+  const [skills, setSkills] = useState<SkillPillProps[]>([]);
+  const skillPill: SkillPillProps[] = [
+    {
+      title: "รถขนของเย็น",
+      color: "#03fcb6",
+    },
+    {
+      title: "รถน้ำตาล",
+      color: "#b146b3",
+    },
+    {
+      title: "เกี๊ยวเตี๊ยวป้อก",
+      color: "#6746b3",
+    },
+    {
+      title: "มะม่วงเปรี้ยว",
+      color: "#5eb346",
+    },
+  ];
 
   const segments: SegmentProp[] = [
     {
@@ -130,6 +150,14 @@ export const DetailCard = () => {
                     value={endLoc}
                     label="ตำแหน่งสิ้นสุด"
                   />
+                  <SkillInput
+                    labelColor="var(--p-500)"
+                    labelSize="0.725rem"
+                    label="ความสามารถเฉพาะ"
+                    value={skills}
+                    onChange={setSkills}
+                    skills={skillPill}
+                  ></SkillInput>
                 </div>
               </div>
             </div>

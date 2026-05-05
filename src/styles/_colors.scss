@@ -23,46 +23,52 @@
   --secondary-800: #0d3b82;
   --secondary-900: #092757;
   --secondary-1000: #05152f;
-
-  --p-0: var(--primary-0);
-  --p-50: var(--primary-50);
-  --p-100: var(--primary-100);
-  --p-200: var(--primary-200);
-  --p-300: var(--primary-300);
-  --p-400: var(--primary-400);
-  --p-500: var(--primary-500);
-  --p-600: var(--primary-600);
-  --p-700: var(--primary-700);
-  --p-800: var(--primary-800);
-  --p-900: var(--primary-900);
-  --p-1000: var(--primary-1000);
-
-  --s-0: var(--secondary-0);
-  --s-100: var(--secondary-100);
-  --s-200: var(--secondary-200);
-  --s-300: var(--secondary-300);
-  --s-400: var(--secondary-400);
-  --s-500: var(--secondary-500);
-  --s-600: var(--secondary-600);
-  --s-700: var(--secondary-700);
-  --s-800: var(--secondary-800);
-  --s-900: var(--secondary-900);
-  --s-1000: var(--secondary-1000);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p-0: var(--primary-1000);
-    --p-50: var(--primary-900);
-    --p-100: var(--primary-800);
-    --p-200: var(--primary-700);
-    --p-300: var(--primary-600);
-    --p-400: var(--primary-500);
-    --p-500: var(--primary-400);
-    --p-600: var(--primary-300);
-    --p-700: var(--primary-200);
-    --p-800: var(--primary-100);
-    --p-900: var(--primary-50);
-    --p-1000: var(--primary-0);
+$light-theme: (
+  p-0: var(--primary-0),
+  p-50: var(--primary-50),
+  p-100: var(--primary-100),
+  p-200: var(--primary-200),
+  p-300: var(--primary-300),
+  p-400: var(--primary-400),
+  p-500: var(--primary-500),
+  p-600: var(--primary-600),
+  p-700: var(--primary-700),
+  p-800: var(--primary-800),
+  p-900: var(--primary-900),
+  p-1000: var(--primary-1000),
+
+  secondary-0: var(--secondary-0),
+  secondary-100: var(--secondary-100),
+  secondary-200: var(--secondary-200),
+  secondary-300: var(--secondary-300),
+  secondary-400: var(--secondary-400),
+  secondary-500: var(--secondary-500),
+  secondary-600: var(--secondary-600),
+  secondary-700: var(--secondary-700),
+  secondary-800: var(--secondary-800),
+  secondary-900: var(--secondary-900),
+  secondary-1000: var(--secondary-1000),
+);
+
+$dark-theme: (
+  p-0: var(--primary-1000),
+  p-50: var(--primary-900),
+  p-100: var(--primary-800),
+  p-200: var(--primary-700),
+  p-300: var(--primary-600),
+  p-400: var(--primary-500),
+  p-500: var(--primary-400),
+  p-600: var(--primary-300),
+  p-700: var(--primary-200),
+  p-800: var(--primary-100),
+  p-900: var(--primary-50),
+  p-1000: var(--primary-0),
+);
+
+@mixin theme-vars($map) {
+  @each $name, $value in $map {
+    --#{$name}: #{$value};
   }
 }

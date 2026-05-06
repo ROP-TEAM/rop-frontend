@@ -1,3 +1,4 @@
+import { TextInput } from "@/components/form/TextInput/TextInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
 import { Location } from "@/types/api.types";
@@ -11,6 +12,7 @@ import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
 import { SkillPillProps } from "../SkillPill/SkillPill.types";
 export const DetailCard = () => {
+  const [name, setName] = useState<string>("สมชายแซ่ตั้งรถขนของเย็น");
   const [detailState, setDetailState] = useState("property");
   const [isShowOverview, setIsShowOverview] = useState(true);
   const [isShowOrder, setIsShowOrder] = useState(true);
@@ -67,7 +69,12 @@ export const DetailCard = () => {
         <div className={styles.detailHeader}>
           <div className={styles.imageContainer}></div>
           <div>
-            <h2>สมชายแซ่ตั้งรถขนของเย็น</h2>
+            <TextInput
+              value={name}
+              onChange={setName}
+              color="var(--p-800)"
+              fontWeight="500"
+            ></TextInput>
             <div className={styles.detailCarContainer}>
               <div className={styles.detailCar}>
                 <p>หมาเลขทะเบียน</p>

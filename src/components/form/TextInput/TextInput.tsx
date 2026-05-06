@@ -7,6 +7,7 @@ export const TextInput = ({
   value,
   color = "var(--p-200)",
   fontSize = "1rem",
+  fontWeight = "400",
   width = "100%",
   onChange,
 }: TextInputProps) => {
@@ -22,6 +23,7 @@ export const TextInput = ({
           {
             width: width,
             fontSize: fontSize,
+            fontWeight: fontWeight,
             "--color-outFocus": color,
           } as React.CSSProperties
         }

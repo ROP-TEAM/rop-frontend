@@ -1,5 +1,5 @@
-"use  client";
-
+import IconSvgMono from "@/components/Icon/SvgIcon";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { SKillInputProps } from "./SkillInput.types";
 import styles from "./SkillInput.module.scss";
 import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
@@ -14,6 +14,7 @@ export const SkillInput = ({
   onChange,
 }: SKillInputProps) => {
   const handleSendFocusInput = () => {};
+  const [isPatch, setIsPatch] = useState<boolean>(true);
   const [isDrop, setIsDrop] = useState(false);
   return (
     <div>
@@ -85,10 +86,45 @@ export const SkillInput = ({
               {s.title}
             </FloatingCard.body>
           ))}
-          <FloatingCard.body isHasLine>
+
+          {/* 
+        ========================
+        Call/Trigger Patch Modal 
+        ========================
+        */}
+
+          <FloatingCard.body onClick={() => setIsPatch(true)} isHasLine>
             + เพิ่มความสามารถเฉพาะ
           </FloatingCard.body>
         </FloatingCard>
+
+        {/* 
+        ========================
+        Patch Modal 
+        ========================
+        */}
+
+        <Modal
+          marginTop="5rem"
+          isActive={isPatch}
+          onCloce={() => setIsPatch(false)}
+        >
+          <div className={styles.modal}>
+            <div className={styles.header}>
+              <div>
+                <h2>ความสามารถเฉพาะ</h2>
+                <p>แบดดีกรีวีน นู้ด แล็บ ไทม์ อพาร์ตเมนท์ลีกอพาร์ทเมนต์โทร</p>
+              </div>
+              <button>
+                <IconSvgMono
+                  color="var(--p-500)"
+                  src="/icon/cross.svg"
+                  size={12}
+                />
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </div>
   );

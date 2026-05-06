@@ -30,3 +30,12 @@
     flex-wrap: wrap;
   }
 }
+.modal {
+  padding: 1rem;
+  max-width: 20rem;
+  .header {
+    display: flex;
+    gap: 4rem;
+    align-items: start;
+  }
+}

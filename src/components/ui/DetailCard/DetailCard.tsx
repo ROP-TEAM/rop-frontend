@@ -1,4 +1,5 @@
 import { TextInput } from "@/components/form/TextInput/TextInput";
+import { FloatingCard } from "../FloatingCard/FloatingCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
 import { Location } from "@/types/api.types";
@@ -21,6 +22,8 @@ export const DetailCard = () => {
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [skills, setSkills] = useState<SkillPillProps[]>([]);
+  const [isOption, setIsOption] = useState<boolean>(true);
+
   const skillPill: SkillPillProps[] = [
     {
       title: "รถขนของเย็น",
@@ -63,6 +66,32 @@ export const DetailCard = () => {
             ></IconSvgMono>
           </button>
           <h4 className={styles.editAt}>แก้ไขล่าสุด 05-03-2026</h4>
+          <div className={styles.optionAction}>
+            <FloatingCard
+              bodyWidth="8rem"
+              isOnRight
+              isOnTop={false}
+              isActive={isOption}
+              setIsActive={setIsOption}
+              trigger={
+                <button
+                  className={styles.optionAction}
+                  onClick={(e) => {
+                    setIsOption((prev) => !prev);
+                  }}
+                >
+                  <IconSvgMono
+                    src="/icon/dot.svg"
+                    size={16}
+                    color="var(--p-700)"
+                  ></IconSvgMono>
+                </button>
+              }
+            >
+              <FloatingCard.body>แก้ไขโปรไฟล์</FloatingCard.body>
+              <FloatingCard.body>ลบยานพาหนะ</FloatingCard.body>
+            </FloatingCard>
+          </div>
         </div>
       </div>
       <div className={styles.detail}>

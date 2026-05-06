@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FloatingCard } from "../components/ui/FloatCard/FloatCard";
+import { FloatingCard } from "../components/ui/FloatingCard/FloatingCard";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 const Page = () => {
   const [isActive, setIsActive] = useState(false);

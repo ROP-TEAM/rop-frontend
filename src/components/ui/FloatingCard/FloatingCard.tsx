@@ -1,14 +1,16 @@
 import { FloatingCardBodyProps, FloatingCardProps } from "./Floating.types";
-import styles from "./FloatCard.module.scss";
+import styles from "./FloatingCard.module.scss";
 import { useClickOutSide } from "@/hook/useClickOutSide";
 import React from "react";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 
 export const FloatingCard = ({
+  bodyWidth = "100%",
   trigger,
   children,
   isOnTop = false,
   isActive,
+  isOnRight = false,
   setIsActive,
 }: FloatingCardProps) => {
   const floatRef = useClickOutSide<HTMLDivElement>(() => {
@@ -21,12 +23,27 @@ export const FloatingCard = ({
       {isActive && (
         <div
           style={
-            (isOnTop
-              ? { "--position-top": "0", "--position-bottom": "unset" }
-              : {
-                  "--position-top": "unset",
-                  "--position-bottom": "0",
-                }) as React.CSSProperties
+            {
+              ...(isOnTop
+                ? {
+                    "--position-top": "auto",
+                    "--position-bottom": "100%",
+                  }
+                : {
+                    "--position-top": "0%",
+                    "--position-bottom": "auto",
+                  }),
+              ...(isOnRight
+                ? {
+                    "--position-left": "auto",
+                    "--position-right": "0",
+                  }
+                : {
+                    "--position-left": "0",
+                    "--position-right": "auto",
+                  }),
+              ...{ "--body-width": bodyWidth },
+            } as React.CSSProperties
           }
           className={styles.floating}
         >

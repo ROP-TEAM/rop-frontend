@@ -18,6 +18,10 @@
     border-left: $border-subtle;
     padding: 0.25rem 0.5rem;
   }
+  .optionAction {
+    height: fit-content;
+    margin-inline: auto 1rem;
+  }
 }
 .detail {
   min-height: 0;

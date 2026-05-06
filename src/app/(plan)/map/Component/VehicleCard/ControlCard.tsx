@@ -4,7 +4,7 @@ export const VehicleCard = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3>มหากาพย์น้ำแข็งลุกป๊อก</h3>
+        <h3 className={styles.name}>มหากาพย์น้ำแข็งลุกป๊อก</h3>
       </div>
       <div className={styles.body}>
         <h4 className={styles.model}>Model Name</h4>

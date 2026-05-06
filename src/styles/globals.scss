@@ -30,6 +30,15 @@ button {
   cursor: pointer;
   color: var(--p-700);
 }
+thead,
+th,
+td {
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  // font-size: 0.725rem;
+  text-align: start;
+}
 
 h1,
 h2,
@@ -52,7 +61,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1rem;
+  // font-size: 1rem;
   font-weight: 500;
 }
 

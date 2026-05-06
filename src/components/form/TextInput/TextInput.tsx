@@ -9,6 +9,7 @@ export const TextInput = ({
   fontSize = "1rem",
   fontWeight = "400",
   width = "100%",
+  backgroundColor = "var(--p-0)",
   onChange,
 }: TextInputProps) => {
   return (
@@ -21,6 +22,7 @@ export const TextInput = ({
         placeholder={placeholder}
         style={
           {
+            backgroundColor: backgroundColor,
             width: width,
             fontSize: fontSize,
             fontWeight: fontWeight,

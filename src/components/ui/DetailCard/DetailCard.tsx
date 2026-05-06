@@ -116,11 +116,11 @@ export const DetailCard = () => {
                 <div className={styles.propertyInfo}>
                   <div>
                     <p className="">เวลาทำการ</p>
-                    <h3>09.00 น. - 18.00 น.</h3>
+                    <h3 className={styles.time}>09.00 น. - 18.00 น.</h3>
                   </div>
                   <div>
                     <p className="">เวลาพักทำการ</p>
-                    <h3>09.00 น. - 18.00 น.</h3>
+                    <h3 className={styles.time}>09.00 น. - 18.00 น.</h3>
                   </div>
                   <NumberInput
                     isFloat={false}

@@ -8,5 +8,6 @@ export interface TextInputProps {
   fontSize?: string;
   color?: string;
   width?: string;
+  backgroundColor?: string;
   onChange: (value: string) => void;
 }

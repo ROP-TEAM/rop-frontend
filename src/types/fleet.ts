@@ -1,14 +1,27 @@
-export interface FleetRoute {
+// src/types/fleet.ts
+export type Priority =
+  | "Depot"
+  | "Critical"
+  | "High"
+  | "Medium"
+  | "Low"
+  | "Heavy";
+
+export interface RoutePoint {
+  loc: string[];
+  prio: Priority;
+}
+
+export interface Vehicle {
   name: string;
-  route: string[][];
+  route: RoutePoint[];
 }
 
 export interface FleetData {
-  data: FleetRoute[];
+  data: Vehicle[];
 }
 
-export interface ParsedVehicle {
-  name: string;
-  route: [number, number][];
-  color: [number, number, number, number];
+export interface ParsedLocation {
+  lat: number;
+  lng: number;
 }

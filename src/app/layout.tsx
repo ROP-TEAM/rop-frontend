@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "./provider";
 
 export const metadata: Metadata = {
-  title: "rop-frontend",
-  description: "route-optimize-frontend",
+  title: "Fleet Tracking Map",
+  description: "Real-time fleet visualization with Deck.gl + MapLibre",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
-      </body>
+      <body className="m-0 p-0 overflow-hidden">{children}</body>
     </html>
   );
 }

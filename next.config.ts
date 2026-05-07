@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  transpilePackages: ["@deck.gl/core", "@deck.gl/layers", "@deck.gl/react"],
 };
 
 export default nextConfig;

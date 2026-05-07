@@ -1,10 +1,12 @@
 "use client";
-
-import { useDispatch } from "react-redux";
-
+import styles from "./board.module.scss";
+import { OrderContainer } from "@/components/ui/OrderContainer/OrderContainer";
 const Board = () => {
-  const dispatch = useDispatch();
-  return <div></div>;
+  return (
+    <div className={styles.board}>
+      <OrderContainer></OrderContainer>
+    </div>
+  );
 };
 
 export default Board;

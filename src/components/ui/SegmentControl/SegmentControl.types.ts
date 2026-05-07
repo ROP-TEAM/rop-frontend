@@ -6,6 +6,7 @@ export interface SegmentProp {
 }
 
 export interface SegmentControlProps {
+  fontSize?: string;
   segments: SegmentProp[];
   value?: string;
   onChange?: (value: string) => void;

@@ -14,6 +14,7 @@ export const TextInput = ({
   border = "none",
   labelGap = "0",
   backgroundColor = "var(--p-0)",
+  pading = "",
   require = false,
   onChange,
 }: TextInputProps) => {
@@ -38,13 +39,13 @@ export const TextInput = ({
         placeholder={placeholder}
         style={
           {
-            padding: border ? "0.25rem 0.5rem" : "0",
             backgroundColor: backgroundColor,
             width: width,
             fontSize: fontSize,
             fontWeight: fontWeight,
             "--outline-input": border,
             "--color-outFocus": color,
+            "--input-padding": border !== "none" ? "0.25rem 0.5rem" : "0",
           } as React.CSSProperties
         }
         type="text"

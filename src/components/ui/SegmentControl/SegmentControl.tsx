@@ -6,6 +6,7 @@ import { SegmentControlProps, SegmentProp } from "./SegmentControl.types";
 const GAP_PX = 24;
 
 export const SegmentControl = ({
+  fontSize = "0.875rem",
   segments,
   value,
   onChange,
@@ -94,7 +95,9 @@ export const SegmentControl = ({
           {item.icon && (
             <IconSvgMono src={item.icon} size={20} className={styles.icon} />
           )}
-          <h4 className={styles.label}>{item.label}</h4>
+          <h4 className={styles.label} style={{ fontSize: fontSize }}>
+            {item.label}
+          </h4>
         </button>
       ))}
 

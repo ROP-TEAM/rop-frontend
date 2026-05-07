@@ -6,8 +6,10 @@
 }
 .space {
   width: 100%;
+  .headerText {
+    padding: 1rem 2rem;
+  }
 }
-.popup {
-  width: 24rem;
-  z-index: 1;
+.children {
+  padding: 1.5rem;
 }

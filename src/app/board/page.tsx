@@ -1,12 +1,10 @@
-import { CardOrder } from "./componets/CardOrder/CardOrder";
-import { OrderContainer } from "./componets/OrderContainer/OrderContainer";
+import { CardOrder } from "../../components/ui/CardOrder/CardOrder";
+import { OrderContainer } from "../../components/ui/OrderContainer/OrderContainer";
 const VehicleBoard = () => {
   return (
     <div>
       Hello Order
-      <div>
-        <OrderContainer></OrderContainer>
-      </div>
+      <div></div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { VehicleDelete } from "@/components/Modal/VehicleDelete/VehicleDelete";
 import { VehicleProfile } from "@/components/Modal/VehicleProfile/VehicleProfile";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import { FloatingCard } from "../FloatingCard/FloatingCard";
@@ -26,6 +27,7 @@ export const DetailCard = () => {
   const [skills, setSkills] = useState<SkillPillProps[]>([]);
   const [isOption, setIsOption] = useState<boolean>(false);
   const [isPatch, setIsPatch] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
   const skillPill: SkillPillProps[] = [
     {
       title: "รถขนของเย็น",
@@ -98,8 +100,17 @@ export const DetailCard = () => {
                 แก้ไขโปรไฟล์
               </FloatingCard.body>
               <FloatingCard.body>ทำซ้ำข้อมูล</FloatingCard.body>
-              <FloatingCard.body>ลบยานพาหนะ</FloatingCard.body>
+              <FloatingCard.body
+                onClick={() => {
+                  (setIsDelete(true), setIsOption(false));
+                }}
+              >
+                ลบยานพาหนะ
+              </FloatingCard.body>
             </FloatingCard>
+            <Modal isActive={isDelete} onClose={() => setIsDelete(false)}>
+              <VehicleDelete onClose={() => setIsDelete(false)} />
+            </Modal>
             <Modal
               marginTop="4rem"
               isActive={isPatch}

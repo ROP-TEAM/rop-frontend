@@ -20,15 +20,9 @@ export const SkillInput = ({
   const [skillList, setSkillList] = useState<{ name: string; color: string }[]>(
     [
       { name: "ของเย็น", color: "#F87171" },
-      { name: "ของสด", color: "#F97316" },
-      { name: "ของแห้ง", color: "#4ADE80" },
-      { name: "เครื่องดื่ม", color: "#22D3EE" },
-      { name: "ขนม", color: "#60A5FA" },
-      { name: "ของทอด", color: "#F87171" },
-      { name: "เงิสด", color: "#F97316" },
-      { name: "ปลาแห้ง", color: "#4ADE80" },
-      { name: "ชูซิ", color: "#22D3EE" },
-      { name: "ขอนแก่น", color: "#60A5FA" },
+      // { name: "ขนม", color: "#60A5FA" },
+      // { name: "ของทอด", color: "#F87171" },
+      // { name: "ปลาแห้ง", color: "#4ADE80" },
     ],
   );
   const [lastestValue, setLastestValue] = useState<string>("");
@@ -324,7 +318,10 @@ export const SkillInput = ({
             </table>
 
             <button
-              onClick={() => handleAddnewSkill()}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleAddnewSkill();
+              }}
               className={styles.add}
               type="button"
             >

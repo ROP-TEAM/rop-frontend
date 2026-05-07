@@ -9,7 +9,6 @@ export const VehicleProfile = ({ onClose }: VehicleProfileProps) => {
   const [name, setName] = useState("มหากายพ์น้ำแข็งลุกป้อก");
   const [model, setModel] = useState("TOYOTA V OA");
   const [numberPlate, setNumberPlate] = useState("กขค 123");
-
   const colorList: string[] = [
     "#F87171",
     "#FB923C",

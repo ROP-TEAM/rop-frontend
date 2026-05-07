@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./Modal.module.scss";
 import { ModalProps } from "./Modal.types";
+import { useClickOutSide } from "@/hook/useClickOutSide";
 
 export const Modal = ({
   children,
@@ -8,10 +9,13 @@ export const Modal = ({
   marginTop = "10rem",
   onClose,
 }: ModalProps) => {
+  const contentRef = useClickOutSide<HTMLDivElement>(() => onClose());
+
   if (!isActive) return;
   return (
-    <div className={styles.background} onClick={() => onClose()}>
+    <div className={styles.background}>
       <div
+        ref={contentRef}
         onClick={(e) => e.stopPropagation()}
         style={{ "--margin-Top": marginTop } as React.CSSProperties}
         className={styles.modal}

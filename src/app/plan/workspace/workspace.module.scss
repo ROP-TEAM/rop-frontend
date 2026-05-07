@@ -1,0 +1,13 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+.space {
+  width: 100%;
+}
+.popup {
+  width: 24rem;
+  z-index: 1;
+}

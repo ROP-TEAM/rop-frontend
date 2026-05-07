@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import "./../styles/globals.scss";
 import { Noto_Sans_Thai } from "next/font/google";
+import "./../styles/globals.scss";
 import { AuthProvider } from "./provider";
-
 export const metadata: Metadata = {
   title: "rop-frontend",
   description: "route-optimize-frontend",
@@ -19,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="dark" lang="en">
+    <html lang="en">
       <body className={noto.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>

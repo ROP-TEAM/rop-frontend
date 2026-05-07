@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SegmentControl.module.scss";
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import { FloatingCard } from "../FloatCard/FloatCard";
+import { FloatingCard } from "../FloatingCard/FloatingCard";
 import { SegmentControlProps, SegmentProp } from "./SegmentControl.types";
 const GAP_PX = 24;
 

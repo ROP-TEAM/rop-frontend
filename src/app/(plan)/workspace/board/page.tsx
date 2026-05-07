@@ -1,12 +1,11 @@
 "use client";
 
-import { togglePopup } from "@/app/features/sidePopup/sidePopupSlide";
 import { useDispatch } from "react-redux";
 
 const Board = () => {
   const dispatch = useDispatch();
   return (
-    <div onClick={() => dispatch(togglePopup())}>
+    <div>
       Hello board ./rop-frontend/src/app/globals.scss.css [Client Component
       Browser] ./rop-frontend/src/app/layout.tsx [Server Component] ⚠
       ./rop-frontend/src/components/ui/SegmentControl/SegmentControl.module.scss

@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     additionalData: `
       @use "@/styles/responsive" as *;
       @use "@/styles/colors" as *;
+      @use "@/styles/shadows" as *;
+
     `,
   },
 };

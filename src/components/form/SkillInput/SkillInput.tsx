@@ -1,5 +1,5 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import { Modal } from "@/components/ui/Modal/Modal";
+import { Modal } from "@/components/Modal/Modal/Modal";
 import { SKillInputProps } from "./SkillInput.types";
 import styles from "./SkillInput.module.scss";
 import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
@@ -153,7 +153,7 @@ export const SkillInput = ({
         <Modal
           marginTop="5rem"
           isActive={isPatch}
-          onCloce={() => setIsPatch(false)}
+          onClose={() => setIsPatch(false)}
         >
           <div className={styles.modal}>
             <div className={styles.header}>

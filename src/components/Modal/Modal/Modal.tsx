@@ -6,11 +6,11 @@ export const Modal = ({
   children,
   isActive,
   marginTop = "10rem",
-  onCloce,
+  onClose,
 }: ModalProps) => {
   if (!isActive) return;
   return (
-    <div className={styles.background} onClick={() => onCloce()}>
+    <div className={styles.background} onClick={() => onClose()}>
       <div
         onClick={(e) => e.stopPropagation()}
         style={{ "--margin-Top": marginTop } as React.CSSProperties}

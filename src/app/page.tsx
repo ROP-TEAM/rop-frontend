@@ -15,7 +15,7 @@ const Page = () => {
           width: "fit-content",
           fontWeight: "500",
           fontSize: "5rem",
-          fontFamily: "-",
+          fontFamily: "Times New Roman",
         }}
       >
         SoRoutesion is on. 😶‍🌫️

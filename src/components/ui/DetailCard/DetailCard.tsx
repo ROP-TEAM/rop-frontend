@@ -1,8 +1,10 @@
+import { VehicleProfile } from "@/components/Modal/VehicleProfile/VehicleProfile";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import { FloatingCard } from "../FloatingCard/FloatingCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
 import { Location } from "@/types/api.types";
+import { Modal } from "@/components/Modal/Modal/Modal";
 import { useDispatch } from "react-redux";
 import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
@@ -22,8 +24,8 @@ export const DetailCard = () => {
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [skills, setSkills] = useState<SkillPillProps[]>([]);
-  const [isOption, setIsOption] = useState<boolean>(true);
-
+  const [isOption, setIsOption] = useState<boolean>(false);
+  const [isPatch, setIsPatch] = useState<boolean>(false);
   const skillPill: SkillPillProps[] = [
     {
       title: "รถขนของเย็น",
@@ -88,9 +90,25 @@ export const DetailCard = () => {
                 </button>
               }
             >
-              <FloatingCard.body>แก้ไขโปรไฟล์</FloatingCard.body>
+              <FloatingCard.body
+                onClick={() => {
+                  (setIsPatch(true), setIsOption(false));
+                }}
+              >
+                แก้ไขโปรไฟล์
+              </FloatingCard.body>
+              <FloatingCard.body>ทำซ้ำข้อมูล</FloatingCard.body>
               <FloatingCard.body>ลบยานพาหนะ</FloatingCard.body>
             </FloatingCard>
+            <Modal
+              marginTop="4rem"
+              isActive={isPatch}
+              onClose={() => setIsPatch(false)}
+            >
+              <VehicleProfile
+                onClose={() => setIsPatch(false)}
+              ></VehicleProfile>
+            </Modal>
           </div>
         </div>
       </div>

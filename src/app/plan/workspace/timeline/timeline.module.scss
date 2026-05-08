@@ -1,19 +1,71 @@
 .timeline {
   width: 100%;
-  height: 10rem;
-  background-color: red;
-  overflow: hidden; // เพิ่ม
+  height: fit-content;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  align-items: start;
 }
 
-.mainHeader {
-  width: 100%;
-  overflow-x: auto;
+.srcollArea {
+  overflow: auto;
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  width: 100%;
+  .bar {
+    width: calc(var(--total-width) * 1rem);
+    width: 288rem;
+    .barTimeline {
+      border-bottom: $border-subtle;
+      width: 100%;
+      height: 3.5rem;
+      display: flex;
+      position: relative;
 
-  .subHeader {
+      .barOrder {
+        position: absolute;
+        background-color: red;
+        top: 0;
+        left: var(--bar-position);
+        bottom: 0;
+      }
+    }
+  }
+}
+.vehicleCol {
+  text-wrap: nowrap;
+  width: 12rem;
+  display: flex;
+  flex-direction: column;
+  .vehicleHeader {
     display: flex;
-    gap: 0.5rem;
+    align-items: end;
+    height: 3.5rem;
+  }
+  .vehicleName {
+    height: 3.5rem;
+    border-bottom: $border-subtle;
+  }
+}
+
+.Header {
+  display: flex;
+  height: fit-content;
+
+  .mainHeader {
+    height: 3.5rem;
+    flex-shrink: 0;
+    min-width: calc(var(--col-width) * 1rem);
+    position: relative;
+
+    .text {
+      font-size: 1.25rem;
+    }
+  }
+  .subHeader {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-col), 1fr);
+    min-width: calc(var(--col-width) * 1rem);
     flex-shrink: 0;
   }
 }

@@ -1,71 +1,169 @@
 .timeline {
-  width: 100%;
   height: fit-content;
   display: flex;
-  min-width: 0;
-  align-items: center;
   align-items: start;
+  min-width: 0; // ✅ บังคับให้ shrink ได้
+  width: 100%;
+  max-width: 1440px;
+  border-radius: 0.25rem;
+  border: $border-subtle;
 }
 
 .srcollArea {
+  position: relative;
+  min-width: 0;
   overflow: auto;
+
   display: flex;
   flex-direction: column;
-  width: 100%;
+
+  flex: 1;
+  min-width: 0;
+
+  .gridContainer {
+    inset: 0;
+
+    padding: 0 1rem;
+
+    position: absolute;
+
+    .gridLine {
+      height: 100%;
+      width: 0.0725rem;
+
+      background-color: var(--p-200);
+
+      position: absolute;
+
+      left: calc(var(--grid-position) * 1rem);
+    }
+  }
+
   .bar {
-    width: calc(var(--total-width) * 1rem);
-    width: 288rem;
+    width: calc(var(--bar-width) * 1rem);
+    .travelLine {
+      position: absolute;
+
+      top: 50%;
+      transform: translateY(-50%);
+
+      left: var(--bar-position);
+
+      height: 0.125rem;
+
+      background-image: repeating-linear-gradient(
+        to right,
+        #9ca3af 0,
+        #9ca3af 0.5rem,
+        transparent 0.5rem,
+        transparent 1rem
+      );
+    }
+
     .barTimeline {
+      box-sizing: content-box;
       border-bottom: $border-subtle;
-      width: 100%;
-      height: 3.5rem;
+
+      width: calc(var(--bar-width) * 1rem);
+
+      height: calc(var(--row-height) * 1rem);
+
       display: flex;
+
       position: relative;
 
       .barOrder {
         position: absolute;
-        background-color: red;
+
+        border-radius: 0.25rem;
+
+        background-color: #e69661;
+
         top: 0;
         left: var(--bar-position);
         bottom: 0;
+
+        margin: 0.725rem 0;
       }
     }
   }
 }
+
 .vehicleCol {
   text-wrap: nowrap;
-  width: 12rem;
+
+  width: 14rem;
+
+  flex-shrink: 0;
+
   display: flex;
   flex-direction: column;
+
+  border-right: $border-subtle;
+
   .vehicleHeader {
     display: flex;
+
     align-items: end;
+
     height: 3.5rem;
-  }
-  .vehicleName {
-    height: 3.5rem;
+
+    padding: calc(var(--header-padding) * 1rem);
+
     border-bottom: $border-subtle;
+    box-sizing: content-box;
+  }
+
+  .vehicleName {
+    display: flex;
+
+    align-items: center;
+
+    height: calc(var(--row-height) * 1rem);
+
+    padding: 0 1rem;
+
+    border-bottom: $border-subtle;
+    box-sizing: content-box;
   }
 }
 
 .Header {
   display: flex;
+
   height: fit-content;
+
+  padding: calc(var(--header-padding) * 1rem) 0;
+
+  border-bottom: $border-subtle;
+  box-sizing: content-box;
+  width: calc(var(--total-width) * 1rem);
 
   .mainHeader {
     height: 3.5rem;
+
     flex-shrink: 0;
-    min-width: calc(var(--col-width) * 1rem);
+
+    width: calc(var(--col-width) * 1rem);
+    padding-left: 0.5rem;
     position: relative;
 
     .text {
       font-size: 1.25rem;
     }
   }
+
   .subHeader {
     display: grid;
     grid-template-columns: repeat(var(--grid-col), 1fr);
-    min-width: calc(var(--col-width) * 1rem);
+    width: calc(var(--col-width) * 1rem);
     flex-shrink: 0;
+    .minute {
+      width: fit-content;
+      font-size: 0.725rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.2rem;
+      background-color: var(--p-100);
+    }
   }
 }

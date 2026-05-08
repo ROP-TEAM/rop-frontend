@@ -1,9 +1,12 @@
 "use client";
 
 import { TimePeriod } from "@/types/api.types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./timeline.module.scss";
 import React from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { detailOpen } from "@/app/features/sidePopup/sidePopupSlide";
 
 const vehicles = [
   {
@@ -243,92 +246,194 @@ const vehicles = [
     ],
   },
 ];
-const COLWIDTH = 12;
+
+{
+  /* ===========================
+       ไม่ได้ใช้ AI ทำ มันมหากาพย์เกินเลยเขียน 
+       comnent ไว้ไม่งั้นคนเขียนนี่แหละจะงงเอง 
+        ===========================
+      */
+}
+const ROWHEIGHT = 4; //rem unit
 const TimeLine = () => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>({
-    start: 0,
+    start: 8,
     end: 23,
   });
-  const [timeScale, setTImeScale] = useState(10);
+  const searchParams = useSearchParams();
+  const [timeScale, setTimeScale] = useState(10);
+  const TICK_WIDTH = 2.2;
+  const COLWIDTH = (60 / timeScale) * TICK_WIDTH;
+
   const totalHours = timePeriod.end - timePeriod.start + 1;
   const totalWidth = totalHours * COLWIDTH;
+  const allWorkingTime = timePeriod.end - timePeriod.start;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const value = Number(searchParams.get("timescale"));
+
+    if (!Number.isNaN(value) && value > 0) {
+      setTimeScale(value);
+    }
+  }, [searchParams]);
   return (
-    <div className={styles.timeline}>
-      {/* ===========================
+    <div>
+      <div
+        className={styles.timeline}
+        style={
+          {
+            "--header-padding": 1,
+            "--row-height": ROWHEIGHT,
+          } as React.CSSProperties
+        }
+      >
+        {/* ===========================
         Vehicle Name column | First Row 
         ===========================
       */}
 
-      <div className={styles.vehicleCol}>
-        <div className={styles.vehicleHeader}>
-          <h3>ยานพาหนะ</h3>
-        </div>
-        {vehicles.map((v, idx) => (
-          <div className={styles.vehicleName} key={idx}>
-            <p>{v.name}</p>
+        <div className={styles.vehicleCol}>
+          <div className={styles.vehicleHeader}>
+            <h3>ยานพาหนะ</h3>
           </div>
-        ))}
-      </div>
+          {vehicles.map((v, idx) => (
+            <button
+              type="button"
+              onClick={() => dispatch(detailOpen())}
+              className={styles.vehicleName}
+              key={idx}
+            >
+              <p>{v.name}</p>
+            </button>
+          ))}
+        </div>
+        {/* ===========================
+        Content Hour Header
+        ===========================
+      */}
+        <div
+          className={styles.srcollArea}
+          style={
+            {
+              "--total-width": totalWidth + allWorkingTime * 0.5,
+            } as React.CSSProperties
+          }
+        >
+          {/* ===========================
+        Grid Line
+        ===========================
+      */}
+          <div
+            style={
+              {
+                "--col-width": COLWIDTH,
+                "--grid-col": 60 / timeScale,
+              } as React.CSSProperties
+            }
+            className={styles.gridContainer}
+          >
+            {[...Array(allWorkingTime)].map((_, ing) => (
+              <div
+                className={styles.gridLine}
+                style={
+                  {
+                    "--grid-position": (ing + 1) * (COLWIDTH + 0.5),
+                  } as React.CSSProperties
+                }
+                key={ing}
+              ></div>
+            ))}
+          </div>
 
-      {/* ===========================
+          {/* ===========================
         Dynamic Hour Header
         ===========================
       */}
-      <div className={styles.srcollArea}>
-        <div
-          className={styles.Header}
-          style={
-            {
-              "--col-width": COLWIDTH,
-              "--grid-col": 60 / timeScale,
-            } as React.CSSProperties
-          }
-        >
-          {[...Array(timePeriod.end - timePeriod.start + 1)].map((_, index) => {
-            const hour = index + timePeriod.start;
-            return (
-              <div className={styles.mainHeader} key={"hour:" + hour}>
-                <h2 className={styles.text}>
-                  {hour.toString().padStart(2, "0")}
-                </h2>
-                <div className={styles.subHeader}>
-                  {[...Array(60 / timeScale)].map((_, inm) => {
-                    return (
-                      <div className={styles.tick} key={"minute:" + inm}>
-                        {inm}0
-                      </div>
-                    );
-                  })}
+
+          <div
+            className={styles.Header}
+            style={
+              {
+                "--col-width": COLWIDTH,
+                "--grid-col": 60 / timeScale,
+              } as React.CSSProperties
+            }
+          >
+            {[...Array(allWorkingTime + 1)].map((_, index) => {
+              const hour = index + timePeriod.start;
+              return (
+                <div className={styles.mainHeader} key={"hour:" + hour}>
+                  <h2 className={styles.text}>
+                    {hour.toString().padStart(2, "0")}
+                  </h2>
+                  <div className={styles.subHeader}>
+                    {[...Array(60 / timeScale)].map((_, inm) => {
+                      return (
+                        <div className={styles.tick} key={"minute:" + inm}>
+                          <h3 className={styles.minute}>
+                            {(inm * timeScale).toString().padStart(2, "0")}
+                          </h3>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+          <div
+            className={styles.bar}
+            style={
+              {
+                "--bar-width": totalWidth + 2 + allWorkingTime * 0.5, //shift 2 becuz is have 1*2 padding
+              } as React.CSSProperties
+            }
+          >
+            {/* ===========================
+            Dash Travel Linex
+            ===========================
+          */}
+
+            {vehicles.map((v, idx) => (
+              <div className={styles.barTimeline} key={idx}>
+                {(() => {
+                  const starTime = v.route[1].arrivalTime;
+                  const endTime =
+                    v.route[v.route.length - 2].arrivalTime +
+                    v.route[v.route.length - 2].serviceTime;
+                  const workRange = endTime - starTime;
+                  return (
+                    <div
+                      style={
+                        {
+                          width: `${(workRange / 60) * COLWIDTH}rem`,
+                          "--bar-position": `${(starTime / 60 - (23 - allWorkingTime)) * COLWIDTH}rem`, //shift 0.5 cuz is header have 1rem
+                        } as React.CSSProperties
+                      }
+                      className={styles.travelLine}
+                    ></div>
+                  );
+                })()}
+
+                {/* ===========================
+            Each order content
+            ===========================
+          */}
+                {v.route.map((t, idt) => (
+                  <div
+                    key={idt}
+                    className={styles.barOrder}
+                    style={
+                      {
+                        width: `${(t.serviceTime / timeScale) * (COLWIDTH / (50 / timeScale))}rem`,
+                        "--bar-position": `${(t.arrivalTime / 60 - (23 - allWorkingTime)) * COLWIDTH}rem`, //shift 0.5 cuz is header have 1rem
+                      } as React.CSSProperties
+                    }
+                  ></div>
+                ))}
               </div>
-            );
-          })}
-        </div>
-        <div
-          className={styles.bar}
-          style={
-            {
-              "--total-width": totalWidth,
-            } as React.CSSProperties
-          }
-        >
-          {vehicles.map((v, idx) => (
-            <div className={styles.barTimeline} key={idx}>
-              {v.route.map((t, idt) => (
-                <div
-                  className={styles.barOrder}
-                  style={
-                    {
-                      width: `${(t.serviceTime / timeScale) * (COLWIDTH / (50 / timeScale))}rem`,
-                      "--bar-position": `${(t.arrivalTime / 60) * COLWIDTH}rem`,
-                    } as React.CSSProperties
-                  }
-                >
-                  {t.arrivalTime}
-                </div>
-              ))}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

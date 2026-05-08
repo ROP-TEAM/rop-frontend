@@ -3,16 +3,22 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
+
 .space {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+
   .headerText {
     padding: 1rem 2rem;
+    flex-shrink: 0;
   }
 }
 
 .children {
   box-sizing: border-box;
   width: 100%;
-  padding: 1rem;
+  padding: 2rem;
 }

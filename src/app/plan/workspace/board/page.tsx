@@ -5,6 +5,10 @@ const Board = () => {
   return (
     <div className={styles.board}>
       <OrderContainer></OrderContainer>
+      <OrderContainer></OrderContainer>
+      <OrderContainer></OrderContainer>
+      <OrderContainer></OrderContainer>
+      <OrderContainer></OrderContainer>
     </div>
   );
 };

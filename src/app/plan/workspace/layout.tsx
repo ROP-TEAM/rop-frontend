@@ -30,7 +30,7 @@ const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
     },
     {
       icon: "/icon/timeline.svg",
-      value: "plan",
+      value: "timeline",
       label: "แผนเดินรถ",
     },
   ];

@@ -1,45 +1,44 @@
 "use client";
 
+import { TimePeriod } from "@/types/api.types";
 import { useState } from "react";
+import styles from "./timeline.module.scss";
 import React from "react";
 const TimeLine = () => {
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>({
+    start: 9,
+    end: 21,
+  });
   const [timeScale, setTImeScale] = useState(10);
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            {[...Array(24)].map((_, hour) => (
-              <React.Fragment key={"hour:" + hour}>
-                <th>{hour.toString().padStart(2, "0")}</th>
-                {Array.from({ length: 60 / timeScale }).map((_, minute) => (
-                  <th key={"minute:" + minute}></th>
-                ))}
-              </React.Fragment>
-            ))}
-          </tr>
-          <tr>
-            <th>ยานพาหนะ</th>
-            {[...Array(24)].map((_, hour) => (
-              <React.Fragment key={"hour:" + hour}>
-                {[...Array(60 / timeScale)].map((_, minute) => (
-                  <th key={minute}>{minute.toString().padStart(2, "0")}</th>
-                ))}
-              </React.Fragment>
-            ))}
-            {/* <th>00</th>
-            <th>10</th>
-            <th>20</th>
-            <th>30</th>
-            <th>40</th>
-            <th>50</th> */}
-          </tr>
-        </thead>
-        <tbody>
-          <td></td>
-        </tbody>
-      </table>
+    <div className={styles.timeline}>
+      {/* ===========================
+        Vehicle Name column | First Row 
+        ===========================
+      */}
+
+      <div></div>
+
+      {/* ===========================
+        Dynamic Hour Header
+        ===========================
+      */}
+
+      <div className={styles.mainHeader}>
+        {[...Array(timePeriod.end - timePeriod.start + 1)].map((_, index) => {
+          const hour = index + timePeriod.start;
+          return (
+            <div key={"hour:" + hour}>
+              <h2>{hour.toString().padStart(2, "0")}</h2>
+              <div className={styles.subHeader}>
+                {[...Array(60 / timeScale)].map((_, inm) => {
+                  return <div key={"minute:" + inm}>{inm}0</div>;
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

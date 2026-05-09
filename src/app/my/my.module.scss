@@ -1,5 +1,5 @@
 .planContainer {
-  max-width: 64rem;
+  max-width: 60rem;
   padding: 0.5rem 2rem;
   margin: 1rem auto;
   min-width: 32rem;
@@ -8,16 +8,41 @@
     font-weight: 500;
   }
 }
+.tipContainer {
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 1rem;
+  .tip {
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 12rem;
+    gap: 1rem;
+    .text {
+    }
+    .image {
+      width: 100%;
+      height: fit-content;
+    }
+  }
+}
 
 .header {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+  gap: 4rem;
   .nameContent {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    text-wrap: nowrap;
+
+    .planName {
+    }
   }
   .Content {
     margin-top: 1rem;

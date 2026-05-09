@@ -1,6 +1,6 @@
+import Image from "next/image";
 import styles from "./my.module.scss";
 import { Topbar } from "@/components/navigation/Topbar/Topbar";
-
 const mockPlans = [
   {
     planName: "เส้นทางจัดส่งประจำวัน - โซนกรุงเทพเหนือ",
@@ -29,6 +29,42 @@ const My = () => {
       <section>
         <div className={styles.planContainer}>
           <h2 className={styles.title}>รอบรถทั้งหมด</h2>
+          <div className={styles.tipContainer}>
+            <div className={styles.tip}>
+              <Image
+                className={styles.image}
+                src={"/cover/add-plan.svg"}
+                alt="csv"
+                width={500}
+                height={500}
+              ></Image>
+              <h4 className={styles.text}>+ เพิ่มงานใหม่</h4>
+            </div>
+            <div className={styles.tip}>
+              <Image
+                className={styles.image}
+                src={"/cover/csv-teach.svg"}
+                alt="csv"
+                width={200}
+                height={200}
+              ></Image>
+              <h4 className={styles.text}>
+                เพิ่มออเดอร์ด้วย .csv และวิธีปรับแต่งแก้ไขข้อมูลอย่างมือโปร
+              </h4>
+            </div>
+            <div className={styles.tip}>
+              <Image
+                className={styles.image}
+                src={"/cover/timeline.svg"}
+                alt="csv"
+                width={500}
+                height={500}
+              ></Image>
+              <h4 className={styles.text}>
+                ส่อง Timeline อย่างเซียน กุมกำไรอย่างงาม
+              </h4>
+            </div>
+          </div>
           <div className={styles.header}>
             <div className={styles.name}>
               <p>ชื่อ</p>

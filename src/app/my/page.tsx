@@ -28,7 +28,7 @@ const My = () => {
       <Topbar></Topbar>
       <section>
         <div className={styles.planContainer}>
-          <h2 className={styles.title}>รอบรถทั้งหมด</h2>
+          <h2 className={styles.title}>แนะนำสำหรับคุณ</h2>
           <div className={styles.tipContainer}>
             <div className={styles.tip}>
               <Image
@@ -65,50 +65,28 @@ const My = () => {
               </h4>
             </div>
           </div>
-          <div className={styles.header}>
-            <div className={styles.name}>
-              <p>ชื่อ</p>
-              <div className={styles.nameContent}>
-                {mockPlans.map((p, idp) => (
-                  <div key={idp}>{p.planName}</div>
-                ))}
-              </div>
-            </div>
-            <div className={styles.info}>
-              <div className={styles.vehicleCount}>
-                <p>จำนวนรถ</p>
-                <div className={styles.Content}>
-                  {mockPlans.map((p, idp) => (
-                    <div key={idp}>{p.cars.length}</div>
-                  ))}
+          <h3 className={styles.today}>ภายในวันนี้</h3>
+          <div className={styles.workContainer}>
+            {mockPlans.map((m, idm) => {
+              return (
+                <div key={idm} className={styles.work}>
+                  <div className={styles.title}>
+                    <h3 className={styles.name}>{m.planName}</h3>
+                    <div className={styles.info}>
+                      <p className={styles.infoText}>รถ {m.cars.length} คัน</p>
+                      <p className={styles.infoText}>{m.ordercount} ออเดอร์</p>
+                    </div>
+                  </div>
+                  <div className={styles.status}>
+                    <p className={styles.statusText}>
+                      {Math.floor(Math.random() * 10) % 2 == 0
+                        ? "เสร็จสิ้น"
+                        : "อยู่ระหว่างจัด"}
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              <div className={styles.orderCount}>
-                <p>จำนวนออเดอร์</p>
-                <div className={styles.Content}>
-                  {mockPlans.map((p, idp) => (
-                    <div key={idp}>{p.ordercount}</div>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.lastestEdit}>
-                <p>แก้ไขล่าสุด</p>
-                <div className={styles.Content}>
-                  {mockPlans.map((p, idp) => {
-                    const date = new Date(p.lastestedit);
-
-                    const formatted = date.toLocaleDateString("th-TH", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    });
-                    return <div key={idp}>{formatted}</div>;
-                  })}
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>

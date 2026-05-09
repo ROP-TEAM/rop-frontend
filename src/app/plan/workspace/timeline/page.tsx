@@ -7,7 +7,8 @@ import React from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { detailOpen } from "@/app/features/sidePopup/sidePopupSlide";
-
+import { TextInput } from "@/components/form/TextInput/TextInput";
+import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 const vehicles = [
   {
     name: "V-02",
@@ -257,27 +258,38 @@ const vehicles = [
 const ROWHEIGHT = 4; //rem unit
 const TimeLine = () => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>({
-    start: 8,
+    start: 0,
     end: 23,
   });
   const searchParams = useSearchParams();
-  const [timeScale, setTimeScale] = useState(10);
-  const TICK_WIDTH = 2.2;
+  const [timeScale, setTimeScale] = useState(5);
+  const TICK_WIDTH = 2.3;
   const COLWIDTH = (60 / timeScale) * TICK_WIDTH;
+  // const COLWIDTH = 25;
 
   const totalHours = timePeriod.end - timePeriod.start + 1;
   const totalWidth = totalHours * COLWIDTH;
   const allWorkingTime = timePeriod.end - timePeriod.start;
   const dispatch = useDispatch();
-  useEffect(() => {
-    const value = Number(searchParams.get("timescale"));
 
-    if (!Number.isNaN(value) && value > 0) {
-      setTimeScale(value);
-    }
-  }, [searchParams]);
   return (
     <div>
+      <select
+        value={timeScale}
+        onChange={(e) => setTimeScale(Number(e.target.value))}
+      >
+        <option value={1}>1</option>
+        <option value={5}>5</option>
+        <option value={10}>10</option>
+        <option value={15}>15</option>
+        <option value={20}>20</option>
+      </select>
+      <NumberInput
+        value={timePeriod.start}
+        onChange={(val) => setTimePeriod((prev) => ({ ...prev, start: val }))}
+        label="start"
+        color="var(--p-800)"
+      ></NumberInput>
       <div
         className={styles.timeline}
         style={
@@ -311,14 +323,7 @@ const TimeLine = () => {
         Content Hour Header
         ===========================
       */}
-        <div
-          className={styles.srcollArea}
-          style={
-            {
-              "--total-width": totalWidth + allWorkingTime * 0.5,
-            } as React.CSSProperties
-          }
-        >
+        <div className={styles.srcollArea}>
           {/* ===========================
         Grid Line
         ===========================
@@ -337,7 +342,7 @@ const TimeLine = () => {
                 className={styles.gridLine}
                 style={
                   {
-                    "--grid-position": (ing + 1) * (COLWIDTH + 0.5),
+                    "--grid-position": (ing + 1) * (COLWIDTH + 1),
                   } as React.CSSProperties
                 }
                 key={ing}
@@ -354,6 +359,7 @@ const TimeLine = () => {
             className={styles.Header}
             style={
               {
+                "--total-width": totalWidth + allWorkingTime * 1 + 1,
                 "--col-width": COLWIDTH,
                 "--grid-col": 60 / timeScale,
               } as React.CSSProperties
@@ -385,15 +391,10 @@ const TimeLine = () => {
             className={styles.bar}
             style={
               {
-                "--bar-width": totalWidth + 2 + allWorkingTime * 0.5, //shift 2 becuz is have 1*2 padding
+                "--bar-width": totalWidth + 2 + allWorkingTime * 1 - 1, //shift 2 becuz is have 1*2 padding
               } as React.CSSProperties
             }
           >
-            {/* ===========================
-            Dash Travel Linex
-            ===========================
-          */}
-
             {vehicles.map((v, idx) => (
               <div className={styles.barTimeline} key={idx}>
                 {(() => {
@@ -402,12 +403,24 @@ const TimeLine = () => {
                     v.route[v.route.length - 2].arrivalTime +
                     v.route[v.route.length - 2].serviceTime;
                   const workRange = endTime - starTime;
+                  const isOverHour = (starTime % 60) + workRange >= 60;
+
+                  let overRange = 0;
+                  if (isOverHour) {
+                    overRange = Math.floor(workRange / 60) * 0.5;
+                  }
+                  const hourFormStart =
+                    Math.floor(starTime / 60) - timePeriod.start;
+                  const position =
+                    (starTime / 60 - (23 - allWorkingTime)) * COLWIDTH +
+                    0.5 +
+                    hourFormStart;
                   return (
                     <div
                       style={
                         {
-                          width: `${(workRange / 60) * COLWIDTH}rem`,
-                          "--bar-position": `${(starTime / 60 - (23 - allWorkingTime)) * COLWIDTH}rem`, //shift 0.5 cuz is header have 1rem
+                          width: `${(workRange / 60) * COLWIDTH + overRange}rem`,
+                          "--bar-position": `${position}rem`,
                         } as React.CSSProperties
                       }
                       className={styles.travelLine}
@@ -416,21 +429,55 @@ const TimeLine = () => {
                 })()}
 
                 {/* ===========================
-            Each order content
-            ===========================
-          */}
-                {v.route.map((t, idt) => (
-                  <div
-                    key={idt}
-                    className={styles.barOrder}
-                    style={
-                      {
-                        width: `${(t.serviceTime / timeScale) * (COLWIDTH / (50 / timeScale))}rem`,
-                        "--bar-position": `${(t.arrivalTime / 60 - (23 - allWorkingTime)) * COLWIDTH}rem`, //shift 0.5 cuz is header have 1rem
-                      } as React.CSSProperties
-                    }
-                  ></div>
-                ))}
+                  Each order content
+                  ===========================
+                */}
+                {v.route.map((t, idt) => {
+                  const isOverHour = (t.arrivalTime % 60) + t.serviceTime >= 60;
+                  let overRange = 0;
+                  const hourFormStart =
+                    Math.floor(t.arrivalTime / 60) - timePeriod.start;
+                  if (isOverHour) {
+                    overRange = Math.floor(t.serviceTime / 60) * 0.5;
+                  }
+                  const orderPosition =
+                    (t.arrivalTime / 60 - (23 - allWorkingTime)) * COLWIDTH +
+                    hourFormStart * 1 +
+                    overRange +
+                    0.5;
+                  const hour = Math.floor(t.arrivalTime / 60);
+                  const minute = t.arrivalTime % 60;
+                  return (
+                    <div
+                      key={idt}
+                      className={styles.barOrder}
+                      style={
+                        {
+                          width: `${(t.serviceTime / timeScale) * (COLWIDTH / (60 / timeScale)) + overRange - 0.25}rem`,
+                          "--order-position": `${orderPosition}rem`, //shift 0.5 cuz is header have 1rem
+                        } as React.CSSProperties
+                      }
+                    ></div>
+                  );
+                })}
+                {(() => {
+                  let overRange = 0;
+                  if (v.breaktime[0] % 60 != 0)
+                    overRange = Math.floor(
+                      (v.breaktime[1] - v.breaktime[0]) / 60,
+                    );
+                  return (
+                    <div
+                      className={styles.barBreakTime}
+                      style={
+                        {
+                          width: `${((v.breaktime[1] - v.breaktime[0]) / timeScale) * (COLWIDTH / (60 / timeScale)) + overRange - 0.25}rem`,
+                          "--break-position": `${(v.breaktime[0] / 60 - (23 - allWorkingTime)) * (COLWIDTH + 1) + 0.5}rem`,
+                        } as React.CSSProperties
+                      }
+                    ></div>
+                  );
+                })()}
               </div>
             ))}
           </div>

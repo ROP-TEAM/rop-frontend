@@ -80,10 +80,29 @@
         background-color: #e69661;
 
         top: 0;
-        left: var(--bar-position);
+        left: var(--order-position);
         bottom: 0;
 
         margin: 0.725rem 0;
+      }
+      .barBreakTime {
+        position: absolute;
+
+        border-radius: 0.25rem;
+
+        background-color: var(--s-200);
+
+        top: 0;
+        left: var(--break-position);
+        bottom: 0;
+        margin: 0.725rem 0;
+        background-image: repeating-linear-gradient(
+          -45deg,
+          var(--p-500) 0rem,
+          var(--p-500) 0.375rem,
+          transparent 0.375rem,
+          transparent 0.75rem
+        );
       }
     }
   }
@@ -145,7 +164,7 @@
     flex-shrink: 0;
 
     width: calc(var(--col-width) * 1rem);
-    padding-left: 0.5rem;
+    padding-inline: 0.5rem;
     position: relative;
 
     .text {

@@ -1,0 +1,39 @@
+.planContainer {
+  max-width: 64rem;
+  padding: 0.5rem 2rem;
+  margin: 1rem auto;
+  min-width: 32rem;
+  .title {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}
+
+.header {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  .nameContent {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .Content {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .info {
+    display: flex;
+    gap: 2rem;
+    text-wrap: nowrap;
+    .vehicleCount {
+    }
+
+    .orderCount {
+    }
+  }
+}

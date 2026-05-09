@@ -433,6 +433,14 @@ const TimeLine = () => {
                   ===========================
                 */}
                 {v.route.map((t, idt) => {
+                  {
+                    /* ===========================
+                  if overhouse are true that 
+                  mean bar can cross hour which have
+                  each hour padding 1 rem
+                  ===========================
+                */
+                  }
                   const isOverHour = (t.arrivalTime % 60) + t.serviceTime >= 60;
                   let overRange = 0;
                   const hourFormStart =
@@ -445,8 +453,6 @@ const TimeLine = () => {
                     hourFormStart * 1 +
                     overRange +
                     0.5;
-                  const hour = Math.floor(t.arrivalTime / 60);
-                  const minute = t.arrivalTime % 60;
                   return (
                     <div
                       key={idt}

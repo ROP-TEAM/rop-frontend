@@ -1,36 +1,14 @@
 "use client";
-
+import { Modal } from "@/components/Modal/Modal/Modal";
 import { useEffect, useState } from "react";
-
+import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
 const Vehicle = () => {
-  const [csv, setCsv] = useState<string[][]>([]);
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      const rows = text.split("\n").map((row) => row.split(","));
-      setCsv(rows);
-    };
-    reader.readAsText(file);
-  };
-  useEffect(() => {
-    console.log(csv);
-  }, [csv]);
+  const [isUpload, setIsUpload] = useState<boolean>(true);
   return (
     <div>
-      <input
-        type="file"
-        accept=".csv"
-        onChange={handleFile}
-        placeholder="File here"
-      />
-      {csv[0]?.map((c, index) => (
-        <div key={index} style={{ color: "red", border: "1px solid" }}>
-          [{c}]
-        </div>
-      ))}
+      <Modal isActive={isUpload} onClose={() => setIsUpload(false)}>
+        <VehicleUpload></VehicleUpload>
+      </Modal>
     </div>
   );
 };

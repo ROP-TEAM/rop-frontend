@@ -1,0 +1,14 @@
+.vehicleUpload {
+  padding: 1rem;
+  max-width: 20rem;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+  .title {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+}

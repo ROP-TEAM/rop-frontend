@@ -67,17 +67,17 @@
   }
 }
 
-:global([data-theme="dark"]) {
-  --p-0: var(--primary-1000);
-  --p-50: var(--primary-900);
-  --p-100: var(--primary-800);
-  --p-200: var(--primary-700);
-  --p-300: var(--primary-600);
-  --p-400: var(--primary-500);
-  --p-500: var(--primary-400);
-  --p-600: var(--primary-300);
-  --p-700: var(--primary-200);
-  --p-800: var(--primary-100);
-  --p-900: var(--primary-50);
-  --p-1000: var(--primary-0);
-}
+// [data-theme="dark"] {
+//   --p-0: var(--primary-1000);
+//   --p-50: var(--primary-900);
+//   --p-100: var(--primary-800);
+//   --p-200: var(--primary-700);
+//   --p-300: var(--primary-600);
+//   --p-400: var(--primary-500);
+//   --p-500: var(--primary-400);
+//   --p-600: var(--primary-300);
+//   --p-700: var(--primary-200);
+//   --p-800: var(--primary-100);
+//   --p-900: var(--primary-50);
+//   --p-1000: var(--primary-0);
+// }

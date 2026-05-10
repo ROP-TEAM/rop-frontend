@@ -5,12 +5,13 @@ import { SegmentControl } from "@/components/ui/SegmentControl/SegmentControl";
 import { SegmentProp } from "@/components/ui/SegmentControl/SegmentControl.types";
 import { usePathname } from "next/navigation";
 import { useDispatch, UseDispatch, useSelector } from "react-redux";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { TextInput } from "@/components/form/TextInput/TextInput";
 import { RootState } from "@/app/store";
 const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
-  const isShow = useSelector((state: RootState) => state.sidePopup);
   const pathname = usePathname().split("/")[3];
   const dispatch = useDispatch();
+  const [projectName, setProjectName] = useState<string>("โปรเจคไม่ทราบชื่อ");
   const segments: SegmentProp[] = [
     {
       icon: "/icon/car.svg",
@@ -29,16 +30,30 @@ const WorkSpaceLayout = ({ children }: { children: ReactNode }) => {
     },
     {
       icon: "/icon/timeline.svg",
-      value: "plan",
+      value: "timeline",
       label: "แผนเดินรถ",
     },
   ];
   return (
     <div className={styles.layout}>
       <section className={styles.space}>
-        <p>{pathname}</p>
+        <div className={styles.headerText}>
+          {/* <p>พื้นที่จัดการ</p> */}
+          <div>
+            <TextInput
+              label="พื้นที่จัดการ"
+              labelSize="0.725rem"
+              labelColor="var(--p-500)"
+              color="var(--p-800)"
+              value={projectName}
+              fontWeight="500"
+              onChange={setProjectName}
+              width="12rem"
+            ></TextInput>
+          </div>
+        </div>
         <SegmentControl value={pathname} segments={segments}></SegmentControl>
-        <div className={styles.space}>{children}</div>
+        <div className={styles.children}>{children}</div>
       </section>
     </div>
   );

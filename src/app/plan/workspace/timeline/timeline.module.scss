@@ -1,0 +1,188 @@
+.timeline {
+  height: fit-content;
+  display: flex;
+  align-items: start;
+  min-width: 0; // ✅ บังคับให้ shrink ได้
+  width: 100%;
+  max-width: 1440px;
+  border-radius: 0.25rem;
+  border: $border-subtle;
+}
+
+.srcollArea {
+  position: relative;
+  min-width: 0;
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-width: 0;
+
+  .gridContainer {
+    inset: 0;
+
+    padding: 0 1rem;
+
+    position: absolute;
+
+    .gridLine {
+      height: 100%;
+      width: 0.0725rem;
+
+      background-color: var(--p-200);
+
+      position: absolute;
+
+      left: calc(var(--grid-position) * 1rem);
+    }
+  }
+
+  .bar {
+    width: calc(var(--bar-width) * 1rem);
+    .travelLine {
+      position: absolute;
+
+      top: 50%;
+      transform: translateY(-50%);
+
+      left: var(--bar-position);
+
+      height: 0.125rem;
+
+      background-image: repeating-linear-gradient(
+        to right,
+        #9ca3af 0,
+        #9ca3af 0.5rem,
+        transparent 0.5rem,
+        transparent 1rem
+      );
+    }
+
+    .barTimeline {
+      box-sizing: content-box;
+      border-bottom: $border-subtle;
+
+      width: calc(var(--bar-width) * 1rem);
+
+      height: calc(var(--row-height) * 1rem);
+
+      display: flex;
+
+      position: relative;
+
+      .barOrder {
+        position: absolute;
+
+        border-radius: 0.25rem;
+
+        background-color: #e69661;
+
+        top: 0;
+        left: var(--order-position);
+        bottom: 0;
+
+        margin: 0.725rem 0;
+      }
+      .barBreakTime {
+        position: absolute;
+
+        border-radius: 0.25rem;
+
+        background-color: var(--s-200);
+
+        top: 0;
+        left: var(--break-position);
+        bottom: 0;
+        margin: 0.725rem 0;
+        background-image: repeating-linear-gradient(
+          -45deg,
+          var(--p-500) 0rem,
+          var(--p-500) 0.375rem,
+          transparent 0.375rem,
+          transparent 0.75rem
+        );
+      }
+    }
+  }
+}
+
+.vehicleCol {
+  text-wrap: nowrap;
+
+  width: 14rem;
+
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  border-right: $border-subtle;
+
+  .vehicleHeader {
+    display: flex;
+
+    align-items: end;
+
+    height: 3.5rem;
+
+    padding: calc(var(--header-padding) * 1rem);
+
+    border-bottom: $border-subtle;
+    box-sizing: content-box;
+  }
+
+  .vehicleName {
+    display: flex;
+
+    align-items: center;
+
+    height: calc(var(--row-height) * 1rem);
+
+    padding: 0 1rem;
+
+    border-bottom: $border-subtle;
+    box-sizing: content-box;
+  }
+}
+
+.Header {
+  display: flex;
+
+  height: fit-content;
+
+  padding: calc(var(--header-padding) * 1rem) 0;
+
+  border-bottom: $border-subtle;
+  box-sizing: content-box;
+  width: calc(var(--total-width) * 1rem);
+
+  .mainHeader {
+    height: 3.5rem;
+
+    flex-shrink: 0;
+
+    width: calc(var(--col-width) * 1rem);
+    padding-inline: 0.5rem;
+    position: relative;
+
+    .text {
+      font-size: 1.25rem;
+    }
+  }
+
+  .subHeader {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-col), 1fr);
+    width: calc(var(--col-width) * 1rem);
+    flex-shrink: 0;
+    .minute {
+      width: fit-content;
+      font-size: 0.725rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.2rem;
+      background-color: var(--p-100);
+    }
+  }
+}

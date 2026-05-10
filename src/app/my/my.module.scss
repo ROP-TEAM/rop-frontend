@@ -1,0 +1,62 @@
+.planContainer {
+  max-width: 60rem;
+  padding: 0.5rem 2rem;
+  margin: 1rem auto;
+  min-width: 32rem;
+  .title {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}
+.tipContainer {
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 1rem;
+  .tip {
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 12rem;
+    gap: 1rem;
+    .text {
+    }
+    .image {
+      width: 100%;
+      height: fit-content;
+    }
+  }
+}
+.today {
+  font-weight: 600;
+  color: var(--p-500);
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+.workContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  .work {
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    &:hover {
+      background-color: var(--p-50);
+    }
+    .name {
+      font-weight: 400;
+    }
+    .title {
+      .info {
+        display: flex;
+        gap: 0.5rem;
+        .infoText {
+          font-size: 0.725rem;
+        }
+      }
+    }
+  }
+}

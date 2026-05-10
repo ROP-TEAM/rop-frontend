@@ -5,6 +5,7 @@
   border-radius: 0.1rem;
   border: none;
   outline: var(--outline-input);
+  padding: (--input-padding);
   &:hover:not(:focus) {
     background-color: var(--p-50);
   }

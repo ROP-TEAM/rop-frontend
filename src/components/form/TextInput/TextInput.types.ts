@@ -11,6 +11,7 @@ export interface TextInputProps {
   width?: string;
   border?: string;
   backgroundColor?: string;
+  pading?: string;
   require?: boolean;
   onChange: (value: string) => void;
 }

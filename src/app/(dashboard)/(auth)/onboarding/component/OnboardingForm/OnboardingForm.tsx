@@ -26,6 +26,10 @@ export const OnboardingForm = () => {
     setStep((prev) => prev + 1);
   };
 
+  const handlePhoneChange = (phone: string) => {
+    setPhone(phone);
+  };
+
   const handleBack = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
@@ -62,7 +66,14 @@ export const OnboardingForm = () => {
             defaultData={formData}
           />
         )}
-        {step === 2 && <StepPhone onNext={handlePhone} onBack={handleBack} />}
+        {step === 2 && (
+          <StepPhone
+            phone={phone}
+            onPhoneChange={handlePhoneChange}
+            onNext={handlePhone}
+            onBack={handleBack}
+          />
+        )}
         {step === 3 && (
           <StepOTP
             phone={formatPhone(phone)}

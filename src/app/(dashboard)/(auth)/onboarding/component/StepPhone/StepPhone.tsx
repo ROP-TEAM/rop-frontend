@@ -4,13 +4,16 @@ import styles from "./StepPhone.module.scss";
 import Image from "next/image";
 
 export const StepPhone = ({
+  phone,
+  onPhoneChange,
   onNext,
   onBack,
 }: {
+  phone: string;
+  onPhoneChange: (phone: string) => void;
   onNext: (phone: string) => void;
   onBack: () => void;
 }) => {
-  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [touched, setTouched] = useState(false);
 
@@ -40,7 +43,7 @@ export const StepPhone = ({
         <PhoneInput
           value={phone}
           onChange={(raw) => {
-            setPhone(raw);
+            onPhoneChange(raw);
             setError(touched ? validate(raw) : "");
           }}
           onBlur={() => {

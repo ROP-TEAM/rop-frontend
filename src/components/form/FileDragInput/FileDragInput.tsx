@@ -40,7 +40,12 @@ export const FileDragInput = ({ file, onChange }: FileDragInputProps) => {
       onClick={() => handleFilePicker()}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      style={{ background: isDraggin ? "red" : "transparent" }}
+      style={{
+        background: isDraggin ? "var(--s-100)" : "transparent",
+        border: isDraggin
+          ? "0.125rem dashed var(--s-300)"
+          : "0.125rem dashed var(--p-200)",
+      }}
       className={styles.dragFile}
     >
       <input

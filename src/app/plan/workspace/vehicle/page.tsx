@@ -6,7 +6,11 @@ const Vehicle = () => {
   const [isUpload, setIsUpload] = useState<boolean>(true);
   return (
     <div>
-      <Modal isActive={isUpload} onClose={() => setIsUpload(false)}>
+      <Modal
+        isActive={isUpload}
+        marginTop="4rem"
+        onClose={() => setIsUpload(false)}
+      >
         <VehicleUpload></VehicleUpload>
       </Modal>
     </div>

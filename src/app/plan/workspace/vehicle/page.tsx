@@ -8,7 +8,7 @@ const Vehicle = () => {
     <div>
       <Modal
         isActive={isUpload}
-        marginTop="4rem"
+        marginTop="2rem"
         onClose={() => setIsUpload(false)}
       >
         <VehicleUpload></VehicleUpload>

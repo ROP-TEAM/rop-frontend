@@ -1,7 +1,11 @@
 import { FileDragInputProps } from "./FileDragInput.types";
 import styles from "./FileDragInput.module.scss";
 import { useState, useRef } from "react";
-export const FileDragInput = ({ file, onChange }: FileDragInputProps) => {
+export const FileDragInput = ({
+  accept = "*",
+  file,
+  onChange,
+}: FileDragInputProps) => {
   const [isDraggin, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -52,7 +56,7 @@ export const FileDragInput = ({ file, onChange }: FileDragInputProps) => {
         ref={inputRef}
         onChange={handleFileChange}
         hidden
-        accept=".csv"
+        accept={accept}
         type="file"
       />
     </div>

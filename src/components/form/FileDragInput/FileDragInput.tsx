@@ -1,9 +1,9 @@
 import { FileDragInputProps } from "./FileDragInput.types";
 import styles from "./FileDragInput.module.scss";
 import { useState, useRef } from "react";
+import Image from "next/image";
 export const FileDragInput = ({
   accept = "*",
-  file,
   onChange,
 }: FileDragInputProps) => {
   const [isDraggin, setIsDragging] = useState(false);
@@ -36,6 +36,7 @@ export const FileDragInput = ({
     const file = e.target.files?.[0];
     if (file) {
       onChange(file);
+      setIsDragging(false);
     }
   };
   return (
@@ -59,6 +60,20 @@ export const FileDragInput = ({
         accept={accept}
         type="file"
       />
+      <div className={styles.content}>
+        <Image
+          src={"/flat/upload.svg"}
+          width={110}
+          height={110}
+          alt="upload"
+        ></Image>
+        <p
+          className={styles.contentText}
+          style={{ color: isDraggin ? "var(--p-500)" : "var(--p-300)" }}
+        >
+          {isDraggin ? "วางไฟล์ที่นี่" : "ลากและวาง หรือกดเพื่ออัพโหลดไฟล์"}
+        </p>
+      </div>
     </div>
   );
 };

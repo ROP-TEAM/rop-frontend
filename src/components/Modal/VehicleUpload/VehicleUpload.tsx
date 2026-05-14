@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import styles from "./VehicleUpload.module.scss";
 import { FileDragInput } from "@/components/form/FileDragInput/FileDragInput";
+import { SelectInput } from "@/components/form/SelectInput/SelectInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import Image from "next/image";
-import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
+import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { StepperControl } from "@/components/ui/StepperControl/StepperControl";
+import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
+import Image from "next/image";
+import { useState } from "react";
+import styles from "./VehicleUpload.module.scss";
 export const VehicleUpload = () => {
   const [file, setFile] = useState<File>();
   const [state, setState] = useState<number>(1);
@@ -22,7 +24,12 @@ export const VehicleUpload = () => {
   ];
 
   const handleUploadFile = (file: File) => {
-    if (!file.name.endsWith(".csv")) return;
+    const isCsv = file.name.toLowerCase().endsWith(".csv");
+
+    if (!isCsv) {
+      setError("รองรับประเภทไฟล์ .csv เท่านั้น");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (e) => {
       const text = e.target?.result as string;
@@ -75,13 +82,51 @@ export const VehicleUpload = () => {
         return (
           <div className={styles.manage}>
             <div className={styles.fileWrapper}>
-              <div className={styles.fileInfo}>
-                <h4>{file?.name ?? "ไม่ทราบขื่อ"}</h4>
-                <div>
-                  <p></p>
-                  <p></p>
-                </div>
+              <div className={styles.fileWrapperInfo}>
+                <SkillPill
+                  title={file?.name.split(",")[1] ?? ".csv"}
+                  color="var(--g-300)"
+                ></SkillPill>
+                {(() => {
+                  if (!file?.name) {
+                    return;
+                  }
+                  const name =
+                    file?.name.length > 15
+                      ? file.name.substring(0, 15) + "..."
+                      : file?.name;
+                  return <h4>{name} .csv</h4>;
+                })()}
+                <p className={styles.fileCount}>
+                  {fileCount.column} หลัก {fileCount.row} แถว
+                </p>
               </div>
+              <button onClick={() => setState(0)} className={styles.changeFile}>
+                เปลี่ยนไฟล์
+              </button>
+            </div>
+            <div className={styles.tableWrapper}>
+              <table className={styles.selectTable}>
+                <thead className={styles.selectHeader}>
+                  <tr>
+                    <th>ข้อมูลของระบบ</th>
+                    <th>ไฟล์ที่นำเข้า</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className={styles.selectInternal}>
+                    <td className={styles.selectSystem}>
+                      <h3 className={styles.selectTitle}>เวลาเริ่มทำงาน</h3>
+                      <p className={styles.selectDescription}>
+                        HH:MM หรือ HH.MM
+                      </p>
+                    </td>
+                    <td>
+                      <SelectInput></SelectInput>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         );

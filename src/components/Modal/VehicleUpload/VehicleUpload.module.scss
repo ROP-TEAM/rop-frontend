@@ -87,7 +87,60 @@
 }
 
 .manage {
+  padding: 0.725rem 1.25rem;
+
   .fileWrapper {
-    padding: 0.725rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.125rem;
+    background-color: var(--p-100);
+    .fileWrapperInfo {
+      display: flex;
+      align-items: end;
+      gap: 0.5rem;
+      .fileCount {
+        font-size: 0.725rem;
+      }
+    }
+  }
+  .changeFile {
+    border-radius: 0.125rem;
+    outline: $border-subtle;
+    font-weight: 600;
+    font-size: 0.625em;
+    padding: 0.125rem 0.5rem;
+  }
+  .tableWrapper {
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    border: $border-subtle;
+  }
+  .selectTable {
+    width: 100%;
+
+    border-collapse: collapse;
+    .selectHeader {
+      color: var(--p-500);
+      font-size: 0.75rem;
+      background-color: var(--p-100);
+      th {
+        padding: 0.5rem;
+      }
+    }
+    .selectInternal {
+      .selectSystem {
+        padding: 0.5rem;
+        .selectTitle {
+          font-size: 0.875rem;
+        }
+        .selectDescription {
+          font-size: 0.675rem;
+          color: var(--p-300);
+        }
+      }
+    }
   }
 }

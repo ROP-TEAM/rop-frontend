@@ -25,6 +25,7 @@ export const FileDragInput = ({
     const droppedFile = e.dataTransfer.files[0];
     const isCsv = droppedFile.name.toLowerCase().endsWith(".csv");
 
+    
     if (!droppedFile || !isCsv) {
       setIsDragging(false);
       return;

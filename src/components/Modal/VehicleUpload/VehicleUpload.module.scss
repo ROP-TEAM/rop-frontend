@@ -59,7 +59,8 @@
   }
 }
 .footer {
-  padding: 1.725rem;
+  padding: 1rem 1.725rem;
+  border: $border-subtle;
 
   .error {
     margin-left: auto;
@@ -149,4 +150,8 @@
       }
     }
   }
+}
+.contentAction {
+  max-height: 24rem;
+  overflow-y: scroll;
 }

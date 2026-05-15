@@ -16,9 +16,6 @@ export const SelectInput = ({
   isOnTop = "auto",
   placeholder,
   errorMessage,
-  activeBorder = "var(--border-subtle)",
-  activeBackground = "tranparent",
-  activeFontColor = "tranparent",
   onBlur,
   onChange,
 }: SelectInputProps) => {
@@ -64,15 +61,7 @@ export const SelectInput = ({
                 optionRef.current[0]?.focus();
               }
             }}
-            style={
-              {
-                "--active-border": value
-                  ? activeBorder
-                  : "var(--border-subtle)",
-                "--active-background": value ? activeBackground : "tranparent",
-              } as React.CSSProperties
-            }
-            className={`${styles.trigger}  ${internalActive ? styles.active : ""}`}
+            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value ? styles.hasValue : ""}`}
             onClick={() => setInternalActive((prev) => !prev)}
             type="button"
           >
@@ -81,7 +70,11 @@ export const SelectInput = ({
             ) : (
               <p>{placeholder}</p>
             )}
-            <IconSvgMono src="/icon/arrow-2-side.svg" size={18}></IconSvgMono>
+            <IconSvgMono
+              src="/icon/arrow-2-side.svg"
+              color={value ? "var(--s-700)" : "var(--p-500)"}
+              size={18}
+            ></IconSvgMono>
           </button>
         }
       >

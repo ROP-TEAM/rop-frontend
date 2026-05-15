@@ -226,7 +226,9 @@ export const VehicleUpload = () => {
                         <td className={styles.selectImport}>
                           {
                             <SelectInput
+                              activeFontColor="var(--s-500)"
                               activeBackground="var(--s-300)"
+                              activeBorder="0.125rem solid var(--s-500)"
                               placeholder="ยังไม่ได้เลือกค่า"
                               value={headerName}
                               onChange={(value) => changeHeader(value)}
@@ -258,9 +260,10 @@ export const VehicleUpload = () => {
           color="var(--p-500)"
         ></IconSvgMono>
       </div>
-      <div></div>
       <StepperControl value={state} stepper={STEPPER}></StepperControl>
-      <VehicleUploadState />
+      <div className={styles.contentAction}>
+        <VehicleUploadState />
+      </div>
       <div className={styles.footer}>
         {error && <p className={styles.error}>เกิดข้อผิดพลาด: {error}</p>}
         <div className={styles.action}>

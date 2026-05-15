@@ -8,7 +8,8 @@ export const FloatingCard = ({
   bodyWidth = "100%",
   trigger,
   children,
-  isOnTop = "auto",
+  bodyHeight = "17rem",
+  isOnTop = 0.8,
   isActive,
   isOnRight = false,
   setIsActive,
@@ -19,8 +20,8 @@ export const FloatingCard = ({
   const [isOnTopInternal, setIsOnTopInternal] = useState(false);
 
   useLayoutEffect(() => {
-    if (!isActive || !floatRef.current || isOnTop !== "auto") return;
-    const therehold = window.innerHeight * 0.8;
+    if (!isActive || !floatRef.current || typeof isOnTop !== "number") return;
+    const therehold = window.innerHeight * isOnTop;
     const rect = floatRef.current.getBoundingClientRect();
     setIsOnTopInternal(rect.bottom > therehold);
   }, [isActive]);
@@ -53,7 +54,7 @@ export const FloatingCard = ({
                     "--position-left": "0",
                     "--position-right": "auto",
                   }),
-              ...{ "--body-width": bodyWidth },
+              ...{ "--body-width": bodyWidth, "--body-height": bodyHeight },
             } as React.CSSProperties
           }
           className={styles.floating}
@@ -70,7 +71,6 @@ FloatingCard.body = ({
   isHasLine = false,
   children,
   onClick = () => {},
-  onFocus = () => {},
   onKeyDown = () => {},
   optionRef,
 }: FloatingCardBodyProps) => {

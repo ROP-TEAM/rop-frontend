@@ -13,9 +13,10 @@ export const SelectInput = ({
   value,
   options,
   label,
-  isOnTop = "auto",
+  isOnTop = 0.8,
   placeholder,
   errorMessage,
+  checkList = [],
   onBlur,
   onChange,
 }: SelectInputProps) => {
@@ -49,6 +50,7 @@ export const SelectInput = ({
   return (
     <div>
       <FloatingCard
+        bodyHeight="12rem"
         isOnTop={isOnTop}
         isActive={internalActive}
         setIsActive={setInternalActive}
@@ -80,6 +82,7 @@ export const SelectInput = ({
       >
         {options.map((item, index) => (
           <FloatingCard.body
+            isHasCheck={checkList.includes(index)}
             onClick={() =>
               onChange(typeof item === "string" ? item : item.value)
             }

@@ -16,7 +16,7 @@
   border-radius: 0.2rem;
   background-color: var(--p-0);
   border: $border-subtle;
-  max-height: 17rem;
+  max-height: var(--body-height);
   overflow-y: auto;
 }
 

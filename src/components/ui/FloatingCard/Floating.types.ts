@@ -1,10 +1,11 @@
 import { KeyboardEvent, ReactElement, ReactNode } from "react";
 
 export interface FloatingCardProps {
+  bodyHeight?: string;
   bodyWidth?: string;
   trigger: ReactElement;
   children: ReactNode;
-  isOnTop?: boolean | "auto";
+  isOnTop?: boolean | number;
   isOnRight?: boolean;
   isActive: boolean;
   setIsActive: (status: boolean) => void;
@@ -16,6 +17,5 @@ export interface FloatingCardBodyProps {
   children: ReactNode;
   isHasCheck?: boolean;
   onClick?: () => void;
-  onFocus?: () => void;
   onKeyDown?: (e: KeyboardEvent<HTMLButtonElement>) => void;
 }

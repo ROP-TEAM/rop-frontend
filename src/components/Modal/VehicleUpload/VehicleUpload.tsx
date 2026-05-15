@@ -13,7 +13,7 @@ export const VehicleUpload = () => {
   const DEFAULT_HEADER_INDEX = -1;
 
   const [file, setFile] = useState<File>();
-  const [state, setState] = useState<number>(1);
+  const [state, setState] = useState<number>(2);
   const [header, setHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [fileCount, setFileCount] = useState<{ row: number; column: number }>({
@@ -61,7 +61,7 @@ export const VehicleUpload = () => {
     },
     {
       label: "ตำแหน่งสิ้นสุด",
-      description: "รูปแบบ latitude,longitude",
+      description: "ถ้าต้องการให้กลับมาจุดเริ่มต้นให้เว้นว่างไว้",
       value: "endLocation",
       required: false,
     },
@@ -126,6 +126,22 @@ export const VehicleUpload = () => {
       setState(1);
     };
     reader.readAsText(file);
+  };
+
+  const handleNextState = () => {
+    if (state == 1) {
+      if (
+        vehicleFileHeader.startLocation == -1 ||
+        vehicleFileHeader.workTimeEnd == -1 ||
+        vehicleFileHeader.workTimeStart == -1 ||
+        vehicleFileHeader.capacity == -1
+      ) {
+        setError("เลือกข้อมูลให้ครบถ้วน");
+        return;
+      }
+      setState(2);
+      setError("");
+    }
   };
 
   const VehicleUploadState = () => {
@@ -197,7 +213,12 @@ export const VehicleUpload = () => {
                   {OPTIONCOL.map((f, index) => {
                     const headerIndex = vehicleFileHeader[f.value];
                     let headerName = header[headerIndex];
-
+                    const checkList: number[] = [];
+                    Object.values(vehicleFileHeader).forEach((item) => {
+                      if (item != DEFAULT_HEADER_INDEX) {
+                        checkList.push(item);
+                      }
+                    });
                     const changeHeader = (val: string) => {
                       const nextIndex = header.indexOf(val);
                       setVehicleFileHeader((prev) => {
@@ -208,7 +229,7 @@ export const VehicleUpload = () => {
                             typedKey !== f.value &&
                             updated[typedKey] == nextIndex
                           ) {
-                            updated[typedKey] = -1;
+                            updated[typedKey] = DEFAULT_HEADER_INDEX;
                           }
                           updated[f.value] = nextIndex;
                         });
@@ -218,7 +239,12 @@ export const VehicleUpload = () => {
                     return (
                       <tr key={index} className={styles.selectInternal}>
                         <td className={styles.selectSystem}>
-                          <h3 className={styles.selectTitle}>{f.label}</h3>
+                          <h3 className={styles.selectTitle}>
+                            <span>{f.label}</span>
+                            {f.required && (
+                              <span className={styles.require}> *</span>
+                            )}
+                          </h3>
                           <p className={styles.selectDescription}>
                             {f.description}
                           </p>
@@ -226,6 +252,8 @@ export const VehicleUpload = () => {
                         <td className={styles.selectImport}>
                           {
                             <SelectInput
+                              isOnTop={0.6}
+                              checkList={checkList}
                               activeFontColor="var(--s-500)"
                               activeBackground="var(--s-300)"
                               activeBorder="0.125rem solid var(--s-500)"
@@ -241,6 +269,23 @@ export const VehicleUpload = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className={styles.invalidFile}>
+            <div className={styles.caution}>
+              <div className={styles.cautionInfo}>
+                <IconSvgMono src="/icon/caution.svg" color="red"></IconSvgMono>
+                <div>
+                  <h3 className={styles.cautionTitle}>
+                    ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
+                  </h3>
+                  <p></p>
+                </div>
+              </div>
+              <div></div>
             </div>
           </div>
         );
@@ -274,11 +319,21 @@ export const VehicleUpload = () => {
           >
             ยกเลิก
           </button>
-          <button type="button" className={styles.confirm}>
+          <button
+            onClick={() => {
+              handleNextState();
+            }}
+            type="button"
+            className={styles.confirm}
+          >
             ยืนยัน
           </button>
         </div>
       </div>
     </div>
   );
+};
+
+const ErrorTable = () => {
+  return <div></div>;
 };

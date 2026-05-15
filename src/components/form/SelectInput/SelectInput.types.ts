@@ -3,7 +3,8 @@ export interface SelectInputProps {
   value: string;
   options: Option[];
   label?: string;
-  isOnTop?: boolean | "auto";
+  checkList?: number[];
+  isOnTop?: boolean | number;
   placeholder?: string;
   errorMessage?: string;
   activeBorder?: string;

@@ -139,6 +139,9 @@
         width: 50%;
         .selectTitle {
           font-size: 0.875rem;
+          .require {
+            color: red;
+          }
         }
         .selectDescription {
           font-size: 0.675rem;
@@ -153,5 +156,23 @@
 }
 .contentAction {
   max-height: 24rem;
-  overflow-y: scroll;
+  padding-bottom: 1.725rem;
+  overflow-y: auto;
+}
+.invalidFile {
+  padding: 1.725rem;
+  .caution {
+    border-radius: 0.5rem;
+    padding: 0.725rem;
+    display: flex;
+    background-color: rgb(255, 236, 236);
+    .cautionInfo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .cautionTitle {
+        color: red;
+      }
+    }
+  }
 }

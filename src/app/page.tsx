@@ -18,7 +18,7 @@ const Page = () => {
           fontFamily: "Times New Roman",
         }}
       >
-        SoRoutesion is on. 😶‍🌫️
+        SoRoutetion is on. 😶‍🌫️
       </h1>
     </div>
   );

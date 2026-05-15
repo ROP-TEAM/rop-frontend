@@ -1,6 +1,8 @@
+"use client";
 import Image from "next/image";
 import styles from "./my.module.scss";
 import { Topbar } from "@/components/navigation/Topbar/Topbar";
+import { useCreatePlanMutation } from "@/app/features/plan/api/planApi";
 const mockPlans = [
   {
     planName: "เส้นทางจัดส่งประจำวัน - โซนกรุงเทพเหนือ",
@@ -23,6 +25,19 @@ const mockPlans = [
 ];
 
 const My = () => {
+  const [createPlan,{ isLoading, error, data}] = useCreatePlanMutation();
+  const handleCreatePlan = async () => {
+    try {
+      const result = await createPlan({
+        name: "",
+        plan_date: new Date().toISOString(),
+      }).unwrap();
+      console.log(result);
+    } catch (err) {      
+      console.error("Failed to create plan:", err);
+    }
+  }
+
   return (
     <div>
       <Topbar></Topbar>
@@ -30,7 +45,7 @@ const My = () => {
         <div className={styles.planContainer}>
           <h2 className={styles.title}>แนะนำสำหรับคุณ</h2>
           <div className={styles.tipContainer}>
-            <div className={styles.tip}>
+            <div className={styles.tip} onClick={handleCreatePlan}>
               <Image
                 className={styles.image}
                 src={"/cover/add-plan.svg"}

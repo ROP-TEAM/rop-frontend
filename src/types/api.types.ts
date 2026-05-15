@@ -8,8 +8,7 @@ export interface TimePeriod {
   end: number;
 }
 
-export interface Vehicle {
-  id: number;
+export interface VehicleBase {
   model?: string;
   name: string;
   maxCapacity: number;
@@ -34,6 +33,10 @@ export interface Order {
   serviceTime: number;
   type: "pick up" | "delivery";
   priority: "critical" | "high" | "medium" | "low";
+}
+
+export interface Vehicle extends VehicleBase {
+  id: number;
 }
 
 interface VehicleRun extends Vehicle {

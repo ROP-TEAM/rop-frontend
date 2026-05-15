@@ -7,7 +7,11 @@ import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./VehicleUpload.module.scss";
+import { Vehicle, VehicleBase } from "@/types/api.types";
+import { VehicleFileHeader } from "./VehicleUpload.types";
 export const VehicleUpload = () => {
+  const DEFAULT_HEADER_INDEX = -1;
+
   const [file, setFile] = useState<File>();
   const [state, setState] = useState<number>(1);
   const [header, setHeader] = useState<string[]>([]);
@@ -16,6 +20,82 @@ export const VehicleUpload = () => {
     row: 0,
     column: 0,
   });
+  const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
+    {
+      workTimeStart: DEFAULT_HEADER_INDEX,
+      workTimeEnd: DEFAULT_HEADER_INDEX,
+      capacity: DEFAULT_HEADER_INDEX,
+      startLocation: DEFAULT_HEADER_INDEX,
+      endLocation: DEFAULT_HEADER_INDEX,
+      maxTask: DEFAULT_HEADER_INDEX,
+      skills: DEFAULT_HEADER_INDEX,
+      model: DEFAULT_HEADER_INDEX,
+      name: DEFAULT_HEADER_INDEX,
+      numberPlate: DEFAULT_HEADER_INDEX,
+    },
+  );
+  const OPTIONCOL = [
+    {
+      label: "เวลาเริ่มทำงาน",
+      description: "รูปแบบ HH:MM หรือ HH.MM",
+      value: "workTimeStart",
+      required: true,
+    },
+    {
+      label: "เวลาสิ้นสุดงาน",
+      description: "รูปแบบ HH:MM หรือ HH.MM",
+      value: "workTimeEnd",
+      required: true,
+    },
+    {
+      label: "น้ำหนักบรรทุก",
+      description: "ตัวเลขมากกว่า 0",
+      value: "capacity",
+      required: true,
+    },
+    {
+      label: "ตำแหน่งเริ่มต้น",
+      description: "รูปแบบ latitude,longitude",
+      value: "startLocation",
+      required: true,
+    },
+    {
+      label: "ตำแหน่งสิ้นสุด",
+      description: "รูปแบบ latitude,longitude",
+      value: "endLocation",
+      required: false,
+    },
+    {
+      label: "จำนวนภาระงานสูงสุด",
+      description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
+      value: "maxTask",
+      required: false,
+    },
+    {
+      label: "ความสามารถเฉพาะ",
+      description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
+      value: "skills",
+      required: false,
+    },
+    {
+      label: "รุ่นรถ",
+      description: "ชื่อรุ่นรถ เช่น Toyota Revo",
+      value: "model",
+      required: false,
+    },
+    {
+      label: "ชื่อรถหรือชื่อพนักงาน",
+      description: "สามารถเว้นว่างได้",
+      value: "name",
+      required: false,
+    },
+    {
+      label: "ทะเบียนรถ",
+      description: "เช่น กข1234",
+      value: "numberPlate",
+      required: false,
+    },
+  ] as const;
   const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
     { value: 0, label: "เลือกไฟล์" },
@@ -40,7 +120,7 @@ export const VehicleUpload = () => {
 
       const rows = text.split("\n").map((row) => row.trim());
       const Fileheader = rows[0];
-      setHeader(Fileheader.split(","));
+      setHeader(Fileheader.split(",").map((item) => item.replace(/"/g, "")));
       setFile(file);
       setError("");
       setState(1);
@@ -114,17 +194,49 @@ export const VehicleUpload = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className={styles.selectInternal}>
-                    <td className={styles.selectSystem}>
-                      <h3 className={styles.selectTitle}>เวลาเริ่มทำงาน</h3>
-                      <p className={styles.selectDescription}>
-                        HH:MM หรือ HH.MM
-                      </p>
-                    </td>
-                    <td>
-                      <SelectInput></SelectInput>
-                    </td>
-                  </tr>
+                  {OPTIONCOL.map((f, index) => {
+                    const headerIndex = vehicleFileHeader[f.value];
+                    let headerName = header[headerIndex];
+
+                    const changeHeader = (val: string) => {
+                      const nextIndex = header.indexOf(val);
+                      setVehicleFileHeader((prev) => {
+                        const updated = { ...prev };
+                        Object.keys(updated).forEach((key) => {
+                          const typedKey = key as keyof typeof updated;
+                          if (
+                            typedKey !== f.value &&
+                            updated[typedKey] == nextIndex
+                          ) {
+                            updated[typedKey] = -1;
+                          }
+                          updated[f.value] = nextIndex;
+                        });
+                        return updated;
+                      });
+                    };
+                    return (
+                      <tr key={index} className={styles.selectInternal}>
+                        <td className={styles.selectSystem}>
+                          <h3 className={styles.selectTitle}>{f.label}</h3>
+                          <p className={styles.selectDescription}>
+                            {f.description}
+                          </p>
+                        </td>
+                        <td className={styles.selectImport}>
+                          {
+                            <SelectInput
+                              activeBackground="var(--s-300)"
+                              placeholder="ยังไม่ได้เลือกค่า"
+                              value={headerName}
+                              onChange={(value) => changeHeader(value)}
+                              options={header}
+                            ></SelectInput>
+                          }
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

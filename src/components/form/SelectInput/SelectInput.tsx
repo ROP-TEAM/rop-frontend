@@ -1,8 +1,106 @@
+import {
+  KeyboardEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./SelectInput.module.scss";
-export const SelectInput = () => {
+import { SelectInputProps } from "./SelectInput.types";
+import IconSvgMono from "@/components/Icon/SvgIcon";
+import { FloatingCard } from "@/components/ui/FloatingCard/FloatingCard";
+export const SelectInput = ({
+  value,
+  options,
+  label,
+  isOnTop = "auto",
+  placeholder,
+  errorMessage,
+  activeBorder = "var(--border-subtle)",
+  activeBackground = "tranparent",
+  activeFontColor = "tranparent",
+  onBlur,
+  onChange,
+}: SelectInputProps) => {
+  const [internalActive, setInternalActive] = useState(false);
+  const optionRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const [focusIndex, setFocusIndex] = useState<number>(-1);
+  const onFocusOption = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      const index = (focusIndex + 1) % options.length;
+
+      e.preventDefault();
+      setFocusIndex(index);
+      optionRef.current[index]?.focus();
+    }
+    if (e.key === "ArrowUp") {
+      let index = (focusIndex - 1) % options.length;
+
+      if (focusIndex < 1) {
+        index = options.length - 1;
+      }
+      e.preventDefault();
+      setFocusIndex(index);
+      optionRef.current[index]?.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (internalActive) return;
+    setFocusIndex(-1);
+  }, [internalActive]);
   return (
     <div>
-      <div className={styles.trigger}>Hello Select</div>
+      <FloatingCard
+        isOnTop={isOnTop}
+        isActive={internalActive}
+        setIsActive={setInternalActive}
+        trigger={
+          <button
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === "ArrowDown" && focusIndex == -1) {
+                e.preventDefault();
+                setFocusIndex(0);
+                optionRef.current[0]?.focus();
+              }
+            }}
+            style={
+              {
+                "--active-border": value
+                  ? activeBorder
+                  : "var(--border-subtle)",
+                "--active-background": value ? activeBackground : "tranparent",
+              } as React.CSSProperties
+            }
+            className={`${styles.trigger}  ${internalActive ? styles.active : ""}`}
+            onClick={() => setInternalActive((prev) => !prev)}
+            type="button"
+          >
+            {value ? (
+              <p className={styles.value}>{value}</p>
+            ) : (
+              <p>{placeholder}</p>
+            )}
+            <IconSvgMono src="/icon/arrow-2-side.svg" size={18}></IconSvgMono>
+          </button>
+        }
+      >
+        {options.map((item, index) => (
+          <FloatingCard.body
+            onClick={() =>
+              onChange(typeof item === "string" ? item : item.value)
+            }
+            optionRef={(el: HTMLButtonElement | null) => {
+              optionRef.current[index] = el;
+            }}
+            onKeyDown={focusIndex === index ? onFocusOption : undefined}
+            key={index}
+          >
+            {typeof item === "string" ? item : item.label}
+          </FloatingCard.body>
+        ))}
+      </FloatingCard>
+      {/* <div className={styles.trigger}>Hello Select</div> */}
     </div>
   );
 };

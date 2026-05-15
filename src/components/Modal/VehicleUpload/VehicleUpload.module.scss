@@ -127,12 +127,15 @@
       font-size: 0.75rem;
       background-color: var(--p-100);
       th {
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
       }
     }
     .selectInternal {
+      td {
+        padding: 0.5rem 1rem;
+      }
       .selectSystem {
-        padding: 0.5rem;
+        width: 50%;
         .selectTitle {
           font-size: 0.875rem;
         }
@@ -140,6 +143,9 @@
           font-size: 0.675rem;
           color: var(--p-300);
         }
+      }
+      .selectImport {
+        width: 50%;
       }
     }
   }

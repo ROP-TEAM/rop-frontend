@@ -1,0 +1,19 @@
+.trigger {
+  border: var(--active-border);
+  width: 100%;
+  text-align: center;
+  padding: 0.25rem 1.125rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.25rem;
+  background-color: var(--active-background);
+}
+
+.active {
+  border: 0.125rem solid var(--s-500);
+}
+
+.value {
+  font-size: 0.85rems;
+}

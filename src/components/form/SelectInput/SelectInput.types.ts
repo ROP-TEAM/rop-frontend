@@ -1,11 +1,14 @@
 export type Option = string | { label: string; value: string };
 export interface SelectInputProps {
   value: string;
-  onChange: (value: string) => void;
   options: Option[];
   label?: string;
+  isOnTop?: boolean | "auto";
   placeholder?: string;
-  isError?: boolean;
   errorMessage?: string;
+  activeBorder?: string;
+  activeBackground?: string;
+  activeFontColor?: string;
   onBlur?: () => void;
+  onChange: (value: string) => void;
 }

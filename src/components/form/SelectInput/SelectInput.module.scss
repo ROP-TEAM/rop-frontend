@@ -10,6 +10,10 @@
   border-radius: 0.25rem;
   background-color: var(--active-background);
   position: relative;
+  .placeholder {
+    font-weight: 500;
+    font-size: 0.725rem;
+  }
 }
 
 .hasValue {
@@ -23,6 +27,7 @@
   }
   .value {
     font-weight: 500;
+    font-size: 0.725rem;
     color: var(--s-600);
   }
 }

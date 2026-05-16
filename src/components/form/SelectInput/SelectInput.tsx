@@ -70,7 +70,7 @@ export const SelectInput = ({
             {value ? (
               <p className={styles.value}>{value}</p>
             ) : (
-              <p>{placeholder}</p>
+              <p className={styles.placeholder}>{placeholder}</p>
             )}
             <IconSvgMono
               src="/icon/arrow-2-side.svg"

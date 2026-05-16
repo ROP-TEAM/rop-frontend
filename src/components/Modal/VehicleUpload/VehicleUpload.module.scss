@@ -3,8 +3,7 @@
   width: clamp(16rem, 80vw, 32rem);
 }
 .content {
-  padding-top: 1.725rem;
-  padding-inline: 1.725rem;
+  padding: 1.725rem;
 }
 .header {
   padding: 0 1.725rem;
@@ -138,13 +137,13 @@
       .selectSystem {
         width: 50%;
         .selectTitle {
-          font-size: 0.875rem;
+          font-size: 0.725rem;
           .require {
             color: red;
           }
         }
         .selectDescription {
-          font-size: 0.675rem;
+          font-size: 0.65rem;
           color: var(--p-300);
         }
       }
@@ -156,12 +155,16 @@
 }
 .contentAction {
   max-height: 24rem;
-  padding-bottom: 1.725rem;
+  // padding-bottom: 1.725rem;
   overflow-y: auto;
 }
 .invalidFile {
   padding: 1.725rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   .caution {
+    border: 0.0625rem solid red;
     border-radius: 0.5rem;
     padding: 0.725rem;
     display: flex;
@@ -169,9 +172,87 @@
     .cautionInfo {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 1rem;
       .cautionTitle {
         color: red;
+      }
+      .cautionDescription {
+        font-size: 0.725rem;
+      }
+    }
+  }
+  .errorTableWarpper {
+    .errorTitle {
+      color: var(--p-300);
+    }
+  }
+}
+.errorTable {
+  margin: 1rem 0;
+  border: $border-subtle;
+  border-radius: 0.25rem;
+  .errorTableInfo {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.375rem 0.725rem;
+    background-color: rgb(255, 236, 236);
+    .errorTableName {
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: red;
+    }
+    .errorTableReview {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      .errorTableDetail {
+        color: red;
+        font-weight: 400;
+        font-size: 0.725rem;
+      }
+      .errorTableColName {
+        color: red;
+        font-size: 0.725rem;
+        font-weight: 600;
+      }
+    }
+  }
+  .errorTableContent {
+    padding: 0.725rem 0.725rem 0;
+    .errorTableRequire {
+      font-size: 0.725rem;
+    }
+    .errorTableRows {
+      padding: 0.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .errorTableMore {
+        margin-top: 0.5rem;
+        font-size: 0.725rem;
+      }
+      .errorTableFile {
+        display: flex;
+        gap: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: $border-subtle;
+        .errorTableFileRow {
+          border-radius: 0.25rem;
+          font-weight: 600;
+          padding: 0.125rem 0.5rem 0rem;
+          font-size: 0.725rem;
+          color: var(--p-400);
+          background-color: var(--p-100);
+          width: fit-content;
+        }
+        .errorTableFileContent {
+          border-radius: 0.25rem;
+          color: red;
+          font-size: 0.725rem;
+          width: fit-content;
+          padding: 0.125rem 0.5rem 0rem;
+          background-color: rgb(255, 236, 236);
+        }
       }
     }
   }

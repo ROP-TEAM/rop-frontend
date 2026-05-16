@@ -5,97 +5,119 @@ import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { StepperControl } from "@/components/ui/StepperControl/StepperControl";
 import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./VehicleUpload.module.scss";
 import { Vehicle, VehicleBase } from "@/types/api.types";
-import { VehicleFileHeader } from "./VehicleUpload.types";
+import { ErrorTableProps, VehicleFileHeader } from "./VehicleUpload.types";
 export const VehicleUpload = () => {
   const DEFAULT_HEADER_INDEX = -1;
 
   const [file, setFile] = useState<File>();
-  const [state, setState] = useState<number>(2);
+  const [state, setState] = useState<number>(0);
   const [header, setHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [fileCount, setFileCount] = useState<{ row: number; column: number }>({
     row: 0,
     column: 0,
   });
+  const [colData, setColData] = useState<string[][]>([]);
   const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
     {
-      workTimeStart: DEFAULT_HEADER_INDEX,
-      workTimeEnd: DEFAULT_HEADER_INDEX,
-      capacity: DEFAULT_HEADER_INDEX,
-      startLocation: DEFAULT_HEADER_INDEX,
-      endLocation: DEFAULT_HEADER_INDEX,
-      maxTask: DEFAULT_HEADER_INDEX,
-      skills: DEFAULT_HEADER_INDEX,
-      model: DEFAULT_HEADER_INDEX,
-      name: DEFAULT_HEADER_INDEX,
-      numberPlate: DEFAULT_HEADER_INDEX,
+      workTimeStart: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "เวลาเริ่มทำงาน",
+        description: "รูปแบบ HH:MM หรือ HH.MM",
+        value: "workTimeStart",
+        require: true,
+        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+      },
+
+      workTimeEnd: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "เวลาสิ้นสุดงาน",
+        description: "รูปแบบ HH:MM หรือ HH.MM",
+        value: "workTimeEnd",
+        require: true,
+        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+      },
+      capacity: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "น้ำหนักบรรทุก",
+        description: "ตัวเลขมากกว่า 0",
+        value: "capacity",
+        require: true,
+      },
+
+      startLocation: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "ตำแหน่งเริ่มต้น",
+        description: "รูปแบบ latitude,longitude",
+        value: "startLocation",
+        require: true,
+        regex:
+          /^-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?)$/,
+      },
+
+      endLocation: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "ตำแหน่งสิ้นสุด",
+        description: "ถ้าต้องการให้กลับมาจุดเริ่มต้นให้เว้นว่างไว้",
+        value: "endLocation",
+        require: false,
+      },
+
+      maxTask: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "จำนวนภาระงานสูงสุด",
+        description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
+        value: "maxTask",
+        require: false,
+      },
+
+      skills: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "ความสามารถเฉพาะ",
+        description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
+        value: "skills",
+        require: false,
+      },
+
+      model: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "รุ่นรถ",
+        description: "ชื่อรุ่นรถ เช่น Toyota Revo",
+        value: "model",
+        require: false,
+      },
+
+      name: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "ชื่อรถหรือชื่อพนักงาน",
+        description: "สามารถเว้นว่างได้",
+        value: "name",
+        require: false,
+      },
+
+      numberPlate: {
+        fileCol: DEFAULT_HEADER_INDEX,
+        ErrorRows: [],
+        label: "ทะเบียนรถ",
+        description: "เช่น กข1234",
+        value: "numberPlate",
+        require: false,
+      },
     },
   );
-  const OPTIONCOL = [
-    {
-      label: "เวลาเริ่มทำงาน",
-      description: "รูปแบบ HH:MM หรือ HH.MM",
-      value: "workTimeStart",
-      required: true,
-    },
-    {
-      label: "เวลาสิ้นสุดงาน",
-      description: "รูปแบบ HH:MM หรือ HH.MM",
-      value: "workTimeEnd",
-      required: true,
-    },
-    {
-      label: "น้ำหนักบรรทุก",
-      description: "ตัวเลขมากกว่า 0",
-      value: "capacity",
-      required: true,
-    },
-    {
-      label: "ตำแหน่งเริ่มต้น",
-      description: "รูปแบบ latitude,longitude",
-      value: "startLocation",
-      required: true,
-    },
-    {
-      label: "ตำแหน่งสิ้นสุด",
-      description: "ถ้าต้องการให้กลับมาจุดเริ่มต้นให้เว้นว่างไว้",
-      value: "endLocation",
-      required: false,
-    },
-    {
-      label: "จำนวนภาระงานสูงสุด",
-      description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
-      value: "maxTask",
-      required: false,
-    },
-    {
-      label: "ความสามารถเฉพาะ",
-      description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
-      value: "skills",
-      required: false,
-    },
-    {
-      label: "รุ่นรถ",
-      description: "ชื่อรุ่นรถ เช่น Toyota Revo",
-      value: "model",
-      required: false,
-    },
-    {
-      label: "ชื่อรถหรือชื่อพนักงาน",
-      description: "สามารถเว้นว่างได้",
-      value: "name",
-      required: false,
-    },
-    {
-      label: "ทะเบียนรถ",
-      description: "เช่น กข1234",
-      value: "numberPlate",
-      required: false,
-    },
-  ] as const;
+
   const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
     { value: 0, label: "เลือกไฟล์" },
@@ -118,8 +140,19 @@ export const VehicleUpload = () => {
         return;
       }
 
-      const rows = text.split("\n").map((row) => row.trim());
+      const rows = text.split("\n").map((row) => {
+        const rowData = row.trim();
+        return rowData;
+      });
       const Fileheader = rows[0];
+      for (let i = 0; i < Fileheader.length; i++) {
+        colData.push(
+          rows.map((row) => {
+            const cols = row.split(",");
+            return cols[i];
+          }),
+        );
+      }
       setHeader(Fileheader.split(",").map((item) => item.replace(/"/g, "")));
       setFile(file);
       setError("");
@@ -131,10 +164,10 @@ export const VehicleUpload = () => {
   const handleNextState = () => {
     if (state == 1) {
       if (
-        vehicleFileHeader.startLocation == -1 ||
-        vehicleFileHeader.workTimeEnd == -1 ||
-        vehicleFileHeader.workTimeStart == -1 ||
-        vehicleFileHeader.capacity == -1
+        vehicleFileHeader.startLocation.fileCol == -1 ||
+        vehicleFileHeader.workTimeEnd.fileCol == -1 ||
+        vehicleFileHeader.workTimeStart.fileCol == -1 ||
+        vehicleFileHeader.capacity.fileCol == -1
       ) {
         setError("เลือกข้อมูลให้ครบถ้วน");
         return;
@@ -210,59 +243,81 @@ export const VehicleUpload = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {OPTIONCOL.map((f, index) => {
-                    const headerIndex = vehicleFileHeader[f.value];
-                    let headerName = header[headerIndex];
+                  {Object.values(vehicleFileHeader).map((f, index) => {
+                    const headerIndex = f.fileCol;
+
+                    const headerName =
+                      headerIndex !== DEFAULT_HEADER_INDEX
+                        ? header[headerIndex]
+                        : "";
+
                     const checkList: number[] = [];
+
                     Object.values(vehicleFileHeader).forEach((item) => {
-                      if (item != DEFAULT_HEADER_INDEX) {
-                        checkList.push(item);
+                      if (item.fileCol !== DEFAULT_HEADER_INDEX) {
+                        checkList.push(item.fileCol);
                       }
                     });
+
                     const changeHeader = (val: string) => {
                       const nextIndex = header.indexOf(val);
+
                       setVehicleFileHeader((prev) => {
                         const updated = { ...prev };
+
                         Object.keys(updated).forEach((key) => {
-                          const typedKey = key as keyof typeof updated;
+                          const typedKey = key as keyof VehicleFileHeader;
+
                           if (
                             typedKey !== f.value &&
-                            updated[typedKey] == nextIndex
+                            updated[typedKey].fileCol === nextIndex
                           ) {
-                            updated[typedKey] = DEFAULT_HEADER_INDEX;
+                            updated[typedKey] = {
+                              ...updated[typedKey],
+                              fileCol: DEFAULT_HEADER_INDEX,
+                            };
                           }
-                          updated[f.value] = nextIndex;
                         });
-                        return updated;
+
+                        const fieldKey = f.value as keyof VehicleFileHeader;
+
+                        updated[fieldKey] = {
+                          ...updated[fieldKey],
+                          fileCol: nextIndex,
+                        };
+
+                        return { ...updated };
                       });
                     };
+
                     return (
                       <tr key={index} className={styles.selectInternal}>
                         <td className={styles.selectSystem}>
                           <h3 className={styles.selectTitle}>
                             <span>{f.label}</span>
-                            {f.required && (
+
+                            {f.require && (
                               <span className={styles.require}> *</span>
                             )}
                           </h3>
+
                           <p className={styles.selectDescription}>
                             {f.description}
                           </p>
                         </td>
+
                         <td className={styles.selectImport}>
-                          {
-                            <SelectInput
-                              isOnTop={0.6}
-                              checkList={checkList}
-                              activeFontColor="var(--s-500)"
-                              activeBackground="var(--s-300)"
-                              activeBorder="0.125rem solid var(--s-500)"
-                              placeholder="ยังไม่ได้เลือกค่า"
-                              value={headerName}
-                              onChange={(value) => changeHeader(value)}
-                              options={header}
-                            ></SelectInput>
-                          }
+                          <SelectInput
+                            isOnTop={0.6}
+                            checkList={checkList}
+                            activeFontColor="var(--s-500)"
+                            activeBackground="var(--s-300)"
+                            activeBorder="0.125rem solid var(--s-500)"
+                            placeholder="ยังไม่ได้เลือกค่า"
+                            value={headerName}
+                            onChange={(value) => changeHeader(value)}
+                            options={header}
+                          />
                         </td>
                       </tr>
                     );
@@ -277,15 +332,37 @@ export const VehicleUpload = () => {
           <div className={styles.invalidFile}>
             <div className={styles.caution}>
               <div className={styles.cautionInfo}>
-                <IconSvgMono src="/icon/caution.svg" color="red"></IconSvgMono>
+                <IconSvgMono
+                  src="/icon/caution.svg"
+                  color="red"
+                  size={28}
+                ></IconSvgMono>
                 <div>
                   <h3 className={styles.cautionTitle}>
                     ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
                   </h3>
-                  <p></p>
+                  <p className={styles.cautionDescription}>
+                    พบข้อมูล 4 ประภทเกิดข้อผิดพลาดในการแปลงไฟล์
+                    กรุณาแก้ไขข้อผิดพลาดแล้วลองใหม่อีกครั้ง
+                  </p>
                 </div>
               </div>
-              <div></div>
+            </div>
+            <div className={styles.erorrTableWarpper}>
+              <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
+              {Object.values(vehicleFileHeader).map((f, index) => {
+                if (f.fileCol == -1) return;
+                return (
+                  <div key={index}>
+                    <ErrorTable
+                      description={f.description}
+                      systemHeader={f.label}
+                      data={colData[f.fileCol]}
+                      regex={f.regex ?? undefined}
+                    ></ErrorTable>
+                  </div>
+                );
+              })}
             </div>
           </div>
         );
@@ -334,6 +411,57 @@ export const VehicleUpload = () => {
   );
 };
 
-const ErrorTable = () => {
-  return <div></div>;
+const ErrorTable = ({
+  systemHeader,
+  data,
+  regex,
+  description,
+}: ErrorTableProps) => {
+  const [errorRows, setErrorRows] = useState<number[]>([]);
+  useEffect(() => {
+    getValidData();
+  }, []);
+  const getValidData = () => {
+    if (!regex) return;
+    for (let i = 0; i < data.length; i++) {
+      if (!regex.test(data[i])) {
+        setErrorRows((prev) => [...prev, i]);
+      }
+    }
+  };
+  if (errorRows.length == 0) return;
+  return (
+    <div className={styles.errorTable}>
+      <div className={styles.errorTableInfo}>
+        <h3 className={styles.errorTableName}>{systemHeader}</h3>
+        <div className={styles.errorTableReview}>
+          <p className={styles.errorTableDetail}>
+            {errorRows.length} ข้อผิดพลาด·หลัก:
+          </p>
+          <h4 className={styles.errorTableColName}>
+            {data[0].replace(/"/g, "")}
+          </h4>
+        </div>
+      </div>
+      <div className={styles.errorTableContent}>
+        <p className={styles.errorTableRequire}>{description}</p>
+        <div className={styles.errorTableRows}>
+          {errorRows.map((err, index) => {
+            if (index > 3) return;
+            return (
+              <div className={styles.errorTableFile} key={index}>
+                <div className={styles.errorTableFileRow}>แถวที่ {err + 1}</div>
+                <p className={styles.errorTableFileContent}>
+                  {data[err].trim() == "" ? `""` : data[err]}
+                </p>
+              </div>
+            );
+          })}
+          <p className={styles.errorTableMore}>
+            และอีก +{errorRows.length - 4} แถว
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 };

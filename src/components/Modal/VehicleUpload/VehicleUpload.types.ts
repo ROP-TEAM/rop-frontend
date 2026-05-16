@@ -9,4 +9,22 @@ export type VehicleHeaderKey =
   | "model"
   | "name"
   | "numberPlate";
-export type VehicleFileHeader = Record<VehicleHeaderKey, number>;
+export type VehicleFileHeader = Record<
+  VehicleHeaderKey,
+  {
+    fileCol: number;
+    ErrorRows: number[];
+    label: string;
+    description: string;
+    value: string;
+    require: boolean;
+    regex?: RegExp;
+  }
+>;
+
+export interface ErrorTableProps {
+  systemHeader: string;
+  data: string[];
+  description: string;
+  regex?: RegExp;
+}

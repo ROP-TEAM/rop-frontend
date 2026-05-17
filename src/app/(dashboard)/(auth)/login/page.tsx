@@ -15,6 +15,8 @@ const LoginPage = () => {
       localStorage.setItem("access_token", token);
 
     }
+
+    console.log("jwt token:", token);
   }, [session]);
 
   return (

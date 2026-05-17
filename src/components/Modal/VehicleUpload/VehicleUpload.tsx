@@ -53,6 +53,7 @@ export const VehicleUpload = () => {
         description: "ตัวเลขมากกว่า 0",
         value: "capacity",
         require: true,
+        regex: /^[1-9]\d*$/,
       },
 
       startLocation: {
@@ -128,7 +129,6 @@ export const VehicleUpload = () => {
     { value: 1, label: "จัดการ" },
     { value: 2, label: "ตรวจสอบ" },
   ];
-
   const handleUploadFile = (file: File) => {
     const isCsv = file.name.toLowerCase().endsWith(".csv");
 
@@ -136,35 +136,43 @@ export const VehicleUpload = () => {
       setError("รองรับประเภทไฟล์ .csv เท่านั้น");
       return;
     }
+
     const reader = new FileReader();
+
     reader.onload = (e) => {
       const text = e.target?.result as string;
+
       if (!text.trim()) {
         setError("ไม่สามารถอัพโหลดไฟล์เปล่า");
         return;
       }
 
-      const rows = text.split("\n").map((row) => {
-        const rowData = row.trim();
-        return rowData;
-      });
-      const Fileheader = rows[0];
-      for (let i = 0; i < Fileheader.length; i++) {
-        colData.push(
-          rows.map((row) => {
-            const cols = row.split(",");
-            return cols[i];
-          }),
-        );
+      const rows = text.split(/\r?\n/).filter((row) => row.trim() !== "");
+
+      const parsedRows = rows.map(
+        (row) =>
+          row
+            .match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+            ?.map((item) => item.replace(/^"|"$/g, "")) || [],
+      );
+
+      const headers = parsedRows[0];
+
+      const tempColData: string[][] = [];
+
+      for (let i = 0; i < headers.length; i++) {
+        tempColData.push(parsedRows.map((row) => row[i] ?? ""));
       }
-      setHeader(Fileheader.split(",").map((item) => item.replace(/"/g, "")));
+
+      setHeader(headers);
+      setColData(tempColData); // <- ขาดอันนี้
       setFile(file);
       setError("");
       setState(1);
     };
+
     reader.readAsText(file);
   };
-
   const handleNextState = () => {
     if (state == 1) {
       if (
@@ -369,7 +377,7 @@ export const VehicleUpload = () => {
                         ...prev,
                         [f.value as keyof VehicleFileHeader]: {
                           ...prev[f.value as keyof VehicleFileHeader],
-                          ErrorRows: errorRows,
+                          errorRows: errorRows,
                         },
                       }))
                     }
@@ -447,10 +455,11 @@ const ErrorTable = ({
   errorRows,
   onValid,
 }: ErrorTableProps) => {
+  const Error_PREVIEW = 3;
   useEffect(() => {
     if (!regex) return;
     const errorRowsTemp: number[] = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data?.length; i++) {
       if (!regex.test(data[i])) {
         errorRowsTemp.push(i);
       }
@@ -477,18 +486,18 @@ const ErrorTable = ({
         <p className={styles.errorTableRequire}>{description}</p>
         <div className={styles.errorTableRows}>
           {errorRows.map((err, index) => {
-            if (index > 3) return;
+            if (index > Error_PREVIEW || index == 0) return;
             return (
               <div className={styles.errorTableFile} key={index}>
-                <div className={styles.errorTableFileRow}>แถวที่ {err + 1}</div>
+                <div className={styles.errorTableFileRow}>แถวที่ {err}</div>
                 <p className={styles.errorTableFileContent}>
-                  {data[err].trim() == "" ? `""` : data[err]}
+                  {data[err] == "" ? `""` : data[err]}
                 </p>
               </div>
             );
           })}
           <p className={styles.errorTableMore}>
-            และอีก +{errorRows.length - 4} แถว
+            และอีก +{errorRows.length - (Error_PREVIEW + 1)} แถว
           </p>
         </div>
       </div>
@@ -504,8 +513,16 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
       <div>
         <p className={styles.headerIndex}>#</p>
         {Array.from({ length: PREVIEW_LENGTH }).map((_, index) => {
+          const isError = tableInfo.some((item) => {
+            if (item.errorRows.includes(index + 1)) {
+              return true;
+            }
+          });
           return (
-            <div className={styles.contentPreviewIndex} key={index}>
+            <div
+              className={`${styles.contentPreviewIndex} ${isError ? styles.isError : ""}`}
+              key={index}
+            >
               {index + 1}
             </div>
           );
@@ -517,33 +534,19 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
             return (
               <div key={rowIndex}>
                 <p className={styles.headerChild}>{row.label}</p>
-                {colData[row.fileCol].map((c, cIndex) => {
-                  if (cIndex < PREVIEW_LENGTH + 1 && cIndex != 0)
+                {colData[row.fileCol]?.map((c, colIndex) => {
+                  const isError = row.errorRows.includes(colIndex);
+                  if (colIndex < PREVIEW_LENGTH + 1 && colIndex != 0)
                     return (
-                      <div key={cIndex} className={`${styles.contentPreview} ${}`}>
+                      <div
+                        key={colIndex}
+                        className={`${styles.contentPreview} ${isError ? styles.isError : ""}`}
+                      >
+                        {isError ? "! " : ""}
                         {c == "" ? `""` : c}
                       </div>
                     );
                 })}
-                {/* {row.map((col, colIndex) => {
-                if (row[0] && colIndex < PREVIEW_LENGTH + 1) {
-                  if (colIndex == 0) {
-                    return (
-                      <p className={styles.headerChild} key={colIndex}>
-                        {col.replace(/"/g, "")}
-                      </p>
-                    );
-                  } else {
-                    return (
-                      <div className={styles.contentPreview} key={colIndex}>
-                        {col.trim() == "" ? `""` : col}
-                      </div>
-                    );
-                  }
-                } else {
-                  return null;
-                }
-              })} */}
               </div>
             );
         })}

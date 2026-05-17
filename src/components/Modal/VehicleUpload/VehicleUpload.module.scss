@@ -274,7 +274,7 @@
 
     .headerChild {
       text-wrap: nowrap;
-      padding: 0.5rem 1rem 0.5rem 2rem;
+      padding: 0.5rem 2rem 0.5rem 0.5rem;
       background-color: var(--p-100);
       gap: 1rem;
       font-size: 0.725rem;
@@ -282,12 +282,16 @@
   }
   .contentPreview {
     text-wrap: nowrap;
-    padding: 0.5rem 1rem 0.5rem 2rem;
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
     font-size: 0.725rem;
   }
-   .contentPreviewIndex {
+  .contentPreviewIndex {
     text-wrap: nowrap;
-    padding: 0.5rem 1rem ;
+    padding: 0.5rem 1rem;
     font-size: 0.725rem;
+  }
+  .isError {
+    color: red;
+    background-color: rgb(255, 236, 236);
   }
 }

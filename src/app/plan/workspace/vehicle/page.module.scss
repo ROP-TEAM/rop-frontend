@@ -1,0 +1,26 @@
+.wrapper {
+    width: 100%;
+}
+
+.table {
+    width: 100%;
+     border-collapse: collapse;
+    th, td {
+    padding: 0.6rem 1rem;
+    border: 0.0625rem solid var(--p-100);
+    white-space: nowrap;
+  }
+}
+
+.tableHeader {
+    background-color: var(--p-50);
+    
+}
+
+.tableBody {
+    background-color: var(--p-0);
+}
+
+.coordinate{
+    color:var(--s-500);
+}

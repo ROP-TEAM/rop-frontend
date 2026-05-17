@@ -257,3 +257,37 @@
     }
   }
 }
+.previewTable {
+  display: flex;
+  border-radius: 0.25rem;
+  border: $border-subtle;
+  width: 27.5rem;
+  overflow-x: hidden;
+  .headerIndex {
+    font-size: 0.725rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--p-100);
+  }
+  .headerSystem {
+    overflow-x: scroll;
+    display: flex;
+
+    .headerChild {
+      text-wrap: nowrap;
+      padding: 0.5rem 1rem 0.5rem 2rem;
+      background-color: var(--p-100);
+      gap: 1rem;
+      font-size: 0.725rem;
+    }
+  }
+  .contentPreview {
+    text-wrap: nowrap;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    font-size: 0.725rem;
+  }
+   .contentPreviewIndex {
+    text-wrap: nowrap;
+    padding: 0.5rem 1rem ;
+    font-size: 0.725rem;
+  }
+}

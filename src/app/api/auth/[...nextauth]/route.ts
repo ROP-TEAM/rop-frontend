@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/$/, "")}/api/auth/google`,
             {
               method: "POST",
 

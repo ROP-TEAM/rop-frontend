@@ -56,3 +56,24 @@ export interface Runs {
   totalRunsTime: number;
   vehicleRuns: VehicleRun[];
 }
+
+export interface PreviewTableProps {
+  colData: string[][];
+  tableInfo: { fileCol: number; label: string; errorRows: number[] }[];
+}
+
+export interface CreateVehiclePayload {
+  model?: string;
+  name: string;
+  maxCapacity: number;
+  numberPlate?: string;
+
+  workTime: TimePeriod;
+  breakTime: TimePeriod;
+  startLocation: Location;
+  endLocation: Location;
+
+  maxTask?: number;
+
+  skills?: string[];
+}

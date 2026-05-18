@@ -20,7 +20,7 @@ export interface Vehicle {
   startLocation: Location;
   endLocation: Location;
   maxTask?: number;
-  skills?: { id: number; name: string; color: string }[];
+  skills?: {  id?: number; name: string; color: string }[];
 }
 
 export interface Order {

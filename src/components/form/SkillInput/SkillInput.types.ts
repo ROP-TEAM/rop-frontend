@@ -1,6 +1,7 @@
 import { SkillPillProps } from "@/components/ui/SkillPill/SkillPill.types";
 
 export interface SKillInputProps {
+   id?: number;
   label?: string;
   labelColor?: string;
   labelSize?: string;

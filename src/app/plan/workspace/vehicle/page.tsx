@@ -7,27 +7,7 @@ import { Vehicle } from "@/types/api.types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import TimeInput from "@/components/form/TimeInput/TimeInput";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
-
-const colorList: string[] = [
-  "#F87171",
-  "#FB923C",
-  "#FACC15",
-  "#4ADE80",
-  "#22D3EE",
-  "#60A5FA",
-  "#A78BFA",
-  "#F472B6",
-  "#FCA5A5",
-  "#FDBA74",
-  "#FDE047",
-  "#86EFAC",
-  "#67E8F9",
-  "#93C5FD",
-  "#C4B5FD",
-  "#F9A8D4",
-];
-
-const getSkillColor = (id: number) => colorList[id % colorList.length];
+import { SkillInput } from "@/components/form/SkillInput/SkillInput";
 
 const mockVehicles: Vehicle[] = [
   {
@@ -42,8 +22,8 @@ const mockVehicles: Vehicle[] = [
     startLocation: { lat: 16.1479, lng: 17.1578 },
     endLocation: { lat: 16.2479, lng: 17.2578 },
     skills: [
-      { id: 1, name: "ห้องเย็น", color: getSkillColor(1) },
-      { id: 3, name: "GPS Tracking", color: getSkillColor(3) },
+      { id: 1, name: "ห้องเย็น", color: "#FB923C" },
+      { id: 3, name: "GPS Tracking", color: "#4ADE80" },
     ],
   },
   {
@@ -57,7 +37,7 @@ const mockVehicles: Vehicle[] = [
     breakTime: { start: 1130, end: 1200 },
     startLocation: { lat: 16.3479, lng: 17.4578 },
     endLocation: { lat: 16.4479, lng: 17.5578 },
-    skills: [{ id: 2, name: "ขนส่งด่วน", color: getSkillColor(2) }],
+    skills: [{ id: 2, name: "ขนส่งด่วน", color: "#FACC15" }],
   },
   {
     id: 3,
@@ -71,8 +51,8 @@ const mockVehicles: Vehicle[] = [
     startLocation: { lat: 16.5479, lng: 17.6578 },
     endLocation: { lat: 16.6479, lng: 17.7578 },
     skills: [
-      { id: 1, name: "ห้องเย็น", color: getSkillColor(1) },
-      { id: 4, name: "ขนส่งสารเคมี", color: getSkillColor(4) },
+      { id: 1, name: "ห้องเย็น", color: "#FB923C" },
+      { id: 4, name: "ขนส่งสารเคมี", color: "#F472B6" },
     ],
   },
   {
@@ -86,7 +66,7 @@ const mockVehicles: Vehicle[] = [
     breakTime: { start: 1230, end: 1330 },
     startLocation: { lat: 16.7479, lng: 17.8578 },
     endLocation: { lat: 16.8479, lng: 17.9578 },
-    skills: [{ id: 4, name: "ขนส่งสารเคมี", color: getSkillColor(4) }],
+    skills: [{ id: 4, name: "ขนส่งสารเคมี", color: "#F472B6" }],
   },
   {
     id: 5,
@@ -100,8 +80,8 @@ const mockVehicles: Vehicle[] = [
     startLocation: { lat: 16.9479, lng: 18.0578 },
     endLocation: { lat: 17.0479, lng: 18.1578 },
     skills: [
-      { id: 5, name: "ควบคุมอุณหภูมิ", color: getSkillColor(5) },
-      { id: 3, name: "GPS Tracking", color: getSkillColor(3) },
+      { id: 5, name: "ควบคุมอุณหภูมิ", color: "#F9A8D4" },
+      { id: 3, name: "GPS Tracking", color: "#4ADE80" },
     ],
   },
 ];
@@ -192,11 +172,30 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
     {
       label: "ความสามารถเฉพาะ",
       render: (v: Vehicle) => (
-        <div className={styles.skillsWrapper}>
-          {v.skills?.map((s) => (
-            <SkillPill key={s.id} title={s.name} color={s.color} />
-          ))}
-        </div>
+        <SkillInput
+          skills={[]}
+          value={(v.skills ?? []).map((s) => ({
+            id: s.id,
+            title: s.name,
+            color: s.color,
+          }))}
+          onChange={(newSkills) => {
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      skills: newSkills.map((skill) => ({
+                        id: skill.id,
+                        name: skill.title,
+                        color: skill.color,
+                      })),
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
       ),
     },
     {
@@ -297,51 +296,51 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
       ),
     },
     {
-  label: "จุดเริ่มต้น",
-  render: (v: Vehicle) => (
-    <LocationInput
-      inputId={`start-location-${v.id}`}
-      value={v.startLocation}
-      color="var(--p-1000)"
-      fontSize="0.875rem"
-      onChange={(location) => {
-        setVehicleData((prev) =>
-          prev.map((item) =>
-            item.id === v.id
-              ? {
-                  ...item,
-                  startLocation: location,
-                }
-              : item,
-          ),
-        );
-      }}
-    />
-  ),
-},
-{
-  label: "จุดสิ้นสุด",
-  render: (v: Vehicle) => (
-    <LocationInput
-      inputId={`end-location-${v.id}`}
-      value={v.endLocation}
-      color="var(--p-1000)"
-      fontSize="0.875rem"
-      onChange={(location) => {
-        setVehicleData((prev) =>
-          prev.map((item) =>
-            item.id === v.id
-              ? {
-                  ...item,
-                  endLocation: location,
-                }
-              : item,
-          ),
-        );
-      }}
-    />
-  ),
-},
+      label: "จุดเริ่มต้น",
+      render: (v: Vehicle) => (
+        <LocationInput
+          inputId={`start-location-${v.id}`}
+          value={v.startLocation}
+          color="var(--p-1000)"
+          fontSize="0.875rem"
+          onChange={(location) => {
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      startLocation: location,
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
+    {
+      label: "จุดสิ้นสุด",
+      render: (v: Vehicle) => (
+        <LocationInput
+          inputId={`end-location-${v.id}`}
+          value={v.endLocation}
+          color="var(--p-1000)"
+          fontSize="0.875rem"
+          onChange={(location) => {
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      endLocation: location,
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
   ];
 
   const tableRef = useRef<HTMLTableElement>(null);

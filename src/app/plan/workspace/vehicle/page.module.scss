@@ -1,5 +1,6 @@
 .wrapper {
-    width: 100%;
+  width: 100%;
+  overflow-x: auto;
 }
 .skillsWrapper {
   display: flex;
@@ -10,24 +11,55 @@
 }
 
 .table {
-    width: 100%;
-     border-collapse: collapse;
-    th, td {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
     padding: 0.6rem 1rem;
     border: 0.0625rem solid var(--p-100);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
   }
 }
 
+.auto {
+  table-layout: auto;
+}
+
+.fixed {
+  table-layout: fixed;
+}
+
 .tableHeader {
-    background-color: var(--p-50);
-    
+  background-color: var(--p-50);
 }
 
 .tableBody {
-    background-color: var(--p-0);
+  background-color: var(--p-0);
 }
 
-.coordinate{
-    color:var(--s-500);
+.coordinate {
+  color: var(--s-500);
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+}
+
+.resizerVisible {
+  background: var(--s-500);
+}
+
+.indexCol {
+  width: 1rem;
+  padding: 0.6rem 0.75rem;
+  text-align: center;
 }

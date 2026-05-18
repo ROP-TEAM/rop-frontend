@@ -1,9 +1,11 @@
 "use client";
 
+import { TextInput } from "@/components/form/TextInput/TextInput";
 import styles from "./page.module.scss";
 import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { Vehicle } from "@/types/api.types";
 import { useCallback, useEffect, useRef, useState } from "react";
+import TimeInput from "@/components/form/TimeInput/TimeInput";
 
 const colorList: string[] = [
   "#F87171",
@@ -103,76 +105,213 @@ const mockVehicles: Vehicle[] = [
   },
 ];
 
-const formatTime = (hhmm: number) => {
-  const h = Math.floor(hhmm / 100)
-    .toString()
-    .padStart(2, "0");
-  const m = (hhmm % 100).toString().padStart(2, "0");
-  return `${h}:${m}`;
+const toTimeValue = (hhmm: number) => {
+  const str = hhmm.toString().padStart(4, "0");
+
+  return {
+    hours: str.slice(0, 2),
+    minutes: str.slice(2, 4),
+  };
 };
 
-const columns = [
-  { label: "ชื่อรถ", render: (v: Vehicle) => v.name },
-  {
-    label: "หมายเลขทะเบียน",
-    render: (v: Vehicle) => (
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <img
-          src="/icon/profile.svg"
-          width={24}
-          height={24}
-          style={{ borderRadius: "50%" }}
-        />
-        {v.numberPlate || "-"}
-      </div>
-    ),
-  },
-  { label: "ความจุน้ำหนัก", render: (v: Vehicle) => `${v.maxCapacity} ตัน` },
-  {
-    label: "ความสามารถเฉพาะ",
-    render: (v: Vehicle) => (
-      <div className={styles.skillsWrapper}>
-        {v.skills?.map((s) => (
-          <SkillPill key={s.id} title={s.name} color={s.color} />
-        ))}
-      </div>
-    ),
-  },
-  {
-    label: "เวลาเริ่มเดินรถ",
-    render: (v: Vehicle) => `${formatTime(v.workTime.start)} น.`,
-  },
-  {
-    label: "เวลาสิ้นสุดเดินรถ",
-    render: (v: Vehicle) => `${formatTime(v.workTime.end)} น.`,
-  },
-  {
-    label: "เวลาเริ่มพัก",
-    render: (v: Vehicle) => `${formatTime(v.breakTime.start)} น.`,
-  },
-  {
-    label: "เวลาสิ้นสุดพัก",
-    render: (v: Vehicle) => `${formatTime(v.breakTime.end)} น.`,
-  },
-  {
-    label: "จุดเริ่มต้น",
-    render: (v: Vehicle) => (
-      <span className={styles.coordinate}>
-        {v.startLocation.lat},{v.startLocation.lng}
-      </span>
-    ),
-  },
-  {
-    label: "จุดสิ้นสุด",
-    render: (v: Vehicle) => (
-      <span className={styles.coordinate}>
-        {v.endLocation.lat},{v.endLocation.lng}
-      </span>
-    ),
-  },
-];
+const toNumberTime = ({
+  hours,
+  minutes,
+}: {
+  hours: string;
+  minutes: string;
+}) => {
+  return Number(`${hours.padStart(2, "0")}${minutes.padStart(2, "0")}`);
+};
 
 const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
+  const [vehicleData, setVehicleData] = useState<Vehicle[]>(vehicles);
+
+  const handleChange = (id: number, field: keyof Vehicle, value: string) => {
+    setVehicleData((prev) =>
+      prev.map((v) =>
+        v.id === id
+          ? {
+              ...v,
+              [field]:
+                field === "maxCapacity" || field === "maxTask"
+                  ? Number(value)
+                  : value,
+            }
+          : v,
+      ),
+    );
+  };
+
+  const columns = [
+    {
+      label: "ชื่อรถ",
+      render: (v: Vehicle) => (
+        <TextInput
+          value={v.name}
+          onChange={(value) => handleChange(v.id, "name", value)}
+          color="var(--p-1000)"
+        />
+      ),
+    },
+    {
+      label: "หมายเลขทะเบียน",
+      render: (v: Vehicle) => (
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img
+            src="/icon/profile.svg"
+            width={24}
+            height={24}
+            style={{ borderRadius: "50%" }}
+          />
+          <TextInput
+            value={v.numberPlate || "-"}
+            onChange={(value) => handleChange(v.id, "numberPlate", value)}
+            color="var(--p-1000)"
+          />
+        </div>
+      ),
+    },
+    {
+      label: "ความจุน้ำหนัก",
+      render: (v: Vehicle) => (
+        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <TextInput
+            value={v.maxCapacity.toString()}
+            onChange={(value) => handleChange(v.id, "maxCapacity", value)}
+            color="var(--p-1000)"
+            width="2rem"
+          />
+
+          <span>ตัน</span>
+        </div>
+      ),
+    },
+    {
+      label: "ความสามารถเฉพาะ",
+      render: (v: Vehicle) => (
+        <div className={styles.skillsWrapper}>
+          {v.skills?.map((s) => (
+            <SkillPill key={s.id} title={s.name} color={s.color} />
+          ))}
+        </div>
+      ),
+    },
+    {
+      label: "เวลาเริ่มเดินรถ",
+      render: (v: Vehicle) => (
+        <TimeInput
+          width="5rem"
+          value={toTimeValue(v.workTime.start)}
+          onBlur={(time) => {
+            if (time.hours.length < 2 || time.minutes.length < 2) return;
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      workTime: { ...item.workTime, start: toNumberTime(time) },
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
+    {
+      label: "เวลาสิ้นสุดเดินรถ",
+      render: (v: Vehicle) => (
+        <TimeInput
+          width="5rem"
+          value={toTimeValue(v.workTime.end)}
+          onBlur={(time) => {
+            if (time.hours.length < 2 || time.minutes.length < 2) return;
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      workTime: {
+                        ...item.workTime,
+                        end: toNumberTime(time),
+                      },
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
+    {
+      label: "เวลาเริ่มพัก",
+      render: (v: Vehicle) => (
+        <TimeInput
+          width="5rem"
+          value={toTimeValue(v.breakTime.start)}
+          onBlur={(time) => {
+            if (time.hours.length < 2 || time.minutes.length < 2) return;
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      breakTime: {
+                        ...item.breakTime,
+                        start: toNumberTime(time),
+                      },
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
+    {
+      label: "เวลาสิ้นสุดพัก",
+      render: (v: Vehicle) => (
+        <TimeInput
+          width="5rem"
+          value={toTimeValue(v.breakTime.end)}
+          onBlur={(time) => {
+            if (time.hours.length < 2 || time.minutes.length < 2) return;
+            setVehicleData((prev) =>
+              prev.map((item) =>
+                item.id === v.id
+                  ? {
+                      ...item,
+                      breakTime: {
+                        ...item.breakTime,
+                        end: toNumberTime(time),
+                      },
+                    }
+                  : item,
+              ),
+            );
+          }}
+        />
+      ),
+    },
+    {
+      label: "จุดเริ่มต้น",
+      render: (v: Vehicle) => (
+        <span className={styles.coordinate}>
+          {v.startLocation.lat},{v.startLocation.lng}
+        </span>
+      ),
+    },
+    {
+      label: "จุดสิ้นสุด",
+      render: (v: Vehicle) => (
+        <span className={styles.coordinate}>
+          {v.endLocation.lat},{v.endLocation.lng}
+        </span>
+      ),
+    },
+  ];
+
   const tableRef = useRef<HTMLTableElement>(null);
   const [colWidths, setColWidths] = useState<number[]>([]);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
@@ -255,7 +394,7 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
           </tr>
         </thead>
         <tbody className={styles.tableBody}>
-          {vehicles.map((v, row) => (
+          {vehicleData.map((v, row) => (
             <tr key={v.id}>
               <td className={styles.indexCol}>{row + 1}</td>
               {columns.map((col, i) => (

@@ -5,6 +5,13 @@
     padding: 0.1rem;
     box-sizing: border-box;
 
+    border: 0.125rem solid transparent;
+
+  &:focus-within {
+    border: 0.125rem solid var(--s-500);
+    border-radius: 0.25rem;
+  }
+
     input{
         border:none;
         width: 2ch;

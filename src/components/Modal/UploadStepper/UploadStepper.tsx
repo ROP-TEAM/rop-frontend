@@ -6,122 +6,26 @@ import { StepperControl } from "@/components/ui/StepperControl/StepperControl";
 import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import styles from "./VehicleUpload.module.scss";
-import { Vehicle, VehicleBase } from "@/types/api.types";
+import styles from "./UploadStepper.module.scss";
 import {
   ErrorTableProps,
+  UploadStepperProps,
   PreviewTableProps,
   VehicleFileHeader,
-} from "./VehicleUpload.types";
-export const VehicleUpload = () => {
+} from "./UploadStepper.types";
+export const UploadStepper = ({
+  vehicleFileHeader,
+  setVehicleFileHeader,
+  onClose,
+}: UploadStepperProps) => {
   const DEFAULT_HEADER_INDEX = -1;
 
   const [file, setFile] = useState<File>();
   const [state, setState] = useState<number>(0);
-  const [header, setHeader] = useState<string[]>([]);
+  const [fileHeader, setFileHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
-  const [fileCount, setFileCount] = useState<{ row: number; column: number }>({
-    row: 0,
-    column: 0,
-  });
+
   const [colData, setColData] = useState<string[][]>([]);
-  const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
-    {
-      workTimeStart: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาเริ่มทำงาน",
-        description: "รูปแบบ HH:MM หรือ HH.MM",
-        value: "workTimeStart",
-        require: true,
-        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
-      },
-
-      workTimeEnd: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาสิ้นสุดงาน",
-        description: "รูปแบบ HH:MM หรือ HH.MM",
-        value: "workTimeEnd",
-        require: true,
-        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
-      },
-      capacity: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "น้ำหนักบรรทุก",
-        description: "ตัวเลขมากกว่า 0",
-        value: "capacity",
-        require: true,
-        regex: /^[1-9]\d*$/,
-      },
-
-      startLocation: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ตำแหน่งเริ่มต้น",
-        description: "รูปแบบ latitude,longitude",
-        value: "startLocation",
-        require: true,
-        regex:
-          /^-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?)$/,
-      },
-
-      endLocation: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ตำแหน่งสิ้นสุด",
-        description: "ถ้าต้องการให้กลับมาจุดเริ่มต้นให้เว้นว่างไว้",
-        value: "endLocation",
-        require: false,
-      },
-
-      maxTask: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "จำนวนภาระงานสูงสุด",
-        description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
-        value: "maxTask",
-        require: false,
-      },
-
-      skills: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ความสามารถเฉพาะ",
-        description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
-        value: "skills",
-        require: false,
-      },
-
-      model: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "รุ่นรถ",
-        description: "ชื่อรุ่นรถ เช่น Toyota Revo",
-        value: "model",
-        require: false,
-      },
-
-      name: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ชื่อรถหรือชื่อพนักงาน",
-        description: "สามารถเว้นว่างได้",
-        value: "name",
-        require: false,
-      },
-
-      numberPlate: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ทะเบียนรถ",
-        description: "เช่น กข1234",
-        value: "numberPlate",
-        require: false,
-      },
-    },
-  );
 
   const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
@@ -129,6 +33,9 @@ export const VehicleUpload = () => {
     { value: 1, label: "จัดการ" },
     { value: 2, label: "ตรวจสอบ" },
   ];
+  const ishasErrorFile = Object.values(vehicleFileHeader).some((item) => {
+    if (item.errorRows.length > 0) return true;
+  });
   const handleUploadFile = (file: File) => {
     const isCsv = file.name.toLowerCase().endsWith(".csv");
 
@@ -160,12 +67,24 @@ export const VehicleUpload = () => {
 
       const tempColData: string[][] = [];
 
+      const updatedVehicleFileHeader = structuredClone(vehicleFileHeader);
+
       for (let i = 0; i < headers.length; i++) {
         tempColData.push(parsedRows.map((row) => row[i] ?? ""));
+
+        const header = headers[i].trim();
+        console.log(tempColData[i]);
+        for (const v of Object.values(updatedVehicleFileHeader)) {
+          if (header.includes(v.label)) {
+            v.fileCol = i;
+          }
+        }
       }
 
-      setHeader(headers);
-      setColData(tempColData); // <- ขาดอันนี้
+      setVehicleFileHeader(updatedVehicleFileHeader);
+
+      setFileHeader(headers);
+      setColData(tempColData);
       setFile(file);
       setError("");
       setState(1);
@@ -187,6 +106,13 @@ export const VehicleUpload = () => {
       setState(2);
       setError("");
     }
+    if (state == 2 && !ishasErrorFile) {
+      onClose();
+    }
+  };
+  const handlePreviousState = () => {
+    if (state == 0) return;
+    setState((prev) => prev - 1);
   };
 
   const VehicleUploadState = () => {
@@ -239,7 +165,8 @@ export const VehicleUpload = () => {
                   return <h4>{name} .csv</h4>;
                 })()}
                 <p className={styles.fileCount}>
-                  {fileCount.column} หลัก {fileCount.row} แถว
+                  {colData.length} หลัก{" "}
+                  {Math.max(...colData.map((row) => row.length))} แถว
                 </p>
               </div>
               <button onClick={() => setState(0)} className={styles.changeFile}>
@@ -251,7 +178,7 @@ export const VehicleUpload = () => {
                 <thead className={styles.selectHeader}>
                   <tr>
                     <th>ข้อมูลของระบบ</th>
-                    <th>ไฟล์ที่นำเข้า</th>
+                    <th>แถวที่นำเข้า</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -260,7 +187,7 @@ export const VehicleUpload = () => {
 
                     const headerName =
                       headerIndex !== DEFAULT_HEADER_INDEX
-                        ? header[headerIndex]
+                        ? fileHeader[headerIndex]
                         : "";
 
                     const checkList: number[] = [];
@@ -272,7 +199,7 @@ export const VehicleUpload = () => {
                     });
 
                     const changeHeader = (val: string) => {
-                      const nextIndex = header.indexOf(val);
+                      const nextIndex = fileHeader.indexOf(val);
 
                       setVehicleFileHeader((prev) => {
                         const updated = { ...prev };
@@ -320,6 +247,7 @@ export const VehicleUpload = () => {
 
                         <td className={styles.selectImport}>
                           <SelectInput
+                            subString={20}
                             isOnTop={0.6}
                             checkList={checkList}
                             activeFontColor="var(--s-500)"
@@ -328,7 +256,7 @@ export const VehicleUpload = () => {
                             placeholder="ยังไม่ได้เลือกค่า"
                             value={headerName}
                             onChange={(value) => changeHeader(value)}
-                            options={header}
+                            options={fileHeader}
                           />
                         </td>
                       </tr>
@@ -342,9 +270,7 @@ export const VehicleUpload = () => {
       case 2:
         return (
           <div className={styles.invalidFile}>
-            {Object.values(vehicleFileHeader).some(
-              (item) => item.errorRows.length == 0,
-            ) && (
+            {ishasErrorFile && (
               <div className={styles.caution}>
                 <div className={styles.cautionInfo}>
                   <IconSvgMono
@@ -357,7 +283,13 @@ export const VehicleUpload = () => {
                       ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
                     </h3>
                     <p className={styles.cautionDescription}>
-                      พบข้อมูล 4 ประภทเกิดข้อผิดพลาดในการแปลงไฟล์
+                      พบข้อมูล{" "}
+                      {
+                        Object.values(vehicleFileHeader).filter(
+                          (item) => item.errorRows.length > 0,
+                        ).length
+                      }{" "}
+                      ประเภทเกิดข้อผิดพลาดในการแปลงไฟล์
                       กรุณาแก้ไขข้อผิดพลาดแล้วลองใหม่อีกครั้ง
                     </p>
                   </div>
@@ -365,7 +297,9 @@ export const VehicleUpload = () => {
               </div>
             )}
             <div className={styles.erorrTableWarpper}>
-              <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
+              {ishasErrorFile && (
+                <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
+              )}
               {Object.values(vehicleFileHeader).map((f, index) => {
                 if (f.fileCol == -1) return;
                 return (
@@ -412,11 +346,13 @@ export const VehicleUpload = () => {
           <h2 className={styles.title}>เพิ่มยานพาหนะ</h2>
           <p> สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส</p>
         </div>
-        <IconSvgMono
-          src="/icon/cross.svg"
-          size={12}
-          color="var(--p-500)"
-        ></IconSvgMono>
+        <button onClick={() => onClose()} type="button">
+          <IconSvgMono
+            src="/icon/cross.svg"
+            size={12}
+            color="var(--p-500)"
+          ></IconSvgMono>
+        </button>
       </div>
       <StepperControl value={state} stepper={STEPPER}></StepperControl>
       <div className={styles.contentAction}>
@@ -428,18 +364,20 @@ export const VehicleUpload = () => {
           <button
             type="button"
             className={styles.cancel}
-            // onClick={() => onclose()}
+            disabled={state == 0}
+            style={{ color: state == 0 ? "var(--p-300)" : "var(--p-700)" }}
+            onClick={() => handlePreviousState()}
           >
-            ยกเลิก
+            ย้อนกลับ
           </button>
           <button
             onClick={() => {
               handleNextState();
             }}
             type="button"
-            className={styles.confirm}
+            className={`${styles.confirm} ${state == 0 || ishasErrorFile ? styles.isDisabled : ""}`}
           >
-            ยืนยัน
+            {state == 2 ? "ยืนยัน" : "ต่อไป"}
           </button>
         </div>
       </div>
@@ -456,10 +394,12 @@ const ErrorTable = ({
   onValid,
 }: ErrorTableProps) => {
   const Error_PREVIEW = 3;
+  const errorMoreLength = errorRows.length - (Error_PREVIEW + 1);
+
   useEffect(() => {
     if (!regex) return;
     const errorRowsTemp: number[] = [];
-    for (let i = 0; i < data?.length; i++) {
+    for (let i = 1; i < data?.length; i++) {
       if (!regex.test(data[i])) {
         errorRowsTemp.push(i);
       }
@@ -475,7 +415,7 @@ const ErrorTable = ({
         <h3 className={styles.errorTableName}>{systemHeader}</h3>
         <div className={styles.errorTableReview}>
           <p className={styles.errorTableDetail}>
-            {errorRows.length} ข้อผิดพลาด·หลัก:
+            {errorRows.length} ข้อผิดพลาด:
           </p>
           <h4 className={styles.errorTableColName}>
             {data[0].replace(/"/g, "")}
@@ -486,7 +426,7 @@ const ErrorTable = ({
         <p className={styles.errorTableRequire}>{description}</p>
         <div className={styles.errorTableRows}>
           {errorRows.map((err, index) => {
-            if (index > Error_PREVIEW || index == 0) return;
+            if (index > Error_PREVIEW) return;
             return (
               <div className={styles.errorTableFile} key={index}>
                 <div className={styles.errorTableFileRow}>แถวที่ {err}</div>
@@ -496,9 +436,13 @@ const ErrorTable = ({
               </div>
             );
           })}
-          <p className={styles.errorTableMore}>
-            และอีก +{errorRows.length - (Error_PREVIEW + 1)} แถว
-          </p>
+          {errorMoreLength > 0 ? (
+            <p className={styles.errorTableMore}>
+              และอีก +{errorMoreLength} แถว
+            </p>
+          ) : (
+            <p className={styles.errorTableMore}></p>
+          )}
         </div>
       </div>
     </div>
@@ -518,14 +462,15 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
               return true;
             }
           });
-          return (
-            <div
-              className={`${styles.contentPreviewIndex} ${isError ? styles.isError : ""}`}
-              key={index}
-            >
-              {index + 1}
-            </div>
-          );
+          if (index < colData[0].length - 1)
+            return (
+              <div
+                className={`${styles.contentPreviewIndex} ${isError ? styles.isError : ""}`}
+                key={index}
+              >
+                {index + 1}
+              </div>
+            );
         })}
       </div>
       <div className={styles.headerSystem}>

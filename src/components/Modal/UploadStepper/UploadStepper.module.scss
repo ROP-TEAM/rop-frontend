@@ -83,6 +83,9 @@
       border-radius: 0.2rem;
       background-color: var(--s-500);
     }
+    .isDisabled {
+      background-color: var(--s-300);
+    }
   }
 }
 
@@ -154,16 +157,17 @@
   }
 }
 .contentAction {
-  max-height: 24rem;
+  max-height: 27rem;
   // padding-bottom: 1.725rem;
   overflow-y: auto;
 }
 .invalidFile {
-  padding: 1.725rem;
+  padding: 0.5rem 1.725rem 1.725rem 1.725rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   .caution {
+    margin-top: 1rem;
     border: 0.0625rem solid red;
     border-radius: 0.5rem;
     padding: 0.725rem;

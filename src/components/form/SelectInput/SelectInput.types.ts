@@ -10,6 +10,6 @@ export interface SelectInputProps {
   activeBorder?: string;
   activeBackground?: string;
   activeFontColor?: string;
-  onBlur?: () => void;
+  subString?: number;
   onChange: (value: string) => void;
 }

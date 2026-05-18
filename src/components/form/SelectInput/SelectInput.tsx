@@ -17,7 +17,7 @@ export const SelectInput = ({
   placeholder,
   errorMessage,
   checkList = [],
-  onBlur,
+  subString = 99,
   onChange,
 }: SelectInputProps) => {
   const [internalActive, setInternalActive] = useState(false);
@@ -68,7 +68,9 @@ export const SelectInput = ({
             type="button"
           >
             {value ? (
-              <p className={styles.value}>{value}</p>
+              <p className={styles.value}>
+                {value.substring(0, subString) + "..."}
+              </p>
             ) : (
               <p className={styles.placeholder}>{placeholder}</p>
             )}
@@ -80,21 +82,29 @@ export const SelectInput = ({
           </button>
         }
       >
-        {options.map((item, index) => (
-          <FloatingCard.body
-            isHasCheck={checkList.includes(index)}
-            onClick={() =>
-              onChange(typeof item === "string" ? item : item.value)
-            }
-            optionRef={(el: HTMLButtonElement | null) => {
-              optionRef.current[index] = el;
-            }}
-            onKeyDown={focusIndex === index ? onFocusOption : undefined}
-            key={index}
-          >
-            {typeof item === "string" ? item : item.label}
-          </FloatingCard.body>
-        ))}
+        {options.map((item, index) => {
+          let selectLabel = "";
+          if (typeof item === "string") {
+            selectLabel = item.substring(0, subString) + "...";
+          } else {
+            selectLabel = item.label;
+          }
+          return (
+            <FloatingCard.body
+              isHasCheck={checkList.includes(index)}
+              onClick={() =>
+                onChange(typeof item === "string" ? item : item.value)
+              }
+              optionRef={(el: HTMLButtonElement | null) => {
+                optionRef.current[index] = el;
+              }}
+              onKeyDown={focusIndex === index ? onFocusOption : undefined}
+              key={index}
+            >
+              {selectLabel}
+            </FloatingCard.body>
+          );
+        })}
       </FloatingCard>
       {/* <div className={styles.trigger}>Hello Select</div> */}
     </div>

@@ -75,7 +75,7 @@ export const SkillInput = ({
         <FloatingCard
           isActive={isDrop}
           setIsActive={setIsDrop}
-          isOnTop={true}
+          isOnTop={0.8}
           trigger={
             <div className={styles.trigger}>
               {value?.length !== 0 || isDrop ? (

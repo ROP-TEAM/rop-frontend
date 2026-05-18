@@ -6,6 +6,7 @@ import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { Vehicle } from "@/types/api.types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import TimeInput from "@/components/form/TimeInput/TimeInput";
+import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 
 const colorList: string[] = [
   "#F87171",
@@ -151,6 +152,7 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
           value={v.name}
           onChange={(value) => handleChange(v.id, "name", value)}
           color="var(--p-1000)"
+          width="10rem"
         />
       ),
     },
@@ -295,21 +297,51 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles: Vehicle[] }) => {
       ),
     },
     {
-      label: "จุดเริ่มต้น",
-      render: (v: Vehicle) => (
-        <span className={styles.coordinate}>
-          {v.startLocation.lat},{v.startLocation.lng}
-        </span>
-      ),
-    },
-    {
-      label: "จุดสิ้นสุด",
-      render: (v: Vehicle) => (
-        <span className={styles.coordinate}>
-          {v.endLocation.lat},{v.endLocation.lng}
-        </span>
-      ),
-    },
+  label: "จุดเริ่มต้น",
+  render: (v: Vehicle) => (
+    <LocationInput
+      inputId={`start-location-${v.id}`}
+      value={v.startLocation}
+      color="var(--p-1000)"
+      fontSize="0.875rem"
+      onChange={(location) => {
+        setVehicleData((prev) =>
+          prev.map((item) =>
+            item.id === v.id
+              ? {
+                  ...item,
+                  startLocation: location,
+                }
+              : item,
+          ),
+        );
+      }}
+    />
+  ),
+},
+{
+  label: "จุดสิ้นสุด",
+  render: (v: Vehicle) => (
+    <LocationInput
+      inputId={`end-location-${v.id}`}
+      value={v.endLocation}
+      color="var(--p-1000)"
+      fontSize="0.875rem"
+      onChange={(location) => {
+        setVehicleData((prev) =>
+          prev.map((item) =>
+            item.id === v.id
+              ? {
+                  ...item,
+                  endLocation: location,
+                }
+              : item,
+          ),
+        );
+      }}
+    />
+  ),
+},
   ];
 
   const tableRef = useRef<HTMLTableElement>(null);

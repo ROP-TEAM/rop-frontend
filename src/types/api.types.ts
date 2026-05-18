@@ -14,12 +14,13 @@ export interface Vehicle {
   name: string;
   maxCapacity: number;
   numberPlate?: string;
+  profile_id?: number;
   workTime: TimePeriod;
   breakTime: TimePeriod;
   startLocation: Location;
   endLocation: Location;
   maxTask?: number;
-  skills?: string[];
+  skills?: { id: number; name: string; color: string }[];
 }
 
 export interface Order {
@@ -27,7 +28,7 @@ export interface Order {
   name: string;
   description?: string;
   capacity: number;
-  skils?: string[];
+  skills?: string[];
   timeWindow: TimePeriod;
   startLocation: Location;
   endLocation: Location;

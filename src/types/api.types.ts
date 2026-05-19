@@ -13,12 +13,13 @@ export interface VehicleBase {
   name: string;
   maxCapacity: number;
   numberPlate?: string;
+  profile_id?: number;
   workTime: TimePeriod;
   breakTime: TimePeriod;
   startLocation: Location;
   endLocation: Location;
   maxTask?: number;
-  skills?: string[];
+  skills?: {  id?: number; name: string; color: string }[];
 }
 
 export interface Order {
@@ -26,7 +27,7 @@ export interface Order {
   name: string;
   description?: string;
   capacity: number;
-  skils?: string[];
+  skills?: string[];
   timeWindow: TimePeriod;
   location: Location;
   serviceTime: number;
@@ -56,4 +57,25 @@ export interface Runs {
   totalRunsDistance: number;
   totalRunsTime: number;
   vehicleRuns: VehicleRun[];
+}
+
+export interface PreviewTableProps {
+  colData: string[][];
+  tableInfo: { fileCol: number; label: string; errorRows: number[] }[];
+}
+
+export interface CreateVehiclePayload {
+  model?: string;
+  name: string;
+  maxCapacity: number;
+  numberPlate?: string;
+
+  workTime: TimePeriod;
+  breakTime: TimePeriod;
+  startLocation: Location;
+  endLocation: Location;
+
+  maxTask?: number;
+
+  skills?: string[];
 }

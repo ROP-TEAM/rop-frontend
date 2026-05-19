@@ -1,16 +1,21 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./TimeInput.module.scss";
 
 const TimeInput = ({
   value = { hours: "", minutes: "" },
   onChange,
+  onBlur,
   placeholder = "- -",
   width = "100%",
 }: TimeInputProps) => {
+  const [localValue, setLocalValue] = useState<TimeValue>(
+    value ?? { hours: "", minutes: "" },
+  );
+  useEffect(() => {
+    setLocalValue(value ?? { hours: "", minutes: "" });
+  }, [value.hours, value.minutes]);
   const hourRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
-  const hours = value?.hours ?? "";
-  const minutes = value?.minutes ?? "";
 
   const format = (num: string, max: number): string => {
     let n = parseInt(num || "0", 10);
@@ -22,53 +27,53 @@ const TimeInput = ({
     const val = e.target.value.replace(/\D/g, "").slice(0, 2);
 
     if (val.length === 0) {
-      onChange?.({ hours: "", minutes });
+      setLocalValue((prev) => ({ ...prev, hours: "" }));
       return;
     }
 
     if (val.length === 1) {
       const num = parseInt(val, 10);
-
       if (num > 2) {
         const hh = format(val, 23);
-        onChange?.({ hours: hh, minutes });
+        setLocalValue((prev) => ({ ...prev, hours: hh }));
         minuteRef.current?.focus();
+        minuteRef.current?.select();
         return;
       }
-
-      onChange?.({ hours: val, minutes });
+      setLocalValue((prev) => ({ ...prev, hours: val }));
       return;
     }
 
     if (val.length === 2) {
       const hh = format(val, 23);
-      onChange?.({ hours: hh, minutes });
+      setLocalValue((prev) => ({ ...prev, hours: hh }));
       minuteRef.current?.focus();
+      minuteRef.current?.select();
     }
   };
 
   const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/\D/g, "").slice(0, 2);
+
     if (val.length === 0) {
-      onChange?.({ hours, minutes: "" });
+      setLocalValue((prev) => ({ ...prev, minutes: "" }));
       return;
     }
+
     if (val.length === 1) {
       const num = parseInt(val, 10);
-
       if (num > 5) {
         const mm = format(val, 59);
-        onChange?.({ hours, minutes: mm });
+        setLocalValue((prev) => ({ ...prev, minutes: mm }));
         return;
       }
-
-      onChange?.({ hours, minutes: val });
+      setLocalValue((prev) => ({ ...prev, minutes: val }));
       return;
     }
 
     if (val.length === 2) {
       const mm = format(val, 59);
-      onChange?.({ hours, minutes: mm });
+      setLocalValue((prev) => ({ ...prev, minutes: mm }));
     }
   };
 
@@ -77,34 +82,33 @@ const TimeInput = ({
     field: "hour" | "minute",
   ) => {
     const input = e.currentTarget;
-
     if (e.key === "Backspace" && !input.value) {
-      if (field === "minute") {
-        hourRef.current?.focus();
-      }
+      if (field === "minute") hourRef.current?.focus();
     }
-
     if (e.key === "ArrowLeft" && field === "minute") {
-    e.preventDefault();
-    hourRef.current?.focus();
-  }
-
-      if (e.key === "ArrowRight" && field === "hour") {
-    e.preventDefault();
-    minuteRef.current?.focus();
-  }
+      e.preventDefault();
+      hourRef.current?.focus();
+    }
+    if (e.key === "ArrowRight" && field === "hour") {
+      e.preventDefault();
+      minuteRef.current?.focus();
+    }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.select();
+    requestAnimationFrame(() => e.target.select());
+  };
+
+  const handleBlur = () => {
+    onBlur?.(localValue);
   };
 
   return (
-    <div className={styles.container}  style={{width}}>
+    <div className={styles.container} style={{ width }} onBlur={handleBlur}>
       <input
         ref={hourRef}
-        value={hours}
-        onChange={(e) => handleHourChange(e)} 
+        value={localValue.hours}
+        onChange={handleHourChange}
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e, "hour")}
         onFocus={handleFocus}
@@ -112,8 +116,8 @@ const TimeInput = ({
       :
       <input
         ref={minuteRef}
-        value={minutes}
-        onChange={(e) => handleMinuteChange(e)} 
+        value={localValue.minutes}
+        onChange={handleMinuteChange}
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e, "minute")}
         onFocus={handleFocus}

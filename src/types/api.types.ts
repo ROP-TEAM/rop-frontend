@@ -28,8 +28,7 @@ export interface Order {
   capacity: number;
   skils?: string[];
   timeWindow: TimePeriod;
-  startLocation: Location;
-  endLocation: Location;
+  location: Location;
   serviceTime: number;
   type: "pick up" | "delivery";
   priority: "critical" | "high" | "medium" | "low";

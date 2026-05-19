@@ -5,17 +5,17 @@ import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { StepperControl } from "@/components/ui/StepperControl/StepperControl";
 import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import styles from "./UploadStepper.module.scss";
+import { useEffect, useState } from "react";
+import styles from "./OrderUpload.module.scss";
 import {
   ErrorTableProps,
   UploadStepperProps,
   PreviewTableProps,
-  VehicleFileHeader,
-} from "./UploadStepper.types";
-export const UploadStepper = ({
-  vehicleFileHeader,
-  setVehicleFileHeader,
+  OrderFileHeader,
+} from "./OrderUpload.types";
+export const OrderUpload = ({
+  orderFileHeader,
+  setOrderFileHeader,
   onClose,
 }: UploadStepperProps) => {
   const DEFAULT_HEADER_INDEX = -1;
@@ -33,7 +33,7 @@ export const UploadStepper = ({
     { value: 1, label: "จัดการ" },
     { value: 2, label: "ตรวจสอบ" },
   ];
-  const ishasErrorFile = Object.values(vehicleFileHeader).some((item) => {
+  const ishasErrorFile = Object.values(orderFileHeader).some((item) => {
     if (item.errorRows.length > 0) return true;
   });
   const handleUploadFile = (file: File) => {
@@ -67,7 +67,7 @@ export const UploadStepper = ({
 
       const tempColData: string[][] = [];
 
-      const updatedVehicleFileHeader = structuredClone(vehicleFileHeader);
+      const updatedVehicleFileHeader = structuredClone(orderFileHeader);
 
       for (let i = 0; i < headers.length; i++) {
         tempColData.push(parsedRows.map((row) => row[i] ?? ""));
@@ -81,7 +81,7 @@ export const UploadStepper = ({
         }
       }
 
-      setVehicleFileHeader(updatedVehicleFileHeader);
+      setOrderFileHeader(updatedVehicleFileHeader);
 
       setFileHeader(headers);
       setColData(tempColData);
@@ -95,10 +95,10 @@ export const UploadStepper = ({
   const handleNextState = () => {
     if (state == 1) {
       if (
-        vehicleFileHeader.startLocation.fileCol == -1 ||
-        vehicleFileHeader.workTimeEnd.fileCol == -1 ||
-        vehicleFileHeader.workTimeStart.fileCol == -1 ||
-        vehicleFileHeader.capacity.fileCol == -1
+        orderFileHeader.timeWindowStart.fileCol == -1 ||
+        orderFileHeader.timeWindowEnd.fileCol == -1 ||
+        orderFileHeader.location.fileCol == -1 ||
+        orderFileHeader.capacity.fileCol == -1
       ) {
         setError("เลือกข้อมูลให้ครบถ้วน");
         return;
@@ -182,7 +182,7 @@ export const UploadStepper = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.values(vehicleFileHeader).map((f, index) => {
+                  {Object.values(orderFileHeader).map((f, index) => {
                     const headerIndex = f.fileCol;
 
                     const headerName =
@@ -192,7 +192,7 @@ export const UploadStepper = ({
 
                     const checkList: number[] = [];
 
-                    Object.values(vehicleFileHeader).forEach((item) => {
+                    Object.values(orderFileHeader).forEach((item) => {
                       if (item.fileCol !== DEFAULT_HEADER_INDEX) {
                         checkList.push(item.fileCol);
                       }
@@ -201,11 +201,11 @@ export const UploadStepper = ({
                     const changeHeader = (val: string) => {
                       const nextIndex = fileHeader.indexOf(val);
 
-                      setVehicleFileHeader((prev) => {
+                      setOrderFileHeader((prev) => {
                         const updated = { ...prev };
 
                         Object.keys(updated).forEach((key) => {
-                          const typedKey = key as keyof VehicleFileHeader;
+                          const typedKey = key as keyof OrderFileHeader;
 
                           if (
                             typedKey !== f.value &&
@@ -218,7 +218,7 @@ export const UploadStepper = ({
                           }
                         });
 
-                        const fieldKey = f.value as keyof VehicleFileHeader;
+                        const fieldKey = f.value as keyof OrderFileHeader;
 
                         updated[fieldKey] = {
                           ...updated[fieldKey],
@@ -285,7 +285,7 @@ export const UploadStepper = ({
                     <p className={styles.cautionDescription}>
                       พบข้อมูล{" "}
                       {
-                        Object.values(vehicleFileHeader).filter(
+                        Object.values(orderFileHeader).filter(
                           (item) => item.errorRows.length > 0,
                         ).length
                       }{" "}
@@ -300,17 +300,17 @@ export const UploadStepper = ({
               {ishasErrorFile && (
                 <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
               )}
-              {Object.values(vehicleFileHeader).map((f, index) => {
+              {Object.values(orderFileHeader).map((f, index) => {
                 if (f.fileCol == -1) return;
                 return (
                   <ErrorTable
                     key={index}
                     errorRows={f.errorRows}
                     onValid={(errorRows) =>
-                      setVehicleFileHeader((prev) => ({
+                      setOrderFileHeader((prev) => ({
                         ...prev,
-                        [f.value as keyof VehicleFileHeader]: {
-                          ...prev[f.value as keyof VehicleFileHeader],
+                        [f.value as keyof OrderFileHeader]: {
+                          ...prev[f.value as keyof OrderFileHeader],
                           errorRows: errorRows,
                         },
                       }))
@@ -325,7 +325,7 @@ export const UploadStepper = ({
             </div>
             <p className={styles.errorTitle}>ตัวอย่างข้อมูลนำเข้า</p>
             <PreviewTable
-              tableInfo={Object.values(vehicleFileHeader).map((v, index) => {
+              tableInfo={Object.values(orderFileHeader).map((v, index) => {
                 return {
                   fileCol: v.fileCol,
                   label: v.label,

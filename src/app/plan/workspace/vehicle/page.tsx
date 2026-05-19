@@ -1,8 +1,8 @@
 "use client";
 import { Modal } from "@/components/Modal/Modal/Modal";
 import { useEffect, useState } from "react";
-import { UploadStepper } from "@/components/Modal/UploadStepper/UploadStepper";
-import { VehicleFileHeader } from "@/components/Modal/UploadStepper/UploadStepper.types";
+import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
+import { VehicleFileHeader } from "@/components/Modal/VehicleUpload/VehicleUpload.types";
 const Vehicle = () => {
   const DEFAULT_HEADER_INDEX = -1;
   const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
@@ -114,11 +114,11 @@ const Vehicle = () => {
         marginTop="2rem"
         onClose={() => setIsUpload(false)}
       >
-        <UploadStepper
+        <VehicleUpload
           onClose={() => setIsUpload(false)}
           vehicleFileHeader={vehicleFileHeader}
           setVehicleFileHeader={setVehicleFileHeader}
-        ></UploadStepper>
+        ></VehicleUpload>
       </Modal>
     </div>
   );

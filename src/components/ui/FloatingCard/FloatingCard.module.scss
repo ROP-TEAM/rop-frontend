@@ -16,6 +16,8 @@
   border-radius: 0.2rem;
   background-color: var(--p-0);
   border: $border-subtle;
+  max-height: var(--body-height);
+  overflow-y: auto;
 }
 
 .floatingBody {
@@ -26,6 +28,10 @@
   padding: 0.6rem 0.8rem;
   &:hover {
     background-color: var(--p-100);
+  }
+  &:focus {
+    color: var(--p-0);
+    background-color: var(--s-500);
   }
 }
 .line {

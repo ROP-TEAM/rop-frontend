@@ -23,6 +23,18 @@
   --secondary-800: #0d3b82;
   --secondary-900: #092757;
   --secondary-1000: #05152f;
+
+  --green-0: #ffffff;
+  --green-100: #f1fccf;
+  --green-200: #e3f99f;
+  --green-300: #d1f665;
+  --green-400: #b8eb33;
+  --green-500: #9fd600;
+  --green-600: #86b500;
+  --green-700: #678b00;
+  --green-800: #496200;
+  --green-900: #2d3b00;
+  --green-1000: #151d00;
 }
 
 $light-theme: (
@@ -50,6 +62,18 @@ $light-theme: (
   s-800: var(--secondary-800),
   s-900: var(--secondary-900),
   s-1000: var(--secondary-1000),
+
+  g-0: var(--green-0),
+  g-100: var(--green-100),
+  g-200: var(--green-200),
+  g-300: var(--green-300),
+  g-400: var(--green-400),
+  g-500: var(--green-500),
+  g-600: var(--green-600),
+  g-700: var(--green-700),
+  g-800: var(--green-800),
+  g-900: var(--green-900),
+  g-1000: var(--green-1000),
 );
 
 $dark-theme: (
@@ -77,6 +101,18 @@ $dark-theme: (
   s-800: var(--secondary-200),
   s-900: var(--secondary-100),
   s-1000: var(--secondary-0),
+
+  g-0: var(--green-1000),
+  g-100: var(--green-900),
+  g-200: var(--green-800),
+  g-300: var(--green-700),
+  g-400: var(--green-600),
+  g-500: var(--green-500),
+  g-600: var(--green-400),
+  g-700: var(--green-300),
+  g-800: var(--green-200),
+  g-900: var(--green-100),
+  g-1000: var(--green-0),
 );
 
 @mixin theme-vars($map) {

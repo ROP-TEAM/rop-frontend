@@ -77,7 +77,6 @@ const MapWorkspace = () => {
               const lat = e.latLng?.lat() ?? 0;
               const lng = e.latLng?.lng() ?? 0;
               dispatch(setLatLng({ lat, lng }));
-              console.log(lat, lng);
             }}
           >
             {/* Child components, such as markers, info windows, etc. */}

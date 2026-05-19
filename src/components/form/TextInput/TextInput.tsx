@@ -6,6 +6,7 @@ export const TextInput = ({
   labelSize = "1rem",
   labelColor = "var(--p-800)",
   placeholder = "",
+  errorMessage = "",
   value,
   color = "var(--p-200)",
   fontSize = "1rem",

@@ -14,4 +14,5 @@ export interface TextInputProps {
   pading?: string;
   require?: boolean;
   onChange: (value: string) => void;
+  errorMessage?: string;
 }

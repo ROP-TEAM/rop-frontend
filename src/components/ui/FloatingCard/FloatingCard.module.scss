@@ -1,0 +1,43 @@
+.warpper {
+  width: 100%;
+  position: relative;
+}
+.floating {
+  position: absolute;
+  left: 0;
+  bottom: var(--position-bottom);
+  top: var(--position-top);
+  left: var(--position-left);
+  right: var(--position-right);
+  margin: 1rem 0;
+  z-index: 20;
+  width: var(--body-width);
+  white-space: nowrap;
+  border-radius: 0.2rem;
+  background-color: var(--p-0);
+  border: $border-subtle;
+  max-height: var(--body-height);
+  overflow-y: auto;
+}
+
+.floatingBody {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  &:hover {
+    background-color: var(--p-100);
+  }
+  &:focus {
+    color: var(--p-0);
+    background-color: var(--s-500);
+  }
+}
+.line {
+  margin: 0.25rem 0;
+  padding: 0;
+  border: none;
+  height: 0.1rem;
+  background-color: var(--p-200);
+}

@@ -1,0 +1,42 @@
+.trigger {
+  border: var(--border-subtle);
+  width: 100%;
+  text-align: center;
+  padding: 0.25rem 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background-color: var(--active-background);
+  position: relative;
+  .placeholder {
+    font-weight: 500;
+    font-size: 0.725rem;
+  }
+}
+
+.hasValue {
+  &::before {
+    content: "";
+    background-color: var(--s-600);
+    width: 0.175rem;
+    height: 2rem;
+    left: 0;
+    position: absolute;
+  }
+  .value {
+    font-weight: 500;
+    font-size: 0.725rem;
+    color: var(--s-600);
+  }
+}
+.active {
+  border: 0.125rem solid var(--s-500);
+}
+
+.value {
+  color: var(--active-fontColor);
+
+  font-size: 0.85rems;
+}

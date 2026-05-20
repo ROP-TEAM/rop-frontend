@@ -1,5 +1,3 @@
-@use "./theme" as *;
-
 :root {
   @include theme-vars($light-theme);
 }

@@ -3,6 +3,8 @@ import React, { SetStateAction } from "react";
 export type VehicleHeaderKey =
   | "workTimeStart"
   | "workTimeEnd"
+  | "breakTimeStart"
+  | "breakTimeEnd"
   | "capacity"
   | "startLocation"
   | "endLocation"
@@ -39,7 +41,10 @@ export interface PreviewTableProps {
 }
 
 export interface UploadStepperProps {
+  colData: string[][];
   vehicleFileHeader: VehicleFileHeader;
+  setColData: React.Dispatch<React.SetStateAction<string[][]>>;
+  handleCreateVehicles: () => void;
   setVehicleFileHeader: React.Dispatch<React.SetStateAction<VehicleFileHeader>>;
   onClose: () => void;
 }

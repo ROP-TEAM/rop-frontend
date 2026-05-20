@@ -14,7 +14,10 @@ import {
   VehicleFileHeader,
 } from "./VehicleUpload.types";
 export const VehicleUpload = ({
+  colData,
+  setColData,
   vehicleFileHeader,
+  handleCreateVehicles,
   setVehicleFileHeader,
   onClose,
 }: UploadStepperProps) => {
@@ -24,8 +27,6 @@ export const VehicleUpload = ({
   const [state, setState] = useState<number>(0);
   const [fileHeader, setFileHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
-
-  const [colData, setColData] = useState<string[][]>([]);
 
   const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
@@ -73,7 +74,6 @@ export const VehicleUpload = ({
         tempColData.push(parsedRows.map((row) => row[i] ?? ""));
 
         const header = headers[i].trim();
-        console.log(tempColData[i]);
         for (const v of Object.values(updatedVehicleFileHeader)) {
           if (header.includes(v.label)) {
             v.fileCol = i;
@@ -107,7 +107,7 @@ export const VehicleUpload = ({
       setError("");
     }
     if (state == 2 && !ishasErrorFile) {
-      onClose();
+      handleCreateVehicles();
     }
   };
   const handlePreviousState = () => {
@@ -152,7 +152,7 @@ export const VehicleUpload = ({
               <div className={styles.fileWrapperInfo}>
                 <SkillPill
                   title={file?.name.split(",")[1] ?? ".csv"}
-                  color="var(--g-300)"
+                  color="var(--g-500)"
                 ></SkillPill>
                 {(() => {
                   if (!file?.name) {
@@ -247,7 +247,7 @@ export const VehicleUpload = ({
 
                         <td className={styles.selectImport}>
                           <SelectInput
-                            subString={20}
+                            subString={16}
                             isOnTop={0.6}
                             checkList={checkList}
                             activeFontColor="var(--s-500)"

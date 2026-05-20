@@ -19,7 +19,7 @@
     right: 0;
     left: 0;
     height: 0.1rem;
-    background-color: var(--primary-100);
+    background-color: var(--p-100);
   }
 }
 
@@ -32,8 +32,8 @@
   white-space: nowrap;
   position: relative;
   span {
-    border: 0.1rem solid var(--primary-100);
-    background-color: var(--primary-100);
+    border: 0.1rem solid var(--p-100);
+    background-color: var(--p-100);
     padding: 0.0625rem 0.6rem;
   }
   .label {

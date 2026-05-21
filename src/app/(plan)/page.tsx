@@ -8,6 +8,7 @@ import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/types/api.types";
 import { useState } from "react";
+import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { VehicleFileHeader } from "@/components/Modal/VehicleUpload/VehicleUpload.types";
 import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
 import { VehicleBase } from "@/types/api.types";

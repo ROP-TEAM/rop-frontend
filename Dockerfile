@@ -2,9 +2,7 @@ FROM oven/bun:1.2-alpine AS builder
 WORKDIR /app
 COPY package.json bun.lock* package-lock.json* ./
 #  package-lock.json* 
-RUN bun install --frozen-lockfile \
-    --trusted-dependency sharp \
-    --trusted-dependency @parcel/watcher
+RUN bun install --frozen-lockfile 
 COPY . .
 ARG NEXT_PUBLIC_BACKEND_URL=https://soroutetion.com/api
 ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL

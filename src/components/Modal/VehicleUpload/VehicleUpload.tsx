@@ -13,7 +13,248 @@ import {
   PreviewTableProps,
   VehicleFileHeader,
 } from "./VehicleUpload.types";
+import { VehicleUploadStateProps } from "./VehicleUpload.types";
 
+const DEFAULT_HEADER_INDEX = -1;
+const VehicleUploadState = ({
+  state,
+  file,
+  colData,
+  fileHeader,
+  vehicleFileHeader,
+  ishasErrorFile,
+  setState,
+  setVehicleFileHeader,
+  handleUploadFile,
+}: VehicleUploadStateProps) => {
+  const ACEEPTFILE = [".csv"];
+
+  switch (state) {
+    case 0:
+      return (
+        <div className={styles.content}>
+          <FileDragInput onChange={handleUploadFile}></FileDragInput>
+          <div className={styles.fileInfo}>
+            <p>ประเภทไฟล์ที่รองรับ {ACEEPTFILE.join(",")}</p>
+            <p>ขนาดไฟล์สูงสุด 201 แถว</p>
+          </div>
+          <div className={styles.fileTemplate}>
+            <div>
+              <div className={styles.fileTemplateHeader}>
+                <Image
+                  src={"/flat/excel.svg"}
+                  alt="excel"
+                  width={20}
+                  height={20}
+                ></Image>
+                <h3 className={styles.text}>ตัวอย่างไฟล์ที่ถูกต้อง</h3>
+              </div>
+              <p className={styles.fileTempalateDescription}>
+                สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส
+                วิกเพลย์บอยพลานุภาพ
+              </p>
+            </div>
+            <button className={styles.download}>ดาวโหลดไฟล์</button>
+          </div>
+        </div>
+      );
+    case 1:
+      return (
+        <div className={styles.manage}>
+          <div className={styles.fileWrapper}>
+            <div className={styles.fileWrapperInfo}>
+              <SkillPill
+                title={
+                  file?.name.split(".")[1]
+                    ? `.${file.name.split(".").pop()}`
+                    : "csv"
+                }
+                color="var(--g-500)"
+              ></SkillPill>
+              {(() => {
+                if (!file?.name) return null;
+                const name =
+                  file.name.length > 15
+                    ? file.name.substring(0, 15) + "..."
+                    : file.name;
+                return <h4>{name}</h4>;
+              })()}
+              <p className={styles.fileCount}>
+                {colData.length} หลัก{" "}
+                {colData.length > 0
+                  ? Math.max(...colData.map((row) => row.length))
+                  : 0}{" "}
+                แถว
+              </p>
+            </div>
+            <button onClick={() => setState(0)} className={styles.changeFile}>
+              เปลี่ยนไฟล์
+            </button>
+          </div>
+          <div className={styles.tableWrapper}>
+            <table className={styles.selectTable}>
+              <thead className={styles.selectHeader}>
+                <tr>
+                  <th>ข้อมูลของระบบ</th>
+                  <th>แถวที่นำเข้า</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.values(vehicleFileHeader).map((f, index) => {
+                  const headerIndex = f.fileCol;
+                  const headerName =
+                    headerIndex !== DEFAULT_HEADER_INDEX
+                      ? fileHeader[headerIndex]
+                      : "";
+
+                  const checkList: number[] = [];
+                  Object.values(vehicleFileHeader).forEach((item) => {
+                    if (item.fileCol !== DEFAULT_HEADER_INDEX) {
+                      checkList.push(item.fileCol);
+                    }
+                  });
+
+                  const changeHeader = (val: string) => {
+                    const nextIndex = fileHeader.indexOf(val);
+
+                    setVehicleFileHeader((prev) => {
+                      const updated = { ...prev };
+
+                      Object.keys(updated).forEach((key) => {
+                        const typedKey = key as keyof VehicleFileHeader;
+
+                        if (
+                          typedKey !== f.value &&
+                          updated[typedKey].fileCol === nextIndex
+                        ) {
+                          updated[typedKey] = {
+                            ...updated[typedKey],
+                            fileCol: DEFAULT_HEADER_INDEX,
+                          };
+                        }
+                      });
+
+                      const fieldKey = f.value as keyof VehicleFileHeader;
+                      updated[fieldKey] = {
+                        ...updated[fieldKey],
+                        fileCol: nextIndex,
+                      };
+
+                      return { ...updated };
+                    });
+                  };
+
+                  return (
+                    <tr key={index} className={styles.selectInternal}>
+                      <td className={styles.selectSystem}>
+                        <h3 className={styles.selectTitle}>
+                          <span>{f.label}</span>
+                          {f.require && (
+                            <span className={styles.require}> *</span>
+                          )}
+                        </h3>
+                        <p className={styles.selectDescription}>
+                          {f.description}
+                        </p>
+                      </td>
+                      <td className={styles.selectImport}>
+                        <SelectInput
+                          subString={16}
+                          isOnTop={0.6}
+                          checkList={checkList}
+                          activeFontColor="var(--s-500)"
+                          activeBackground="var(--s-300)"
+                          activeBorder="0.125rem solid var(--s-500)"
+                          placeholder="ยังไม่ได้เลือกค่า"
+                          value={headerName}
+                          onChange={(value) => changeHeader(value)}
+                          options={fileHeader}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    case 2:
+      return (
+        <div className={styles.invalidFile}>
+          {ishasErrorFile && (
+            <div className={styles.caution}>
+              <div className={styles.cautionInfo}>
+                <IconSvgMono
+                  src="/icon/caution.svg"
+                  color="red"
+                  size={28}
+                ></IconSvgMono>
+                <div>
+                  <h3 className={styles.cautionTitle}>
+                    ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
+                  </h3>
+                  <p className={styles.cautionDescription}>
+                    พบข้อมูล{" "}
+                    {
+                      Object.values(vehicleFileHeader).filter(
+                        (item) => item.errorRows.length > 0,
+                      ).length
+                    }{" "}
+                    ประเภทเกิดข้อผิดพลาดในการแปลงไฟล์
+                    กรุณาแก้ไขข้อผิดพลาดแล้วลองใหม่อีกครั้ง
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className={styles.erorrTableWarpper}>
+            {ishasErrorFile && (
+              <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
+            )}
+            {Object.values(vehicleFileHeader).map((f, index) => {
+              if (f.fileCol === -1) return null;
+              return (
+                <ErrorTable
+                  require={f.require}
+                  key={index}
+                  errorRows={f.errorRows}
+                  onValid={(errorRows) =>
+                    setVehicleFileHeader((prev) => ({
+                      ...prev,
+                      [f.value as keyof VehicleFileHeader]: {
+                        ...prev[f.value as keyof VehicleFileHeader],
+                        errorRows: errorRows,
+                      },
+                    }))
+                  }
+                  description={f.description}
+                  systemHeader={f.label}
+                  data={colData[f.fileCol]}
+                  regex={f.regex ?? undefined}
+                ></ErrorTable>
+              );
+            })}
+          </div>
+          <p className={styles.errorTitle}>ตัวอย่างข้อมูลนำเข้า</p>
+          <PreviewTable
+            tableInfo={Object.values(vehicleFileHeader).map((v) => {
+              return {
+                fileCol: v.fileCol,
+                label: v.label,
+                errorRows: v.errorRows,
+              };
+            })}
+            colData={colData}
+          ></PreviewTable>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
+// 3. Component หลัก (VehicleUpload)
 export const VehicleUpload = ({
   colData,
   setColData,
@@ -24,21 +265,19 @@ export const VehicleUpload = ({
   setVehicleFileHeader,
   onClose,
 }: UploadStepperProps) => {
-  const DEFAULT_HEADER_INDEX = -1;
-
   const [state, setState] = useState<number>(0);
   const [fileHeader, setFileHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
 
-  const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
     { value: 0, label: "เลือกไฟล์" },
     { value: 1, label: "จัดการ" },
     { value: 2, label: "ตรวจสอบ" },
   ];
-  const ishasErrorFile = Object.values(vehicleFileHeader).some((item) => {
-    if (item.errorRows.length > 0) return true;
-  });
+
+  const ishasErrorFile = Object.values(vehicleFileHeader).some(
+    (item) => item.errorRows.length > 0,
+  );
 
   const parseCSVRow = (row: string): string[] => {
     const result: string[] = [];
@@ -68,22 +307,21 @@ export const VehicleUpload = ({
 
   const handleUploadFile = (file: File) => {
     setVehicleFileHeader((prev) => {
-      const updated = vehicleFileHeader;
+      const updated = { ...prev };
       Object.keys(updated).forEach((key) => {
         const typedKey = key as keyof VehicleFileHeader;
         updated[typedKey].fileCol = -1;
       });
       return updated;
     });
-    const isCsv = file.name.toLowerCase().endsWith(".csv");
 
+    const isCsv = file.name.toLowerCase().endsWith(".csv");
     if (!isCsv) {
       setError("รองรับประเภทไฟล์ .csv เท่านั้น");
       return;
     }
 
     const reader = new FileReader();
-
     reader.onload = (e) => {
       const text = e.target?.result as string;
 
@@ -130,12 +368,12 @@ export const VehicleUpload = ({
   };
 
   const handleNextState = () => {
-    if (state == 1) {
+    if (state === 1) {
       if (
-        vehicleFileHeader.startLocation.fileCol == -1 ||
-        vehicleFileHeader.workTimeEnd.fileCol == -1 ||
-        vehicleFileHeader.workTimeStart.fileCol == -1 ||
-        vehicleFileHeader.capacity.fileCol == -1
+        vehicleFileHeader.startLocation?.fileCol === -1 ||
+        vehicleFileHeader.workTimeEnd?.fileCol === -1 ||
+        vehicleFileHeader.workTimeStart?.fileCol === -1 ||
+        vehicleFileHeader.capacity?.fileCol === -1
       ) {
         setError("เลือกข้อมูลให้ครบถ้วน");
         return;
@@ -143,236 +381,14 @@ export const VehicleUpload = ({
       setState(2);
       setError("");
     }
-    if (state == 2 && !ishasErrorFile) {
+    if (state === 2 && !ishasErrorFile) {
       handleCreateVehicles();
     }
   };
 
   const handlePreviousState = () => {
-    if (state == 0) return;
+    if (state === 0) return;
     setState((prev) => prev - 1);
-  };
-
-  const VehicleUploadState = () => {
-    switch (state) {
-      case 0:
-        return (
-          <div className={styles.content}>
-            <FileDragInput onChange={handleUploadFile}></FileDragInput>
-            <div className={styles.fileInfo}>
-              <p>ประเภทไฟล์ที่รองรับ {ACEEPTFILE.join(",")}</p>
-              <p>ขนาดไฟล์สูงสุด 201 แถว</p>
-            </div>
-            <div className={styles.fileTemplate}>
-              <div>
-                <div className={styles.fileTemplateHeader}>
-                  <Image
-                    src={"/flat/excel.svg"}
-                    alt="excel"
-                    width={20}
-                    height={20}
-                  ></Image>
-                  <h3 className={styles.text}>ตัวอย่างไฟล์ที่ถูกต้อง</h3>
-                </div>
-                <p className={styles.fileTempalateDescription}>
-                  สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส
-                  วิกเพลย์บอยพลานุภาพ
-                </p>
-              </div>
-              <button className={styles.download}>ดาวโหลดไฟล์</button>
-            </div>
-          </div>
-        );
-      case 1:
-        return (
-          <div className={styles.manage}>
-            <div className={styles.fileWrapper}>
-              <div className={styles.fileWrapperInfo}>
-                <SkillPill
-                  title={file?.name.split(".")[1] ?? "csv"}
-                  color="var(--g-500)"
-                ></SkillPill>
-                {(() => {
-                  if (!file?.name) {
-                    return;
-                  }
-                  const name =
-                    file?.name.length > 15
-                      ? file.name.substring(0, 15) + "..."
-                      : file?.name;
-                  return <h4>{name}</h4>;
-                })()}
-                <p className={styles.fileCount}>
-                  {colData.length} หลัก{" "}
-                  {Math.max(...colData.map((row) => row.length))} แถว
-                </p>
-              </div>
-              <button onClick={() => setState(0)} className={styles.changeFile}>
-                เปลี่ยนไฟล์
-              </button>
-            </div>
-            <div className={styles.tableWrapper}>
-              <table className={styles.selectTable}>
-                <thead className={styles.selectHeader}>
-                  <tr>
-                    <th>ข้อมูลของระบบ</th>
-                    <th>แถวที่นำเข้า</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.values(vehicleFileHeader).map((f, index) => {
-                    const headerIndex = f.fileCol;
-
-                    const headerName =
-                      headerIndex !== DEFAULT_HEADER_INDEX
-                        ? fileHeader[headerIndex]
-                        : "";
-
-                    const checkList: number[] = [];
-
-                    Object.values(vehicleFileHeader).forEach((item) => {
-                      if (item.fileCol !== DEFAULT_HEADER_INDEX) {
-                        checkList.push(item.fileCol);
-                      }
-                    });
-
-                    const changeHeader = (val: string) => {
-                      const nextIndex = fileHeader.indexOf(val);
-
-                      setVehicleFileHeader((prev) => {
-                        const updated = { ...prev };
-
-                        Object.keys(updated).forEach((key) => {
-                          const typedKey = key as keyof VehicleFileHeader;
-
-                          if (
-                            typedKey !== f.value &&
-                            updated[typedKey].fileCol === nextIndex
-                          ) {
-                            updated[typedKey] = {
-                              ...updated[typedKey],
-                              fileCol: DEFAULT_HEADER_INDEX,
-                            };
-                          }
-                        });
-
-                        const fieldKey = f.value as keyof VehicleFileHeader;
-
-                        updated[fieldKey] = {
-                          ...updated[fieldKey],
-                          fileCol: nextIndex,
-                        };
-
-                        return { ...updated };
-                      });
-                    };
-
-                    return (
-                      <tr key={index} className={styles.selectInternal}>
-                        <td className={styles.selectSystem}>
-                          <h3 className={styles.selectTitle}>
-                            <span>{f.label}</span>
-                            {f.require && (
-                              <span className={styles.require}> *</span>
-                            )}
-                          </h3>
-                          <p className={styles.selectDescription}>
-                            {f.description}
-                          </p>
-                        </td>
-                        <td className={styles.selectImport}>
-                          <SelectInput
-                            subString={16}
-                            isOnTop={0.6}
-                            checkList={checkList}
-                            activeFontColor="var(--s-500)"
-                            activeBackground="var(--s-300)"
-                            activeBorder="0.125rem solid var(--s-500)"
-                            placeholder="ยังไม่ได้เลือกค่า"
-                            value={headerName}
-                            onChange={(value) => changeHeader(value)}
-                            options={fileHeader}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-      case 2:
-        return (
-          <div className={styles.invalidFile}>
-            {ishasErrorFile && (
-              <div className={styles.caution}>
-                <div className={styles.cautionInfo}>
-                  <IconSvgMono
-                    src="/icon/caution.svg"
-                    color="red"
-                    size={28}
-                  ></IconSvgMono>
-                  <div>
-                    <h3 className={styles.cautionTitle}>
-                      ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
-                    </h3>
-                    <p className={styles.cautionDescription}>
-                      พบข้อมูล{" "}
-                      {
-                        Object.values(vehicleFileHeader).filter(
-                          (item) => item.errorRows.length > 0,
-                        ).length
-                      }{" "}
-                      ประเภทเกิดข้อผิดพลาดในการแปลงไฟล์
-                      กรุณาแก้ไขข้อผิดพลาดแล้วลองใหม่อีกครั้ง
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div className={styles.erorrTableWarpper}>
-              {ishasErrorFile && (
-                <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
-              )}
-              {Object.values(vehicleFileHeader).map((f, index) => {
-                if (f.fileCol == -1) return;
-                return (
-                  <ErrorTable
-                    require={f.require}
-                    key={index}
-                    errorRows={f.errorRows}
-                    onValid={(errorRows) =>
-                      setVehicleFileHeader((prev) => ({
-                        ...prev,
-                        [f.value as keyof VehicleFileHeader]: {
-                          ...prev[f.value as keyof VehicleFileHeader],
-                          errorRows: errorRows,
-                        },
-                      }))
-                    }
-                    description={f.description}
-                    systemHeader={f.label}
-                    data={colData[f.fileCol]}
-                    regex={f.regex ?? undefined}
-                  ></ErrorTable>
-                );
-              })}
-            </div>
-            <p className={styles.errorTitle}>ตัวอย่างข้อมูลนำเข้า</p>
-            <PreviewTable
-              tableInfo={Object.values(vehicleFileHeader).map((v) => {
-                return {
-                  fileCol: v.fileCol,
-                  label: v.label,
-                  errorRows: v.errorRows,
-                };
-              })}
-              colData={colData}
-            ></PreviewTable>
-          </div>
-        );
-    }
   };
 
   return (
@@ -394,27 +410,39 @@ export const VehicleUpload = ({
         </button>
       </div>
       <StepperControl value={state} stepper={STEPPER}></StepperControl>
+
       <div className={styles.contentAction}>
-        <VehicleUploadState />
+        <VehicleUploadState
+          state={state}
+          file={file}
+          colData={colData}
+          fileHeader={fileHeader}
+          vehicleFileHeader={vehicleFileHeader}
+          ishasErrorFile={ishasErrorFile}
+          setState={setState}
+          setVehicleFileHeader={setVehicleFileHeader}
+          handleUploadFile={handleUploadFile}
+        />
       </div>
+
       <div className={styles.footer}>
         {error && <p className={styles.error}>เกิดข้อผิดพลาด: {error}</p>}
         <div className={styles.action}>
           <button
             type="button"
             className={styles.cancel}
-            disabled={state == 0}
-            style={{ color: state == 0 ? "var(--p-300)" : "var(--p-700)" }}
+            disabled={state === 0}
+            style={{ color: state === 0 ? "var(--p-300)" : "var(--p-700)" }}
             onClick={() => handlePreviousState()}
           >
             ย้อนกลับ
           </button>
           <button
-            onClick={() => handleNextState()}
+            onClick={handleNextState}
             type="button"
-            className={`${styles.confirm} ${state == 0 || (state == 2 && ishasErrorFile) ? styles.isDisabled : ""}`}
+            className={`${styles.confirm} ${state === 0 || (state === 2 && ishasErrorFile) ? styles.isDisabled : ""}`}
           >
-            {state == 2 ? "ยืนยัน" : "ต่อไป"}
+            {state === 2 ? "ยืนยัน" : "ต่อไป"}
           </button>
         </div>
       </div>
@@ -422,27 +450,27 @@ export const VehicleUpload = ({
   );
 };
 
+// 4. Components ย่อยสำหรับการตรวจพรูฟข้อมูลตาราง
 const ErrorTable = ({
   systemHeader,
   data,
   regex,
   description,
   errorRows,
-  require: isRequired, // FIX: rename เพื่อไม่ชนกับ JS built-in `require`
+  require: isRequired,
   onValid,
-}: ErrorTableProps) => {
+}: ErrorTableProps & { require?: boolean }) => {
   const Error_PREVIEW = 3;
   const errorMoreLength = errorRows.length - (Error_PREVIEW + 1);
 
   useEffect(() => {
-    if (!regex) return;
+    if (!regex || !data) return;
 
     const errorRowsTemp: number[] = [];
 
-    for (let i = 1; i < data?.length; i++) {
+    for (let i = 1; i < data.length; i++) {
       const value = data[i]?.trim();
 
-      // FIX: ใช้ isRequired แทน require (ซึ่งเป็น JS built-in function = truthy เสมอ)
       if (!isRequired && value === "") {
         continue;
       }
@@ -455,9 +483,9 @@ const ErrorTable = ({
     if (JSON.stringify(errorRowsTemp) !== JSON.stringify(errorRows)) {
       onValid(errorRowsTemp);
     }
-  }, [data, regex, isRequired]); // FIX: dependency ใช้ isRequired
+  }, [data, regex, isRequired, errorRows, onValid]);
 
-  if (errorRows.length == 0) return;
+  if (errorRows.length === 0) return null;
   return (
     <div className={styles.errorTable}>
       <div className={styles.errorTableInfo}>
@@ -467,7 +495,7 @@ const ErrorTable = ({
             {errorRows.length} ข้อผิดพลาด:
           </p>
           <h4 className={styles.errorTableColName}>
-            {data[0].replace(/"/g, "")}
+            {data[0]?.replace(/"/g, "")}
           </h4>
         </div>
       </div>
@@ -475,12 +503,12 @@ const ErrorTable = ({
         <p className={styles.errorTableRequire}>{description}</p>
         <div className={styles.errorTableRows}>
           {errorRows.map((err, index) => {
-            if (index > Error_PREVIEW) return;
+            if (index > Error_PREVIEW) return null;
             return (
               <div className={styles.errorTableFile} key={index}>
                 <div className={styles.errorTableFileRow}>แถวที่ {err}</div>
                 <p className={styles.errorTableFileContent}>
-                  {data[err] == "" ? `""` : data[err]}
+                  {data[err] === "" ? `""` : data[err]}
                 </p>
               </div>
             );
@@ -500,8 +528,8 @@ const ErrorTable = ({
 
 export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
   const PREVIEW_LENGTH = 5;
+  if (!colData || colData.length === 0) return null;
 
-  // FIX: filter เฉพาะ column ที่ถูก map แล้ว เพื่อให้ index column sync กับ data columns
   const activeColumns = tableInfo.filter((row) => row.fileCol !== -1);
 
   return (
@@ -512,7 +540,7 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
           const isError = activeColumns.some((item) =>
             item.errorRows.includes(index + 1),
           );
-          if (index < colData[0].length - 1)
+          if (index < (colData[0]?.length ?? 0) - 1)
             return (
               <div
                 className={`${styles.contentPreviewIndex} ${isError ? styles.isError : ""}`}
@@ -521,25 +549,26 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
                 {index + 1}
               </div>
             );
+          return null;
         })}
       </div>
       <div className={styles.headerSystem}>
-        {/* FIX: filter ก่อน map แทน return null กลาง loop เพื่อป้องกัน layout เหลื่อม */}
         {activeColumns.map((row, rowIndex) => (
           <div key={rowIndex}>
             <p className={styles.headerChild}>{row.label}</p>
             {colData[row.fileCol]?.map((c, colIndex) => {
               const isError = row.errorRows.includes(colIndex);
-              if (colIndex < PREVIEW_LENGTH + 1 && colIndex != 0)
+              if (colIndex < PREVIEW_LENGTH + 1 && colIndex !== 0)
                 return (
                   <div
                     key={colIndex}
                     className={`${styles.contentPreview} ${isError ? styles.isError : ""}`}
                   >
                     {isError ? "! " : ""}
-                    {c == "" ? `""` : c}
+                    {c === "" ? `""` : c}
                   </div>
                 );
+              return null;
             })}
           </div>
         ))}

@@ -45,7 +45,11 @@ export const SelectInput = ({
 
   useEffect(() => {
     if (internalActive) return;
-    setFocusIndex(-1);
+    const timer = setTimeout(() => {
+      setFocusIndex(-1);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [internalActive]);
   return (
     <div>
@@ -64,7 +68,7 @@ export const SelectInput = ({
               }
             }}
             className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value ? styles.hasValue : ""}`}
-            onClick={() => setInternalActive((prev) => !prev)}
+            onClick={() => setInternalActive(true)}
             type="button"
           >
             {value ? (

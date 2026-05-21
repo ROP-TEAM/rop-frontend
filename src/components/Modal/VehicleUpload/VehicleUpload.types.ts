@@ -51,3 +51,14 @@ export interface UploadStepperProps {
   setVehicleFileHeader: React.Dispatch<React.SetStateAction<VehicleFileHeader>>;
   onClose: () => void;
 }
+export interface VehicleUploadStateProps {
+  state: number;
+  file: File | undefined;
+  colData: string[][];
+  fileHeader: string[];
+  vehicleFileHeader: VehicleFileHeader;
+  ishasErrorFile: boolean;
+  setState: React.Dispatch<React.SetStateAction<number>>;
+  setVehicleFileHeader: React.Dispatch<React.SetStateAction<VehicleFileHeader>>;
+  handleUploadFile: (file: File) => void;
+}

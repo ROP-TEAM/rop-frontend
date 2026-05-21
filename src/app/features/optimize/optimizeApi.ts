@@ -4,7 +4,7 @@ export const optimizeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createOptimize: builder.mutation({
       query: (body) => ({
-        url: "/",
+        url: "/api/optimize",
         method: "POST",
         body,
       }),

@@ -8,12 +8,12 @@ import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/types/api.types";
 import { useState } from "react";
-import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { VehicleFileHeader } from "@/components/Modal/VehicleUpload/VehicleUpload.types";
 import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
 import { VehicleBase } from "@/types/api.types";
 import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
 import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
+import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
 const Page = () => {
   const DEFAULT_HEADER_INDEX = -1;
   const [optimizeCount, setOptimizeCount] = useState<{
@@ -24,6 +24,7 @@ const Page = () => {
     vehicle: 0,
   });
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
+  const [createOptimize, { isLoading }] = useCreateOptimizeMutation();
   const [isUploadOrder, setIsUploadOrder] = useState(false);
   const [vehicleFile, setVehicleFile] = useState<File>();
   const [orderFile, setOrderFile] = useState<File>();
@@ -463,6 +464,19 @@ const Page = () => {
     setOrderFile(undefined);
   };
 
+  const handleCreateOptimize = async () => {
+    try {
+      document.body.style.cursor = "wait";
+      const result = await createOptimize({
+        vehicles: vehicleBases,
+        orders: orderBases,
+      });
+      setIsOptimize(true);
+    } catch (err) {
+      console.log(err);
+    }
+    document.body.style.cursor = "default";
+  };
   return (
     <div>
       <div className={styles.container}>
@@ -666,6 +680,7 @@ const Page = () => {
             <section className={styles.actionSection}>
               <p className={styles.actionInfo}>{getFileCondition()}</p>
               <button
+                onClick={() => handleCreateOptimize()}
                 disabled={!(vehicleBases.length > 0 && orderBases.length > 0)}
                 className={`${styles.sendAction}  ${!(vehicleBases.length > 0 && orderBases.length > 0) ? styles.isActive : ""}`}
               >

@@ -48,3 +48,14 @@ export interface OrderUploadProps {
   handleCreateOrder: () => void;
   onClose: () => void;
 }
+export interface OrderUploadStateProps {
+  state: number;
+  file: File | undefined;
+  colData: string[][];
+  fileHeader: string[];
+  orderFileHeader: OrderFileHeader;
+  ishasErrorFile: boolean;
+  setState: React.Dispatch<React.SetStateAction<number>>;
+  setOrderFileHeader: React.Dispatch<React.SetStateAction<OrderFileHeader>>;
+  handleUploadFile: (file: File) => void;
+}

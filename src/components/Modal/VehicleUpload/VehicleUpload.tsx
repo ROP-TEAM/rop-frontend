@@ -28,7 +28,66 @@ const VehicleUploadState = ({
   handleUploadFile,
 }: VehicleUploadStateProps) => {
   const ACEEPTFILE = [".csv"];
+  const getVehicleDownloadFileExam = () => {
+    const header = Object.values(vehicleFileHeader).map((item) => item.label);
 
+    const rows = [
+      [
+        "08:00",
+        "17:00",
+        "12:00",
+        "13:00",
+        "1200",
+        '"13.7563,100.5018"',
+        '"13.7563,100.5018"',
+        "25",
+        '"ของเย็น,ผักสด"',
+        "Toyota Revo",
+        "รถคันที่ 1",
+        "กข1234",
+      ],
+      [
+        "09:00",
+        "18:00",
+        "",
+        "",
+        "800",
+        '"13.7263,100.5218"',
+        "",
+        "",
+        '"เอกสาร"',
+        "Isuzu D-Max",
+        "รถคันที่ 2",
+        "1ฒฮ8888",
+      ],
+    ];
+
+    const escapeCSV = (value: string) => `"${value.replace(/"/g, '""')}"`;
+
+    const csvContent = [
+      header.map(escapeCSV).join(","),
+      ...rows.map((row) => row.map(escapeCSV).join(",")),
+    ].join("\n");
+
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "vehicle-template.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  };
   switch (state) {
     case 0:
       return (
@@ -54,7 +113,12 @@ const VehicleUploadState = ({
                 วิกเพลย์บอยพลานุภาพ
               </p>
             </div>
-            <button className={styles.download}>ดาวโหลดไฟล์</button>
+            <button
+              className={styles.download}
+              onClick={() => getVehicleDownloadFileExam()}
+            >
+              ดาวโหลดไฟล์
+            </button>
           </div>
         </div>
       );

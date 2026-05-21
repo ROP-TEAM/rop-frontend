@@ -32,7 +32,7 @@ const Page = () => {
   const [orderBases, setOrderBases] = useState<OrderBase[]>([]);
   const [colDataVehicle, setColDataVehicle] = useState<string[][]>([]);
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
-  const [isOptimize, setIsOptimize] = useState<boolean>(true);
+  const [isOptimize, setIsOptimize] = useState<boolean>(false);
   const [orderFileHeader, setOrderFileHeader] = useState<OrderFileHeader>({
     name: {
       fileCol: DEFAULT_HEADER_INDEX,

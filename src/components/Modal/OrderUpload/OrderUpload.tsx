@@ -28,6 +28,41 @@ const OrderUploadState = ({
   handleUploadFile,
 }: OrderUploadStateProps) => {
   const ACEEPTFILE = [".csv"];
+  const getDownloadFileExam = () => {
+    const header = Object.values(orderFileHeader).map((item) => item.label);
+    const row = [
+      [
+        "SOT001",
+        "ส่งสินค้าแช่เย็นไปสาขา A",
+        "120",
+        "ของเย็น",
+        "08:00",
+        "17:00",
+        '"13.7563,100.5018"',
+        "15",
+        "สูง",
+      ],
+    ];
+    const csvContent = [
+      header.join(","),
+      ...row.map((row) => row.join(",")),
+    ].join("\n");
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "order-template.csv";
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   switch (state) {
     case 0:
@@ -54,7 +89,12 @@ const OrderUploadState = ({
                 วิกเพลย์บอยพลานุภาพ
               </p>
             </div>
-            <button className={styles.download}>ดาวโหลดไฟล์</button>
+            <button
+              className={styles.download}
+              onClick={() => getDownloadFileExam()}
+            >
+              ดาวโหลดไฟล์
+            </button>
           </div>
         </div>
       );
@@ -369,7 +409,6 @@ export const OrderUpload = ({
 
   const handleNextState = () => {
     if (state === 1) {
-      // ตรวจสอบข้อมูล Field บังคับ (เช็คจากตัวแปรที่มีอยู่ใน orderFileHeader ของคุณ)
       if (
         orderFileHeader.timeWindowStart?.fileCol === -1 ||
         orderFileHeader.timeWindowEnd?.fileCol === -1 ||

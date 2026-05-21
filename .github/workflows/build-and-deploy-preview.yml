@@ -68,6 +68,11 @@ jobs:
         with:
           authkey: ${{ secrets.TS_OAUTH_SECRET }}
 
+      # - name: Install kubectl
+      #   uses: azure/setup-kubectl@v4
+      #   with:
+      #     version: "latest" 
+
       - name: Setup kubectl
         run: |
           mkdir -p ~/.kube

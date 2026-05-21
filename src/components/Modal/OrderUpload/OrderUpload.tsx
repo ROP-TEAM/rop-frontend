@@ -9,23 +9,25 @@ import { useEffect, useState } from "react";
 import styles from "./OrderUpload.module.scss";
 import {
   ErrorTableProps,
-  UploadStepperProps,
+  OrderUploadProps,
   PreviewTableProps,
   OrderFileHeader,
 } from "./OrderUpload.types";
 export const OrderUpload = ({
   orderFileHeader,
+  colData,
+  file,
+  setFile,
+  setColData,
   setOrderFileHeader,
+  handleCreateOrder,
   onClose,
-}: UploadStepperProps) => {
+}: OrderUploadProps) => {
   const DEFAULT_HEADER_INDEX = -1;
 
-  const [file, setFile] = useState<File>();
   const [state, setState] = useState<number>(0);
   const [fileHeader, setFileHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
-
-  const [colData, setColData] = useState<string[][]>([]);
 
   const ACEEPTFILE = [".csv"];
   const STEPPER: StepperProp[] = [
@@ -36,7 +38,47 @@ export const OrderUpload = ({
   const ishasErrorFile = Object.values(orderFileHeader).some((item) => {
     if (item.errorRows.length > 0) return true;
   });
+
+  useEffect(() => {
+    if (state == 0) {
+    }
+  }, [state]);
+
+  const parseCSVRow = (row: string): string[] => {
+    const result: string[] = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < row.length; i++) {
+      const char = row[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+        continue;
+      }
+
+      if (char === "," && !inQuotes) {
+        result.push(current);
+        current = "";
+        continue;
+      }
+
+      current += char;
+    }
+
+    result.push(current);
+    return result;
+  };
+
   const handleUploadFile = (file: File) => {
+    setOrderFileHeader((prev) => {
+      const updated = orderFileHeader;
+      Object.keys(updated).forEach((key) => {
+        const typedKey = key as keyof OrderFileHeader;
+        updated[typedKey].fileCol = -1;
+      });
+      return updated;
+    });
     const isCsv = file.name.toLowerCase().endsWith(".csv");
 
     if (!isCsv) {
@@ -55,25 +97,24 @@ export const OrderUpload = ({
       }
 
       const rows = text.split(/\r?\n/).filter((row) => row.trim() !== "");
-
-      const parsedRows = rows.map(
-        (row) =>
-          row
-            .match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-            ?.map((item) => item.replace(/^"|"$/g, "")) || [],
-      );
+      const parsedRows = rows.map(parseCSVRow);
 
       const headers = parsedRows[0];
+      const colCount = headers.length;
+      const normalizedRows = parsedRows.map((row) => {
+        if (row.length < colCount) {
+          return [...row, ...Array(colCount - row.length).fill("")];
+        }
+        return row;
+      });
 
       const tempColData: string[][] = [];
-
       const updatedVehicleFileHeader = structuredClone(orderFileHeader);
 
-      for (let i = 0; i < headers.length; i++) {
-        tempColData.push(parsedRows.map((row) => row[i] ?? ""));
+      for (let i = 0; i < colCount; i++) {
+        tempColData.push(normalizedRows.map((row) => row[i] ?? ""));
 
         const header = headers[i].trim();
-        console.log(tempColData[i]);
         for (const v of Object.values(updatedVehicleFileHeader)) {
           if (header.includes(v.label)) {
             v.fileCol = i;
@@ -82,7 +123,6 @@ export const OrderUpload = ({
       }
 
       setOrderFileHeader(updatedVehicleFileHeader);
-
       setFileHeader(headers);
       setColData(tempColData);
       setFile(file);
@@ -98,7 +138,9 @@ export const OrderUpload = ({
         orderFileHeader.timeWindowStart.fileCol == -1 ||
         orderFileHeader.timeWindowEnd.fileCol == -1 ||
         orderFileHeader.location.fileCol == -1 ||
-        orderFileHeader.capacity.fileCol == -1
+        orderFileHeader.capacity.fileCol == -1 ||
+        orderFileHeader.name.fileCol == -1 ||
+        orderFileHeader.serviceTime.fileCol == -1
       ) {
         setError("เลือกข้อมูลให้ครบถ้วน");
         return;
@@ -107,7 +149,7 @@ export const OrderUpload = ({
       setError("");
     }
     if (state == 2 && !ishasErrorFile) {
-      onClose();
+      handleCreateOrder();
     }
   };
   const handlePreviousState = () => {
@@ -343,7 +385,10 @@ export const OrderUpload = ({
     <div className={styles.vehicleUpload}>
       <div className={styles.header}>
         <div className={styles.headerInfo}>
-          <h2 className={styles.title}>เพิ่มยานพาหนะ</h2>
+          <div className={styles.headerTitle}>
+            <h2 className={styles.title}>อัปโหลดไฟล์</h2>
+            <SkillPill color="#E36A6A" title="ออร์เดอร์" />
+          </div>
           <p> สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส</p>
         </div>
         <button onClick={() => onClose()} type="button">
@@ -375,7 +420,7 @@ export const OrderUpload = ({
               handleNextState();
             }}
             type="button"
-            className={`${styles.confirm} ${state == 0 || ishasErrorFile ? styles.isDisabled : ""}`}
+            className={`${styles.confirm} ${state == 0 || (state == 2 && ishasErrorFile) ? styles.isDisabled : ""}`}
           >
             {state == 2 ? "ยืนยัน" : "ต่อไป"}
           </button>
@@ -408,6 +453,7 @@ const ErrorTable = ({
       onValid(errorRowsTemp);
     }
   }, [data, regex]);
+
   if (errorRows.length == 0) return;
   return (
     <div className={styles.errorTable}>

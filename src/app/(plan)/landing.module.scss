@@ -57,12 +57,15 @@
     }
   }
   .uploadContent {
-    padding: 2.725rem;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 4rem 2.725rem;
     border-radius: 0.25rem;
-    border: 0.0625rem solid rgba(27, 31, 35, 0.15);
+
     @include respond(md) {
       padding: 1.5rem 1rem;
     }
+
     .uploadInfo {
       padding: 0;
       @include respond(md) {
@@ -70,6 +73,10 @@
       }
 
       .uploadText {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: fit-content;
         font-size: 1.375rem;
         font-weight: 500;
         margin: auto;
@@ -108,6 +115,8 @@
   }
 }
 .actionSection {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   background-color: var(--p-100);
   justify-content: space-between;
@@ -141,14 +150,15 @@
     background-color: var(--s-600);
   }
 
-  &:disabled {
-    background-color: var(--p-300);
-    cursor: not-allowed;
-  }
-
   @include respond(md) {
     width: 100%;
     text-align: center;
     padding: 0.625rem 1.5rem;
+  }
+}
+.isActive {
+  background-color: var(--s-300);
+  &:hover {
+    background-color: var(--s-300);
   }
 }

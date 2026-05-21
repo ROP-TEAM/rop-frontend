@@ -13,9 +13,12 @@ import {
   PreviewTableProps,
   VehicleFileHeader,
 } from "./VehicleUpload.types";
+
 export const VehicleUpload = ({
   colData,
   setColData,
+  file,
+  setFile,
   vehicleFileHeader,
   handleCreateVehicles,
   setVehicleFileHeader,
@@ -23,7 +26,6 @@ export const VehicleUpload = ({
 }: UploadStepperProps) => {
   const DEFAULT_HEADER_INDEX = -1;
 
-  const [file, setFile] = useState<File>();
   const [state, setState] = useState<number>(0);
   const [fileHeader, setFileHeader] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
@@ -37,7 +39,42 @@ export const VehicleUpload = ({
   const ishasErrorFile = Object.values(vehicleFileHeader).some((item) => {
     if (item.errorRows.length > 0) return true;
   });
+
+  const parseCSVRow = (row: string): string[] => {
+    const result: string[] = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < row.length; i++) {
+      const char = row[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+        continue;
+      }
+
+      if (char === "," && !inQuotes) {
+        result.push(current);
+        current = "";
+        continue;
+      }
+
+      current += char;
+    }
+
+    result.push(current);
+    return result;
+  };
+
   const handleUploadFile = (file: File) => {
+    setVehicleFileHeader((prev) => {
+      const updated = vehicleFileHeader;
+      Object.keys(updated).forEach((key) => {
+        const typedKey = key as keyof VehicleFileHeader;
+        updated[typedKey].fileCol = -1;
+      });
+      return updated;
+    });
     const isCsv = file.name.toLowerCase().endsWith(".csv");
 
     if (!isCsv) {
@@ -56,22 +93,22 @@ export const VehicleUpload = ({
       }
 
       const rows = text.split(/\r?\n/).filter((row) => row.trim() !== "");
-
-      const parsedRows = rows.map(
-        (row) =>
-          row
-            .match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-            ?.map((item) => item.replace(/^"|"$/g, "")) || [],
-      );
+      const parsedRows = rows.map(parseCSVRow);
 
       const headers = parsedRows[0];
+      const colCount = headers.length;
+      const normalizedRows = parsedRows.map((row) => {
+        if (row.length < colCount) {
+          return [...row, ...Array(colCount - row.length).fill("")];
+        }
+        return row;
+      });
 
       const tempColData: string[][] = [];
-
       const updatedVehicleFileHeader = structuredClone(vehicleFileHeader);
 
-      for (let i = 0; i < headers.length; i++) {
-        tempColData.push(parsedRows.map((row) => row[i] ?? ""));
+      for (let i = 0; i < colCount; i++) {
+        tempColData.push(normalizedRows.map((row) => row[i] ?? ""));
 
         const header = headers[i].trim();
         for (const v of Object.values(updatedVehicleFileHeader)) {
@@ -82,7 +119,6 @@ export const VehicleUpload = ({
       }
 
       setVehicleFileHeader(updatedVehicleFileHeader);
-
       setFileHeader(headers);
       setColData(tempColData);
       setFile(file);
@@ -92,6 +128,7 @@ export const VehicleUpload = ({
 
     reader.readAsText(file);
   };
+
   const handleNextState = () => {
     if (state == 1) {
       if (
@@ -110,6 +147,7 @@ export const VehicleUpload = ({
       handleCreateVehicles();
     }
   };
+
   const handlePreviousState = () => {
     if (state == 0) return;
     setState((prev) => prev - 1);
@@ -151,7 +189,7 @@ export const VehicleUpload = ({
             <div className={styles.fileWrapper}>
               <div className={styles.fileWrapperInfo}>
                 <SkillPill
-                  title={file?.name.split(",")[1] ?? ".csv"}
+                  title={file?.name.split(".")[1] ?? "csv"}
                   color="var(--g-500)"
                 ></SkillPill>
                 {(() => {
@@ -162,7 +200,7 @@ export const VehicleUpload = ({
                     file?.name.length > 15
                       ? file.name.substring(0, 15) + "..."
                       : file?.name;
-                  return <h4>{name} .csv</h4>;
+                  return <h4>{name}</h4>;
                 })()}
                 <p className={styles.fileCount}>
                   {colData.length} หลัก{" "}
@@ -234,17 +272,14 @@ export const VehicleUpload = ({
                         <td className={styles.selectSystem}>
                           <h3 className={styles.selectTitle}>
                             <span>{f.label}</span>
-
                             {f.require && (
                               <span className={styles.require}> *</span>
                             )}
                           </h3>
-
                           <p className={styles.selectDescription}>
                             {f.description}
                           </p>
                         </td>
-
                         <td className={styles.selectImport}>
                           <SelectInput
                             subString={16}
@@ -304,6 +339,7 @@ export const VehicleUpload = ({
                 if (f.fileCol == -1) return;
                 return (
                   <ErrorTable
+                    require={f.require}
                     key={index}
                     errorRows={f.errorRows}
                     onValid={(errorRows) =>
@@ -325,7 +361,7 @@ export const VehicleUpload = ({
             </div>
             <p className={styles.errorTitle}>ตัวอย่างข้อมูลนำเข้า</p>
             <PreviewTable
-              tableInfo={Object.values(vehicleFileHeader).map((v, index) => {
+              tableInfo={Object.values(vehicleFileHeader).map((v) => {
                 return {
                   fileCol: v.fileCol,
                   label: v.label,
@@ -343,8 +379,11 @@ export const VehicleUpload = ({
     <div className={styles.vehicleUpload}>
       <div className={styles.header}>
         <div className={styles.headerInfo}>
-          <h2 className={styles.title}>เพิ่มยานพาหนะ</h2>
-          <p> สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส</p>
+          <div className={styles.headerTitle}>
+            <h2 className={styles.title}>เพิ่มยานพาหนะ</h2>
+            <SkillPill color="#5E7AC4" title="รถยนต์" />
+          </div>
+          <p>สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส</p>
         </div>
         <button onClick={() => onClose()} type="button">
           <IconSvgMono
@@ -371,11 +410,9 @@ export const VehicleUpload = ({
             ย้อนกลับ
           </button>
           <button
-            onClick={() => {
-              handleNextState();
-            }}
+            onClick={() => handleNextState()}
             type="button"
-            className={`${styles.confirm} ${state == 0 || ishasErrorFile ? styles.isDisabled : ""}`}
+            className={`${styles.confirm} ${state == 0 || (state == 2 && ishasErrorFile) ? styles.isDisabled : ""}`}
           >
             {state == 2 ? "ยืนยัน" : "ต่อไป"}
           </button>
@@ -391,6 +428,7 @@ const ErrorTable = ({
   regex,
   description,
   errorRows,
+  require: isRequired, // FIX: rename เพื่อไม่ชนกับ JS built-in `require`
   onValid,
 }: ErrorTableProps) => {
   const Error_PREVIEW = 3;
@@ -398,16 +436,27 @@ const ErrorTable = ({
 
   useEffect(() => {
     if (!regex) return;
+
     const errorRowsTemp: number[] = [];
+
     for (let i = 1; i < data?.length; i++) {
-      if (!regex.test(data[i])) {
+      const value = data[i]?.trim();
+
+      // FIX: ใช้ isRequired แทน require (ซึ่งเป็น JS built-in function = truthy เสมอ)
+      if (!isRequired && value === "") {
+        continue;
+      }
+
+      if (!regex.test(value)) {
         errorRowsTemp.push(i);
       }
     }
+
     if (JSON.stringify(errorRowsTemp) !== JSON.stringify(errorRows)) {
       onValid(errorRowsTemp);
     }
-  }, [data, regex]);
+  }, [data, regex, isRequired]); // FIX: dependency ใช้ isRequired
+
   if (errorRows.length == 0) return;
   return (
     <div className={styles.errorTable}>
@@ -452,16 +501,17 @@ const ErrorTable = ({
 export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
   const PREVIEW_LENGTH = 5;
 
+  // FIX: filter เฉพาะ column ที่ถูก map แล้ว เพื่อให้ index column sync กับ data columns
+  const activeColumns = tableInfo.filter((row) => row.fileCol !== -1);
+
   return (
     <div className={styles.previewTable}>
       <div>
         <p className={styles.headerIndex}>#</p>
         {Array.from({ length: PREVIEW_LENGTH }).map((_, index) => {
-          const isError = tableInfo.some((item) => {
-            if (item.errorRows.includes(index + 1)) {
-              return true;
-            }
-          });
+          const isError = activeColumns.some((item) =>
+            item.errorRows.includes(index + 1),
+          );
           if (index < colData[0].length - 1)
             return (
               <div
@@ -474,27 +524,25 @@ export const PreviewTable = ({ tableInfo, colData }: PreviewTableProps) => {
         })}
       </div>
       <div className={styles.headerSystem}>
-        {tableInfo.map((row, rowIndex) => {
-          if (row.fileCol != -1)
-            return (
-              <div key={rowIndex}>
-                <p className={styles.headerChild}>{row.label}</p>
-                {colData[row.fileCol]?.map((c, colIndex) => {
-                  const isError = row.errorRows.includes(colIndex);
-                  if (colIndex < PREVIEW_LENGTH + 1 && colIndex != 0)
-                    return (
-                      <div
-                        key={colIndex}
-                        className={`${styles.contentPreview} ${isError ? styles.isError : ""}`}
-                      >
-                        {isError ? "! " : ""}
-                        {c == "" ? `""` : c}
-                      </div>
-                    );
-                })}
-              </div>
-            );
-        })}
+        {/* FIX: filter ก่อน map แทน return null กลาง loop เพื่อป้องกัน layout เหลื่อม */}
+        {activeColumns.map((row, rowIndex) => (
+          <div key={rowIndex}>
+            <p className={styles.headerChild}>{row.label}</p>
+            {colData[row.fileCol]?.map((c, colIndex) => {
+              const isError = row.errorRows.includes(colIndex);
+              if (colIndex < PREVIEW_LENGTH + 1 && colIndex != 0)
+                return (
+                  <div
+                    key={colIndex}
+                    className={`${styles.contentPreview} ${isError ? styles.isError : ""}`}
+                  >
+                    {isError ? "! " : ""}
+                    {c == "" ? `""` : c}
+                  </div>
+                );
+            })}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -10,7 +10,12 @@
   display: flex;
   justify-content: space-between;
   align-items: start;
-
+  .headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
   .title {
     font-size: 1.125rem;
     font-weight: 500;

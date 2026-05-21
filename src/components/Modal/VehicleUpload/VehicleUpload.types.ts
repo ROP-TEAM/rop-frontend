@@ -27,6 +27,7 @@ export type VehicleFileHeader = Record<
 >;
 
 export interface ErrorTableProps {
+  require?: boolean;
   systemHeader: string;
   data: string[];
   description: string;
@@ -41,6 +42,8 @@ export interface PreviewTableProps {
 }
 
 export interface UploadStepperProps {
+  file: File | undefined;
+  setFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   colData: string[][];
   vehicleFileHeader: VehicleFileHeader;
   setColData: React.Dispatch<React.SetStateAction<string[][]>>;

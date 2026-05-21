@@ -28,18 +28,22 @@ export interface VehicleBase {
   maxTask?: number;
   skills?: string[];
 }
-
-export interface Order {
-  id: number;
+export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
   skils?: string[];
-  timeWindow: TimePeriod;
-  location: Location;
+  timeWindowStart: number;
+  timeWindowEnd: number;
+  locationLat: number;
+  locationLng: number;
   serviceTime: number;
-  type: "pick up" | "delivery";
-  priority: "critical" | "high" | "medium" | "low";
+  type: number;
+  priority: number;
+}
+
+export interface Order extends OrderBase {
+  id: number;
 }
 
 export interface Vehicle extends VehicleBase {

@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+.docusaurus
+
+.bun
+bun.lockb
+
+# Git
+.git
+.gitignore
+
+*.log
+.DS_Store
+.env*.local

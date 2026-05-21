@@ -12,6 +12,20 @@ const nextConfig: NextConfig = {
     `,
   },
   reactCompiler: true,
+  output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "fakestoreapi.com",
+        pathname: "/img/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

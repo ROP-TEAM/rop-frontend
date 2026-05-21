@@ -2,6 +2,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/Modal/Modal/Modal";
+import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
 import { OrderBase, TimePeriod } from "@/types/api.types";
 import styles from "./landing.module.scss";
 import Image from "next/image";
@@ -14,6 +15,13 @@ import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
 import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
 const Page = () => {
   const DEFAULT_HEADER_INDEX = -1;
+  const [optimizeCount, setOptimizeCount] = useState<{
+    distance: number;
+    vehicle: number;
+  }>({
+    distance: 0,
+    vehicle: 0,
+  });
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
   const [isUploadOrder, setIsUploadOrder] = useState(false);
   const [vehicleFile, setVehicleFile] = useState<File>();
@@ -430,6 +438,29 @@ const Page = () => {
 
     setIsUploadOrder(false);
   };
+  const handleClearOptimize = () => {
+    setIsOptimize(false);
+    setVehicleFileHeader((prev) => {
+      const updated = vehicleFileHeader;
+      Object.keys(updated).forEach((key) => {
+        const typedKey = key as keyof VehicleFileHeader;
+        updated[typedKey].fileCol = -1;
+      });
+      return updated;
+    });
+    setOrderFileHeader((prev) => {
+      const updated = orderFileHeader;
+      Object.keys(updated).forEach((key) => {
+        const typedKey = key as keyof OrderFileHeader;
+        updated[typedKey].fileCol = -1;
+      });
+      return updated;
+    });
+    setColDataOrder([]);
+    setColDataVehicle([]);
+    setVehicleFile(undefined);
+    setOrderFile(undefined);
+  };
 
   return (
     <div>
@@ -439,21 +470,64 @@ const Page = () => {
             <h2 className={styles.titleText}>สร้างรอบรถของคุณ</h2>
             <div className={styles.titleDescription}>
               <span className={styles.normal}>
-                เพียงแค่อัพโหลดไฟล์
-                และสร้างรอบรถแบบที่คุณต้องการได้เพียงไม่กี่ขั้นตอน หรือ
+                อัปโหลดไฟล์และสร้างรอบรถได้ง่าย ๆ ภายในไม่กี่ขั้นตอน
+                ทั้งนี้ผลลัพธ์อาจแตกต่างกันเล็กน้อยในแต่ละครั้ง
+                ซึ่งเป็นพฤติกรรมปกติของระบบที่ออกแบบมาเพื่อเลือกแนวทางการจัดรอบที่เหมาะสมที่สุด
+                หรือ
+                <span className={styles.report}> พบปัญหาการใช้งาน</span>
               </span>
-              <span className={styles.report}> พบปัญหาการใช้งาน</span>
             </div>
           </div>
           <button className={styles.titleAction}>ติดต่อเรา</button>
         </div>
         {isOptimize ? (
-          <div className={styles.optimizeContentp}>
-            <div className={styles.header}>
-              <h3>ผลการคำนวณ</h3>
-              <IconSvgMono src="/icon/reload.svg"></IconSvgMono>
+          <div className={styles.optimize}>
+            <div className={styles.optimizeHeader}>
+              <h2 className={styles.optimizeTitle}>ผลการคำนวณ</h2>
+              <Tooltip title="ลองใหม่">
+                <button type="button">
+                  <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
+                </button>
+              </Tooltip>
             </div>
-            <div></div>
+            <div className={styles.optimizeContent}>
+              <div className={styles.optimizeBox}>
+                <h2 className={styles.optimizeType}>รถที่ใช้ในการเดินทาง</h2>
+                <div className={styles.optimizeInfo}>
+                  <h1 className={styles.optimizeVariable}>
+                    {optimizeCount.vehicle}
+                  </h1>
+                  <p className={styles.optimizeUnit}>คัน</p>
+                </div>
+              </div>
+              <div className={styles.optimizeBox}>
+                <h2 className={styles.optimizeType}>ระยะทางทั้งหมด </h2>
+                <div className={styles.optimizeInfo}>
+                  <h1 className={styles.optimizeVariable}>
+                    {optimizeCount.vehicle}
+                  </h1>
+                  <p className={styles.optimizeUnit}>กม.</p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.optimizeFooter}>
+              <button type="button" className={styles.optimizeAction}>
+                ดาวโหลดไฟล์
+              </button>
+              <Tooltip title="ล้างค่า">
+                <button
+                  onClick={() => handleClearOptimize()}
+                  className={styles.optimizeCloseContainer}
+                >
+                  <IconSvgMono
+                    className={styles.optimizeClose}
+                    size={20}
+                    src="/icon/cross.svg"
+                    color="var(--p-500)"
+                  ></IconSvgMono>
+                </button>
+              </Tooltip>
+            </div>
           </div>
         ) : (
           <div>
@@ -518,7 +592,7 @@ const Page = () => {
                     onClick={() => setIsUploadVehicle(true)}
                     type="button"
                   >
-                    {vehicleFile ? "เปลี่ยนไฟล์" : "เลือกไฟล์"}
+                    {vehicleBases.length > 0 ? "เปลี่ยนไฟล์" : "เลือกไฟล์"}
                   </button>
                 </div>
               </div>
@@ -583,7 +657,7 @@ const Page = () => {
                     className={styles.uploadAction}
                     type="button"
                   >
-                    {orderFile ? "เปลี่ยนไฟล์" : "เลือกไฟล์"}
+                    {orderBases.length > 0 ? "เปลี่ยนไฟล์" : "เลือกไฟล์"}
                   </button>
                 </div>
               </div>

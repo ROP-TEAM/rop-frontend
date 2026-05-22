@@ -19,12 +19,13 @@ export interface VehicleBase {
   dailyBreakTimeEnd: number | undefined;
   maxCapacity: number;
   numberPlate?: string;
-  dailyWorkTimeStart: number;
-  dailyWorkTimeEnd: number;
-  startLocationLat: number;
-  startLocationLng: number;
-  endLocationLat: number;
-  endLocationLng: number;
+  WorkTimeStart: number;
+  WorkTimeEnd: number;
+  startLatitude: number;
+  startLongitude: number;
+  endLatitude: number;
+  endLongitude: number;
+
   maxTask?: number;
   skills?: string[];
 }
@@ -32,11 +33,11 @@ export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
-  skils?: string[];
+  skills?: string[];
   timeWindowStart: number;
   timeWindowEnd: number;
-  locationLat: number;
-  locationLng: number;
+  deslatitude: number;
+  deslongitude: number;
   serviceTime: number;
   type: number;
   priority: number;

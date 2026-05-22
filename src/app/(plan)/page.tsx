@@ -14,6 +14,7 @@ import { VehicleBase } from "@/types/api.types";
 import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
 import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
 import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
+import { Console } from "console";
 const Page = () => {
   const DEFAULT_HEADER_INDEX = -1;
   const [optimizeCount, setOptimizeCount] = useState<{
@@ -356,16 +357,17 @@ const Page = () => {
         name,
         maxCapacity,
         numberPlate,
-        dailyWorkTimeStart: workTimeStart,
-        dailyWorkTimeEnd: workTimeEnd,
+        WorkTimeStart: workTimeStart,
+        WorkTimeEnd: workTimeEnd,
         dailyBreakTimeStart: breakTimeStart,
         dailyBreakTimeEnd: breakTimeEnd,
-        startLocationLat: startLocation.lat,
-        startLocationLng: startLocation.lng,
-        endLocationLat: endLocation.lat,
-        endLocationLng: endLocation.lng,
+        startLatitude: startLocation.lat,
+        startLongitude: startLocation.lng,
+        endLatitude: startLocation.lng,
+        endLongitude: startLocation.lng, //อย่าลืมแก้
+
         maxTask,
-        skills,
+        skills: skills,
       };
 
       setVehicleBases((prev) => [...prev, vehicleBase]);
@@ -425,11 +427,11 @@ const Page = () => {
         name,
         description,
         capacity,
-        skils: skills.length > 0 ? skills : undefined,
+        skills: skills,
         timeWindowStart,
         timeWindowEnd,
-        locationLat: location.lat,
-        locationLng: location.lng,
+        deslatitude: location.lat,
+        deslongitude: location.lng,
         serviceTime,
         type: 0,
         priority,
@@ -471,6 +473,11 @@ const Page = () => {
         vehicles: vehicleBases,
         orders: orderBases,
       });
+      console.log({
+        vehicles: vehicleBases,
+        orders: orderBases,
+      });
+      console.log(result);
       setIsOptimize(true);
     } catch (err) {
       console.log(err);

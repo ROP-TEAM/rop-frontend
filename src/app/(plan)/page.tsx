@@ -24,7 +24,7 @@ const Page = () => {
     distance: 0,
     vehicle: 0,
   });
-  const [optimizeResult, setOptimizeResult] = useState([]);
+  const [optimizeResult, setOptimizeResult] = useState<string[][]>([]);
   const [loadingCount, setLoadingCount] = useState<number>(0);
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
   const [depotLoc, setDepotLoc] = useState<Location>({ lat: 0, lng: 0 });
@@ -258,7 +258,16 @@ const Page = () => {
     if (fileCol == DEFAULT_HEADER_INDEX) return "";
     return colDataVehicle[fileCol][row];
   };
+  const parseNumberToTime = (minutes?: number): string => {
+    if (minutes == null || minutes < 0) return "00:00";
 
+    const hour = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  };
   const parseTimeToNumber = (time?: string): number => {
     if (!time) return 0;
 
@@ -473,7 +482,8 @@ const Page = () => {
       setIsOptimize(true);
       setOptimizeResult(
         routes.flatMap((r: any) => {
-          const content = r.stops.flatMap((s: any) => [
+          return r.stops.map((s: any) => [
+            r.vehicleName,
             s.orderName,
             s.arrivalMin,
             s.departMin,
@@ -483,11 +493,50 @@ const Page = () => {
     } catch (err) {
       console.log(err);
     } finally {
-      console.log(optimizeResult);
       setLoadingCount(0);
       clearInterval(intervalCount);
       document.body.style.cursor = "default";
     }
+  };
+  const getDownloadFileResult = () => {
+    const header = ["ชื่อคนขับ", "ชื่อออเดอร์", "เวลาที่ไปถึง", "เวลาบริการ"];
+
+    const rows = optimizeResult;
+
+    if (!rows?.length) {
+      alert("ไม่มีข้อมูลสำหรับดาวน์โหลด");
+      return;
+    }
+
+    const csvContent = [
+      header.join(","),
+      ...rows.map((row: any[]) => {
+        const [driver, order, arrivalMin, serviceMin] = row;
+
+        return [
+          driver,
+          order,
+          parseNumberToTime(Number(arrivalMin)),
+          parseNumberToTime(Number(serviceMin)),
+        ].join(",");
+      }),
+    ].join("\n");
+
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "optimize-result.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
   };
   return (
     <div>
@@ -538,7 +587,11 @@ const Page = () => {
               </div>
             </div>
             <div className={styles.optimizeFooter}>
-              <button type="button" className={styles.optimizeAction}>
+              <button
+                type="button"
+                onClick={() => getDownloadFileResult()}
+                className={styles.optimizeAction}
+              >
                 ดาวโหลดไฟล์
               </button>
               <Tooltip title="ล้างค่า">

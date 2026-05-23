@@ -5,6 +5,8 @@ import React, { useLayoutEffect, useState } from "react";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 
 export const FloatingCard = ({
+  focusColor = "var(--p-0)",
+  focusBackgroundColor = "var(--s-600)",
   bodyWidth = "100%",
   trigger,
   children,
@@ -42,7 +44,7 @@ export const FloatingCard = ({
                     "--position-bottom": "80%",
                   }
                 : {
-                    "--position-top": "80%",
+                    "--position-top": "95%",
                     "--position-bottom": "auto",
                   }),
               ...(isOnRight
@@ -54,7 +56,12 @@ export const FloatingCard = ({
                     "--position-left": "0",
                     "--position-right": "auto",
                   }),
-              ...{ "--body-width": bodyWidth, "--body-height": bodyHeight },
+              ...{
+                "--body-width": bodyWidth,
+                "--body-height": bodyHeight,
+                "--focus-color": focusColor,
+                "--focus-background-color": focusBackgroundColor,
+              },
             } as React.CSSProperties
           }
           className={styles.floating}

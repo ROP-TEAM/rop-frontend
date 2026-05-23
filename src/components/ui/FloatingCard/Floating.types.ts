@@ -1,6 +1,8 @@
 import { KeyboardEvent, ReactElement, ReactNode } from "react";
 
 export interface FloatingCardProps {
+  focusColor?: string;
+  focusBackgroundColor?: string;
   bodyHeight?: string;
   bodyWidth?: string;
   trigger: ReactElement;

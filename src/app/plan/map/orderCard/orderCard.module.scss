@@ -1,0 +1,25 @@
+.container {
+  border: $border-subtle;
+  padding: 0.725rem 1.25rem;
+  border-radius: 0.25rem;
+}
+
+.orderInfo {
+  .orderInfoHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .orderName {
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .orderDescription {
+    font-size: 0.725rem;
+  }
+}
+
+.orderContent {
+  margin-top: 1rem;
+}

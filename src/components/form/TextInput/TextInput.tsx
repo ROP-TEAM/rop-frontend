@@ -44,6 +44,7 @@ export const TextInput = ({
             width: width,
             fontSize: fontSize,
             fontWeight: fontWeight,
+            padding: pading,
             "--outline-input": border,
             "--color-outFocus": color,
             "--input-padding": border !== "none" ? "0.25rem 0.5rem" : "0",

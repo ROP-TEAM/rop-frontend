@@ -1,0 +1,53 @@
+.label {
+  font-size: var(--label-size);
+  color: var(--label-color);
+  font-weight: var(--label-weight);
+  .require {
+    color: red;
+  }
+}
+.locationInput {
+  display: flex;
+  align-items: end;
+  .comma {
+    padding: 0 0.25rem;
+  }
+
+  &:focus-within {
+    .lat,
+    .lng {
+      flex: 1;
+      box-sizing: border-box;
+      background-color: var(--p-100);
+      outline-color: var(--s-500);
+      color: var(--p-700);
+      padding: 0.25rem 0.5rem;
+    }
+    .comma {
+      padding: 0 1rem;
+    }
+  }
+  .lat {
+    width: 5rem;
+  }
+  .lng {
+    width: 5.5rem;
+  }
+  .lat,
+  .lng {
+    border-radius: 0.125rem;
+    color: var(--color-outFocus);
+    background-color: var(--background-color);
+    border: none;
+    &:hover:not(:focus) {
+      background-color: var(--p-50);
+    }
+  }
+}
+.lat::-webkit-outer-spin-button,
+.lng::-webkit-outer-spin-button,
+.lat::-webkit-inner-spin-button,
+.lng::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

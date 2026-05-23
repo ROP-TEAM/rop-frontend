@@ -6,8 +6,6 @@ export type VehicleHeaderKey =
   | "breakTimeStart"
   | "breakTimeEnd"
   | "capacity"
-  | "startLocation"
-  | "endLocation"
   | "maxTask"
   | "skills"
   | "model"

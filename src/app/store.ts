@@ -4,6 +4,7 @@ import routeReducer from "./features/route/routeSlice";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import orderReducer from "./features/order/orderSlice";
+import mapclickReducer from "./features/mapClick/mapClickSlice";
 type RootReducerType = ReturnType<typeof rootReducer>;
 const persisConfig: PersistConfig<RootReducerType> = {
   key: "root",
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   route: routeReducer,
   order: orderReducer,
+  mapclick: mapclickReducer,
 });
 
 const persistedReducer = persistReducer(persisConfig, rootReducer);

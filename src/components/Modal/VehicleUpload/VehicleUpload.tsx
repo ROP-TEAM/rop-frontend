@@ -434,8 +434,6 @@ export const VehicleUpload = ({
   const handleNextState = () => {
     if (state === 1) {
       if (
-        vehicleFileHeader.startLocation?.fileCol === -1 ||
-        vehicleFileHeader.workTimeEnd?.fileCol === -1 ||
         vehicleFileHeader.workTimeStart?.fileCol === -1 ||
         vehicleFileHeader.capacity?.fileCol === -1
       ) {

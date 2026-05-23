@@ -1,5 +1,6 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/Modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
@@ -14,7 +15,6 @@ import { VehicleBase } from "@/types/api.types";
 import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
 import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
 import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
-import { Console } from "console";
 const Page = () => {
   const DEFAULT_HEADER_INDEX = -1;
   const [optimizeCount, setOptimizeCount] = useState<{
@@ -24,7 +24,10 @@ const Page = () => {
     distance: 0,
     vehicle: 0,
   });
+  const [optimizeResult, setOptimizeResult] = useState([]);
+  const [loadingCount, setLoadingCount] = useState<number>(0);
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
+  const [depotLoc, setDepotLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [createOptimize, { isLoading }] = useCreateOptimizeMutation();
   const [isUploadOrder, setIsUploadOrder] = useState(false);
   const [vehicleFile, setVehicleFile] = useState<File>();
@@ -80,7 +83,7 @@ const Page = () => {
       description: "รูปแบบ HH:MM หรือ HH.MM",
       value: "timeWindowStart",
       require: true,
-      regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+      regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
     },
 
     timeWindowEnd: {
@@ -90,7 +93,7 @@ const Page = () => {
       description: "รูปแบบ HH:MM หรือ HH.MM",
       value: "timeWindowEnd",
       require: true,
-      regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+      regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
     },
 
     location: {
@@ -134,7 +137,7 @@ const Page = () => {
         description: "รูปแบบ HH:MM หรือ HH.MM",
         value: "workTimeStart",
         require: true,
-        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+        regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
       },
 
       workTimeEnd: {
@@ -144,7 +147,7 @@ const Page = () => {
         description: "รูปแบบ HH:MM หรือ HH.MM",
         value: "workTimeEnd",
         require: true,
-        regex: /^([01]\d|2[0-3])[:.]([0-5]\d)$/,
+        regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
       },
       breakTimeStart: {
         fileCol: DEFAULT_HEADER_INDEX,
@@ -173,28 +176,6 @@ const Page = () => {
         value: "capacity",
         require: true,
         regex: /^[1-9]\d*$/,
-      },
-
-      startLocation: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ตำแหน่งเริ่มต้น",
-        description: "รูปแบบ latitude,longitude",
-        value: "startLocation",
-        require: true,
-        regex:
-          /^-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?)$/,
-      },
-
-      endLocation: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ตำแหน่งสิ้นสุด",
-        description: "ถ้าต้องการให้กลับมาจุดเริ่มต้นให้เว้นว่างไว้",
-        value: "endLocation",
-        require: false,
-        regex:
-          /^(-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?))?$/,
       },
 
       maxTask: {
@@ -258,6 +239,10 @@ const Page = () => {
       return "กรุณาอัปโหลดไฟล์ข้อมูลออเดอร์ปลายทาง เพื่อเริ่มคำนวณเส้นทางการจัดส่ง";
     }
 
+    if (depotLoc.lat === 0 || depotLoc.lng === 0) {
+      return "กรุณากำหนดตำแหน่งคลังสินค้า (Depot Location) เพื่อใช้เป็นจุดเริ่มต้นในการวางแผนเส้นทาง";
+    }
+
     return "ข้อมูลครบถ้วนพร้อมใช้งาน สามารถเริ่มสร้างรอบรถและวางแผนเส้นทางได้ทันที";
   };
   const getFileName = (file: File | undefined) => {
@@ -308,7 +293,7 @@ const Page = () => {
 
       const name = getCellVehicle(header.name.fileCol, row);
 
-      const maxCapacity = Number(getCellVehicle(header.capacity.fileCol, row));
+      const capacity = Number(getCellVehicle(header.capacity.fileCol, row));
 
       const numberPlate = getCellVehicle(header.numberPlate.fileCol, row);
 
@@ -333,16 +318,6 @@ const Page = () => {
         breakTimeEnd = undefined;
       }
 
-      const startLocation = parseLocation(
-        getCellVehicle(header.startLocation.fileCol, row),
-      );
-
-      let endLocationRaw = getCellVehicle(header.endLocation.fileCol, row);
-
-      const endLocation = endLocationRaw
-        ? parseLocation(endLocationRaw)
-        : startLocation;
-
       const maxTaskRaw = getCellVehicle(header.maxTask.fileCol, row);
 
       const maxTask = maxTaskRaw ? Number(maxTaskRaw) : undefined;
@@ -355,24 +330,19 @@ const Page = () => {
       const vehicleBase: VehicleBase = {
         model,
         name,
-        maxCapacity,
-        numberPlate,
-        WorkTimeStart: workTimeStart,
-        WorkTimeEnd: workTimeEnd,
-        dailyBreakTimeStart: breakTimeStart,
-        dailyBreakTimeEnd: breakTimeEnd,
-        startLatitude: startLocation.lat,
-        startLongitude: startLocation.lng,
-        endLatitude: startLocation.lng,
-        endLongitude: startLocation.lng, //อย่าลืมแก้
+        capacity,
+        plateNumber: numberPlate,
+        workTimeStart: workTimeStart,
+        workTimeEnd: workTimeEnd,
+        breakTimeStart: breakTimeStart,
+        breakTimeEnd: breakTimeEnd,
 
         maxTask,
-        skills: skills,
+        skills: skills.map((item) => ({ name: item })),
       };
 
       setVehicleBases((prev) => [...prev, vehicleBase]);
     }
-    console.log(vehicleBases);
     setIsUploadVehicle(false);
   };
   const getCellOrder = (fileCol: number, row: number) => {
@@ -427,11 +397,11 @@ const Page = () => {
         name,
         description,
         capacity,
-        skills: skills,
+        skill: skills[0],
         timeWindowStart,
         timeWindowEnd,
-        deslatitude: location.lat,
-        deslongitude: location.lng,
+        desLatitude: location.lat,
+        desLongitude: location.lng,
         serviceTime,
         type: 0,
         priority,
@@ -444,45 +414,80 @@ const Page = () => {
   };
   const handleClearOptimize = () => {
     setIsOptimize(false);
-    setVehicleFileHeader((prev) => {
-      const updated = vehicleFileHeader;
-      Object.keys(updated).forEach((key) => {
-        const typedKey = key as keyof VehicleFileHeader;
-        updated[typedKey].fileCol = -1;
-      });
-      return updated;
-    });
-    setOrderFileHeader((prev) => {
-      const updated = orderFileHeader;
-      Object.keys(updated).forEach((key) => {
-        const typedKey = key as keyof OrderFileHeader;
-        updated[typedKey].fileCol = -1;
-      });
-      return updated;
-    });
-    setColDataOrder([]);
-    setColDataVehicle([]);
-    setVehicleFile(undefined);
-    setOrderFile(undefined);
+
+    // setOrderBases([]);
+    // setVehicleBases([]);
+    // setVehicleFileHeader((prev) => {
+    //   const updated = vehicleFileHeader;
+    //   Object.keys(updated).forEach((key) => {
+    //     const typedKey = key as keyof VehicleFileHeader;
+    //     updated[typedKey].fileCol = -1;
+    //   });
+    //   return updated;
+    // });
+    // setOrderFileHeader((prev) => {
+    //   const updated = orderFileHeader;
+    //   Object.keys(updated).forEach((key) => {
+    //     const typedKey = key as keyof OrderFileHeader;
+    //     updated[typedKey].fileCol = -1;
+    //   });
+    //   return updated;
+    // });
+    // setColDataOrder([]);
+    // setColDataVehicle([]);
+    // setVehicleFile(undefined);
+    // setOrderFile(undefined);
   };
 
   const handleCreateOptimize = async () => {
+    let intervalCount: NodeJS.Timeout;
+    setLoadingCount(0);
+
+    intervalCount = setInterval(() => {
+      setLoadingCount((prev) => prev + 1);
+    }, 1000);
     try {
       document.body.style.cursor = "wait";
       const result = await createOptimize({
+        depotLat: depotLoc.lat,
+        depotLon: depotLoc.lng,
         vehicles: vehicleBases,
         orders: orderBases,
       });
-      console.log({
-        vehicles: vehicleBases,
-        orders: orderBases,
+      const routes = result.data.data.routes;
+      if (!routes) {
+        console.log("Optimize failed", result.error);
+        return;
+      }
+      const totalDistance = result.data.data.routes.reduce(
+        (sum: number, v: any) => {
+          return sum + v.totalDistance;
+        },
+        0,
+      );
+
+      setOptimizeCount({
+        vehicle: result.data.data.routes.length,
+        distance: totalDistance,
       });
-      console.log(result);
       setIsOptimize(true);
+      setOptimizeResult(
+        routes.flatMap((r: any) => {
+          const content = r.stops.flatMap((s: any) => [
+            s.orderName,
+            s.arrivalMin,
+            s.departMin,
+          ]);
+        }),
+      );
     } catch (err) {
       console.log(err);
+    } finally {
+      console.log(optimizeResult);
+      setLoadingCount(0);
+      clearInterval(intervalCount);
+      document.body.style.cursor = "default";
     }
-    document.body.style.cursor = "default";
   };
   return (
     <div>
@@ -507,7 +512,7 @@ const Page = () => {
             <div className={styles.optimizeHeader}>
               <h2 className={styles.optimizeTitle}>ผลการคำนวณ</h2>
               <Tooltip title="ลองใหม่">
-                <button type="button">
+                <button onClick={() => handleCreateOptimize()} type="button">
                   <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
                 </button>
               </Tooltip>
@@ -517,7 +522,7 @@ const Page = () => {
                 <h2 className={styles.optimizeType}>รถที่ใช้ในการเดินทาง</h2>
                 <div className={styles.optimizeInfo}>
                   <h1 className={styles.optimizeVariable}>
-                    {optimizeCount.vehicle}
+                    {optimizeCount.vehicle} / {vehicleBases.length}
                   </h1>
                   <p className={styles.optimizeUnit}>คัน</p>
                 </div>
@@ -526,7 +531,7 @@ const Page = () => {
                 <h2 className={styles.optimizeType}>ระยะทางทั้งหมด </h2>
                 <div className={styles.optimizeInfo}>
                   <h1 className={styles.optimizeVariable}>
-                    {optimizeCount.vehicle}
+                    {(optimizeCount.distance / 1000).toFixed(2)}
                   </h1>
                   <p className={styles.optimizeUnit}>กม.</p>
                 </div>
@@ -553,6 +558,17 @@ const Page = () => {
           </div>
         ) : (
           <div>
+            <div className={styles.depotInput}>
+              <LocationInput
+                isRequire
+                color="var(--p-500)"
+                labelWeight="500"
+                label="ตำแหน่งคลังสินค้า"
+                labelGap="0.5rem"
+                value={depotLoc}
+                onChange={setDepotLoc}
+              ></LocationInput>
+            </div>
             <section className={styles.uploadContainer}>
               <div
                 style={{
@@ -689,9 +705,11 @@ const Page = () => {
               <button
                 onClick={() => handleCreateOptimize()}
                 disabled={!(vehicleBases.length > 0 && orderBases.length > 0)}
-                className={`${styles.sendAction}  ${!(vehicleBases.length > 0 && orderBases.length > 0) ? styles.isActive : ""}`}
+                className={`${styles.sendAction}  ${!(vehicleBases.length > 0 && orderBases.length > 0) || loadingCount > 0 ? styles.isActive : ""}`}
               >
-                จัดรอบรถ
+                {loadingCount > 0
+                  ? `กำลังโหลด ... ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")}`
+                  : "จัดรอบรถ"}
               </button>
             </section>
           </div>

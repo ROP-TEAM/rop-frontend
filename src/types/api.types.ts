@@ -15,29 +15,24 @@ export interface TimePeriodNotRequire {
 export interface VehicleBase {
   model?: string;
   name: string;
-  dailyBreakTimeStart: number | undefined;
-  dailyBreakTimeEnd: number | undefined;
-  maxCapacity: number;
-  numberPlate?: string;
-  WorkTimeStart: number;
-  WorkTimeEnd: number;
-  startLatitude: number;
-  startLongitude: number;
-  endLatitude: number;
-  endLongitude: number;
-
+  breakTimeStart: number | undefined;
+  breakTimeEnd: number | undefined;
+  capacity: number;
+  plateNumber?: string;
+  workTimeStart: number;
+  workTimeEnd: number;
   maxTask?: number;
-  skills?: string[];
+  skills?: { name: string }[];
 }
 export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
-  skills?: string[];
+  skill?: string;
   timeWindowStart: number;
   timeWindowEnd: number;
-  deslatitude: number;
-  deslongitude: number;
+  desLatitude: number;
+  desLongitude: number;
   serviceTime: number;
   type: number;
   priority: number;

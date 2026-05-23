@@ -499,7 +499,7 @@ const Page = () => {
     }
   };
   const getDownloadFileResult = () => {
-    const header = ["ชื่อคนขับ", "ชื่อออเดอร์", "เวลาที่ไปถึง", "เวลาบริการ"];
+    const header = ["ชื่อคนขับ", "ชื่อออเดอร์", "เวลาที่ไปถึง", "เวลาออก"];
 
     const rows = optimizeResult;
 

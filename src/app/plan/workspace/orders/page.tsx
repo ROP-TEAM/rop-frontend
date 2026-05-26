@@ -23,26 +23,59 @@ const mockOrders: Order[] = [
     name: "Order A",
     description: "Frozen food",
     capacity: 10,
-    skills: {
-      id: 1,
-      name: "ห้องเย็น",
-      color: "#4ADE80",
-    },
-
-    timeWindow: {
-      start: 800,
-      end: 1200,
-    },
-
-    location: {
-      lat: 16.1479,
-      lng: 102.1578,
-    },
-
+    skills: { id: 1, name: "ห้องเย็น", color: "#4ADE80" },
+    timeWindow: { start: 800, end: 1200 },
+    location: { lat: 16.1479, lng: 102.1578 },
     serviceTime: 15,
-
     type: "delivery",
-
+    priority: "high",
+  },
+  {
+    id: 2,
+    name: "Order B",
+    description: "Electronics",
+    capacity: 5,
+    skills: undefined,
+    timeWindow: { start: 900, end: 1700 },
+    location: { lat: 16.2105, lng: 102.8312 },
+    serviceTime: 10,
+    type: "pick up",
+    priority: "medium",
+  },
+  {
+    id: 3,
+    name: "Order C",
+    description: "Fragile items",
+    capacity: 3,
+    skills: { id: 2, name: "ของแตก", color: "#F87171" },
+    timeWindow: { start: 1000, end: 1400 },
+    location: { lat: 16.0539, lng: 102.7222 },
+    serviceTime: 20,
+    type: "delivery",
+    priority: "critical",
+  },
+  {
+    id: 4,
+    name: "Order D",
+    description: "Documents",
+    capacity: 1,
+    skills: undefined,
+    timeWindow: { start: 800, end: 2000 },
+    location: { lat: 16.4322, lng: 102.8342 },
+    serviceTime: 5,
+    type: "delivery",
+    priority: "low",
+  },
+  {
+    id: 5,
+    name: "Order E",
+    description: "Heavy machinery parts",
+    capacity: 50,
+    skills: { id: 3, name: "ของหนัก", color: "#FB923C" },
+    timeWindow: { start: 700, end: 1200 },
+    location: { lat: 16.3011, lng: 102.9801 },
+    serviceTime: 45,
+    type: "pick up",
     priority: "high",
   },
 ];
@@ -423,7 +456,7 @@ const Orders = () => {
         options={[
           {
             label: "Pick up",
-            value: "pickup",
+            value: "pick up",
           },
           {
             label: "Delivery",

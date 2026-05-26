@@ -70,6 +70,7 @@ export const VehicleProfile = ({ onClose }: VehicleProfileProps) => {
               value={name}
               color="var(--p-700)"
               onChange={setName}
+              pading="0.25rem 0.5rem"
               placeholder="กรุณากรอกชื่อ"
               label="ชื่อที่แสดง"
               labelSize="0.825rem"
@@ -79,6 +80,7 @@ export const VehicleProfile = ({ onClose }: VehicleProfileProps) => {
               labelGap="0.25rem"
               border="0.0625rem solid var(--p-300)"
               fontSize="0.85rem"
+              pading="0.25rem 0.5rem"
               fontWeight="400"
               value={model}
               color="var(--p-700)"
@@ -90,6 +92,7 @@ export const VehicleProfile = ({ onClose }: VehicleProfileProps) => {
             ></TextInput>
             <TextInput
               labelGap="0.25rem"
+              pading="0.25rem 0.5rem"
               border="0.0625rem solid var(--p-300)"
               fontSize="0.85rem"
               fontWeight="400"

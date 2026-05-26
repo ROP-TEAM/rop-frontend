@@ -1,4 +1,5 @@
 "use client";
+import { OrderCard } from "./orderCard/orderCard";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { DetailCard } from "@/components/ui/DetailCard/DetailCard";
 import { useCallback, useState } from "react";
@@ -23,6 +24,8 @@ const MapWorkspace = () => {
     lat: 16.441879460231092,
     lng: 102.8275588872729,
   });
+
+  const [isVehicleState, setIsVehicleState] = useState<boolean>(false);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -54,14 +57,26 @@ const MapWorkspace = () => {
             </button>
           </div>
           <div className={styles.stateControl}>
-            <button type="button">ยานพาหนะ</button>
-            <button type="button">ออเดอร์</button>
+            <button onClick={() => setIsVehicleState(true)} type="button">
+              ยานพาหนะ
+            </button>
+            <button onClick={() => setIsVehicleState(false)} type="button">
+              ออเดอร์
+            </button>
           </div>
           <button
             onClick={() => dispatch(detailOpen())}
             className={styles.vehicleContainer}
           >
-            <VehicleCard></VehicleCard>
+            {isVehicleState ? (
+              <div>
+                <VehicleCard></VehicleCard>
+              </div>
+            ) : (
+              <div>
+                <OrderCard></OrderCard>
+              </div>
+            )}
           </button>
         </div>
       )}
@@ -77,6 +92,9 @@ const MapWorkspace = () => {
               const lat = e.latLng?.lat() ?? 0;
               const lng = e.latLng?.lng() ?? 0;
               dispatch(setLatLng({ lat, lng }));
+            }}
+            options={{
+              clickableIcons: false,
             }}
           >
             {/* Child components, such as markers, info windows, etc. */}

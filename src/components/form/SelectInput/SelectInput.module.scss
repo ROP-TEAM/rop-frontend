@@ -1,8 +1,9 @@
 .trigger {
-  border: var(--border-subtle);
+  box-sizing: border-box;
+  border: var(--border-default);
   width: 100%;
   text-align: center;
-  padding: 0.25rem 0.875rem;
+  padding: var(--padding-default);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,6 +15,12 @@
     font-weight: 500;
     font-size: 0.725rem;
   }
+}
+
+.value {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--s-600);
 }
 
 .hasValue {
@@ -32,6 +39,7 @@
   }
 }
 .active {
+  padding: 0.5rem 0.5rem;
   border: 0.125rem solid var(--s-500);
 }
 

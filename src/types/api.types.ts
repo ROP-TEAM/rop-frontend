@@ -27,7 +27,11 @@ export interface Order {
   name: string;
   description?: string;
   capacity: number;
-  skills?: string[];
+  skills?: {
+    id?: number;
+    name: string;
+    color: string;
+  };
   timeWindow: TimePeriod;
   location: Location;
   serviceTime: number;

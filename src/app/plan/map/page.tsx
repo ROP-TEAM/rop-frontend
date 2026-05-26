@@ -93,6 +93,9 @@ const MapWorkspace = () => {
               const lng = e.latLng?.lng() ?? 0;
               dispatch(setLatLng({ lat, lng }));
             }}
+            options={{
+              clickableIcons: false,
+            }}
           >
             {/* Child components, such as markers, info windows, etc. */}
             <></>

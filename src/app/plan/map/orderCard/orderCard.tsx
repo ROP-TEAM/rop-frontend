@@ -1,14 +1,19 @@
 import { SkillInput } from "@/components/form/SkillInput/SkillInput";
 import { SkillPillProps } from "@/components/ui/SkillPill/SkillPill.types";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
+import { SelectInput } from "@/components/form/SelectInput/SelectInput";
+import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { useState } from "react";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import styles from "./orderCard.module.scss";
+import { Location } from "@/types/api.types";
+
 export const OrderCard = () => {
   const [isExplain, setIsExplain] = useState(false);
   const [name, setName] = useState("#ORD30");
   const [capacity, setCapacity] = useState(0);
+  const [orderLoc, setOrderLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [skillList, setSkillList] = useState<SkillPillProps[]>([
     { title: "ของเย็น", color: "#60A5FA" },
     { title: "อาหารสด", color: "#34D399" },
@@ -22,6 +27,14 @@ export const OrderCard = () => {
   const [selectSkill, setSelectSkill] = useState<SkillPillProps[]>([
     { title: "ของเย็น", color: "#60A5FA" },
   ]);
+  const [orderType, setOrderType] = useState<number>(0);
+  const TYPE_DELIVERY = [
+    { label: "ส่งสินค้า", value: "0" },
+    {
+      label: "รับสินค้า",
+      value: "1",
+    },
+  ];
   return (
     <div className={styles.container}>
       <SkillInput
@@ -40,7 +53,11 @@ export const OrderCard = () => {
               onChange={setName}
             ></TextInput>
           </div>
-          <button onClick={() => setIsExplain((prev) => !prev)} type="button">
+          <button
+            className={`${isExplain ? styles.arrowDown : ""}`}
+            onClick={() => setIsExplain((prev) => !prev)}
+            type="button"
+          >
             <IconSvgMono
               size={20}
               color="var(--p-500)"
@@ -60,6 +77,20 @@ export const OrderCard = () => {
               value={capacity}
               onChange={setCapacity}
             ></NumberInput>
+            <SelectInput
+              label="ประเภทการการจัดส่ง"
+              value={String(orderType)}
+              options={TYPE_DELIVERY}
+              onChange={(value: string) => setOrderType(Number(value))}
+            ></SelectInput>
+            <LocationInput
+              color="var(--s-500)"
+              labelSize="0.725rem"
+              labelGap="0.25rem"
+              label="ตำแหน่ง"
+              value={orderLoc}
+              onChange={setOrderLoc}
+            ></LocationInput>
           </div>
         )}
       </div>

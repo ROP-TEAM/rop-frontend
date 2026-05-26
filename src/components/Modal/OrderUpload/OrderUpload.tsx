@@ -48,7 +48,6 @@ export const OrderUpload = ({
 
     reader.onload = (e) => {
       const text = e.target?.result as string;
-
       if (!text.trim()) {
         setError("ไม่สามารถอัพโหลดไฟล์เปล่า");
         return;

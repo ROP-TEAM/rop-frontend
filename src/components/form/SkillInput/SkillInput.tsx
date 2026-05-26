@@ -104,7 +104,10 @@ export const SkillInput = ({
                   className={styles.noSkill}
                   onClick={() => setIsDrop((prev) => !prev)}
                 >
-                  ไม่มีความสามารถเฉพาะ
+                  <SkillPill
+                    color="var(--p-300)"
+                    title="สินค้าทั่วไป"
+                  ></SkillPill>
                 </button>
               )}
             </div>
@@ -124,6 +127,9 @@ export const SkillInput = ({
                 } else {
                   if (isMutiSelect) onChange([...value, s]);
                   onChange([s]);
+                }
+                if (!isMutiSelect) {
+                  setIsDrop(false);
                 }
               }}
             >

@@ -3,6 +3,7 @@
   color: var(--label-color);
 }
 .locationInput {
+  margin-top: var(--label-gap);
   display: flex;
   align-items: end;
   .comma {
@@ -30,7 +31,7 @@
     width: 5.5rem;
   }
   .lat,
-.lng {
+  .lng {
     color: var(--color-outFocus);
     background-color: var(--p-0);
     border: none;

@@ -11,6 +11,6 @@ export interface VehicleBase {
   maxTask?: number;
   skills?: { id?: number; name: string; color?: string }[];
 }
-export interface Vehicle extends Vehicle {
+export interface Vehicle extends VehicleBase {
   id: number;
 }

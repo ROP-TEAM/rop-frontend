@@ -6,13 +6,13 @@ import { StepperControl } from "@/components/ui/StepperControl/StepperControl";
 import { StepperProp } from "@/components/ui/StepperControl/StepperControl.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import styles from "./VehicleUpload.module.scss";
+import styles from "./UploadStepper.module.scss";
 import {
   ErrorTableProps,
   UploadStepperProps,
   PreviewTableProps,
-  HeaderRule,
-} from "./VehicleUpload.types";
+} from "./UploadStepper.types";
+
 const STEPPER: StepperProp[] = [
   { value: 0, label: "เลือกไฟล์" },
   { value: 1, label: "จัดการ" },
@@ -20,11 +20,17 @@ const STEPPER: StepperProp[] = [
 ];
 const ACEEPTFILE = [".csv"];
 
-export const VehicleUpload = ({
+export const UploadStepper = ({
+  title,
+  fileExample,
+  description,
+  skillPill,
   file,
   setFile,
+  mappedColData,
+  setMappedColData,
   headerRule,
-  handleCreateVehicles,
+  handleCreate,
   onClose,
 }: UploadStepperProps) => {
   const [state, setState] = useState<number>(0);
@@ -32,15 +38,12 @@ export const VehicleUpload = ({
   const [errorIndex, setErrorIndex] = useState<number[][]>(
     Array.from({ length: headerRule.length }, () => []),
   );
-  const [colData, setColData] = useState<string[][]>([]);
-  const [internalColData, setInternalColData] = useState<string[][]>(
-    Array.from({ length: headerRule.length }, () => []),
-  );
+
+  const [rawColData, setRawColData] = useState<string[][]>([]);
+
   const [header, setHeader] = useState<string[]>([]);
 
-  const ishasErrorFile = errorIndex.some((e) => {
-    e.length > 0;
-  });
+  const ishasErrorFile = errorIndex.some((e) => e.length > 0);
 
   const parseCSVRow = (row: string): string[] => {
     const result: string[] = [];
@@ -68,27 +71,24 @@ export const VehicleUpload = ({
     return result;
   };
 
-  // useEffect(() => {
-  //   console.log(errorIndex);
-  // }, [errorIndex]);
-
-  const parseCSVCol = (rows: string[][]) => {
-    if (rows[0].length == 0) return [];
+  const parseCSVCol = (rows: string[][]): string[][] => {
+    if (rows[0].length === 0) return [];
     const colCount = rows[0].length;
 
-    let tempColData: string[][] = Array.from(
+    const tempRawColData: string[][] = Array.from(
       { length: rows[0].length },
       () => [],
     );
     for (let row = 0; row < rows.length; row++) {
       for (let col = 0; col < colCount; col++) {
-        tempColData[col].push(rows[row][col] ?? "");
+        tempRawColData[col].push(rows[row][col] ?? "");
       }
     }
-    return tempColData;
+    return tempRawColData;
   };
 
   const handleUploadFile = (file: File) => {
+    setMappedColData(Array.from({ length: headerRule.length }, () => []));
     const isCsv = file.name.toLowerCase().endsWith(".csv");
     if (!isCsv) {
       setError("รองรับประเภทไฟล์ .csv เท่านั้น");
@@ -106,27 +106,27 @@ export const VehicleUpload = ({
 
       const rows = text.split(/\r?\n/).filter((row) => row.trim() !== "");
       const parsedRows = rows.map(parseCSVRow);
-      const parsedCol = parseCSVCol(parsedRows);
+      const parsedRawCol = parseCSVCol(parsedRows);
       const headers = parsedRows[0];
-      const tempInternalColData: string[][] = Array.from(
+
+      const tempMappedColData: string[][] = Array.from(
         { length: headerRule.length },
         () => [],
       );
       for (let h = 0; h < headers.length; h++) {
-        const headerIndex = headerRule.findIndex((r) =>
+        const ruleIndex = headerRule.findIndex((r) =>
           r.label.includes(headers[h].trim()),
         );
-
-        if (headerIndex !== -1) {
-          tempInternalColData[headerIndex] = [...(parsedCol[h] ?? [])];
+        if (ruleIndex !== -1) {
+          tempMappedColData[ruleIndex] = [...(parsedRawCol[h] ?? [])];
         }
       }
-      setInternalColData(tempInternalColData);
+
+      setMappedColData(tempMappedColData);
+      setRawColData(parsedRawCol);
       setHeader(headers);
-      setColData(parsedCol);
       setFile(file);
       setError("");
-
       setState(1);
     };
 
@@ -134,42 +134,13 @@ export const VehicleUpload = ({
   };
 
   const getVehicleDownloadFileExam = () => {
-    const rows = [
-      [
-        "08:00",
-        "17:00",
-        "12:00",
-        "13:00",
-        "1200",
-        '"13.7563,100.5018"',
-        '"13.7563,100.5018"',
-        "25",
-        '"ของเย็น,ผักสด"',
-        "Toyota Revo",
-        "รถคันที่ 1",
-        "กข1234",
-      ],
-      [
-        "09:00",
-        "18:00",
-        "",
-        "",
-        "800",
-        '"13.7263,100.5218"',
-        "",
-        "",
-        '"เอกสาร"',
-        "Isuzu D-Max",
-        "รถคันที่ 2",
-        "1ฒฮ8888",
-      ],
-    ];
+    if (!fileExample || fileExample?.length == 0) return;
 
     const escapeCSV = (value: string) => `"${value.replace(/"/g, '""')}"`;
 
     const csvContent = [
       header.map(escapeCSV).join(","),
-      ...rows.map((row) => row.map(escapeCSV).join(",")),
+      ...fileExample.map((row) => row.map(escapeCSV).join(",")),
     ].join("\n");
 
     const blob = new Blob(["\uFEFF" + csvContent], {
@@ -189,9 +160,9 @@ export const VehicleUpload = ({
   const handleNextState = () => {
     if (state === 1) {
       if (
-        headerRule.some((r, index) => {
-          return r.require && internalColData[index].length == 0;
-        })
+        headerRule.some(
+          (r, index) => r.require && mappedColData[index].length === 0,
+        )
       ) {
         setError("เลือกข้อมูลให้ครบถ้วน");
         return;
@@ -200,7 +171,7 @@ export const VehicleUpload = ({
       setError("");
     }
     if (state === 2 && !ishasErrorFile) {
-      handleCreateVehicles();
+      handleCreate();
     }
   };
 
@@ -219,33 +190,35 @@ export const VehicleUpload = ({
               <p>ประเภทไฟล์ที่รองรับ {ACEEPTFILE.join(",")}</p>
               <p>ขนาดไฟล์สูงสุด 201 แถว</p>
             </div>
-            <div className={styles.fileTemplate}>
-              <div>
-                <div className={styles.fileTemplateHeader}>
-                  <Image
-                    src={"/flat/excel.svg"}
-                    alt="excel"
-                    width={20}
-                    height={20}
-                  />
-                  <h3 className={styles.text}>ตัวอย่างไฟล์ที่ถูกต้อง</h3>
+            {fileExample && (
+              <div className={styles.fileTemplate}>
+                <div>
+                  <div className={styles.fileTemplateHeader}>
+                    <Image
+                      src={"/flat/excel.svg"}
+                      alt="excel"
+                      width={20}
+                      height={20}
+                    />
+                    <h3 className={styles.text}>ตัวอย่างไฟล์ที่ถูกต้อง</h3>
+                  </div>
+                  <p className={styles.fileTempalateDescription}>
+                    สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส
+                    วิกเพลย์บอยพลานุภาพ
+                  </p>
                 </div>
-                <p className={styles.fileTempalateDescription}>
-                  สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส
-                  วิกเพลย์บอยพลานุภาพ
-                </p>
+                <button
+                  className={styles.download}
+                  onClick={getVehicleDownloadFileExam}
+                >
+                  ดาวโหลดไฟล์
+                </button>
               </div>
-              <button
-                className={styles.download}
-                onClick={getVehicleDownloadFileExam}
-              >
-                ดาวโหลดไฟล์
-              </button>
-            </div>
+            )}
           </div>
         );
 
-      case 1: {
+      case 1:
         return (
           <div className={styles.manage}>
             <div className={styles.fileWrapper}>
@@ -267,9 +240,9 @@ export const VehicleUpload = ({
                   return <h4>{name}</h4>;
                 })()}
                 <p className={styles.fileCount}>
-                  {colData.length} หลัก{" "}
-                  {colData.length > 0
-                    ? Math.max(...colData.map((row) => row.length))
+                  {rawColData.length} หลัก{" "}
+                  {rawColData.length > 0
+                    ? Math.max(...rawColData.map((row) => row.length))
                     : 0}{" "}
                   แถว
                 </p>
@@ -293,14 +266,17 @@ export const VehicleUpload = ({
                       label: h,
                       value: h,
                     }));
+
                     const changeHeaderCol = (value: string) => {
-                      const headerIndex = header.indexOf(value);
-                      setInternalColData((prev) =>
-                        prev.map((c) => (c[0] == value ? [] : c)),
+                      const rawColIndex = header.indexOf(value);
+                      // ล้าง rule อื่นที่เลือก column เดียวกันออกก่อน
+                      setMappedColData((prev) =>
+                        prev.map((c) => (c[0] === value ? [] : c)),
                       );
-                      setInternalColData((prev) => {
+                      // set mappedColData ของ rule นี้จาก rawColData
+                      setMappedColData((prev) => {
                         const temp = [...prev];
-                        temp[index] = [...(colData[headerIndex] ?? [])];
+                        temp[index] = [...(rawColData[rawColIndex] ?? [])];
                         return temp;
                       });
                     };
@@ -321,12 +297,12 @@ export const VehicleUpload = ({
                         <td className={styles.selectImport}>
                           <SelectInput
                             subString={16}
-                            isOnTop={0.5}
+                            isOnTop={0.65}
                             activeFontColor="var(--s-500)"
                             activeBackground="var(--s-300)"
                             activeBorder="0.125rem solid var(--s-500)"
                             placeholder="ยังไม่ได้เลือกค่า"
-                            value={internalColData[index][0]}
+                            value={mappedColData[index][0]}
                             onChange={changeHeaderCol}
                             options={optionHeader}
                           />
@@ -339,7 +315,6 @@ export const VehicleUpload = ({
             </div>
           </div>
         );
-      }
 
       case 2:
         return (
@@ -353,12 +328,7 @@ export const VehicleUpload = ({
                       ตรวจพบข้อผิดพลาดในการนำเข้าไฟล์
                     </h3>
                     <p className={styles.cautionDescription}>
-                      พบข้อมูล{" "}
-                      {/* {
-                        Object.values(vehicleFileHeader).filter(
-                          (item) => item.errorRows.length > 0,
-                        ).length
-                      }{" "} */}
+                      พบข้อมูล {errorIndex.filter((e) => e.length > 0).length}{" "}
                       ประเภทเกิดข้อผิดพลาดในการแปลงไฟล์
                       กรุณาแก้ไขข้อผิดพลาดแล้วลองใหม่อีกครั้ง
                     </p>
@@ -372,38 +342,34 @@ export const VehicleUpload = ({
                 <p className={styles.errorTitle}>ข้อมูลข้อผิดพลาด</p>
               )}
               <div className={styles.errorTableCaution}>
-                {internalColData.map((f, index) => {
-                  return (
-                    <ErrorTable
-                      require={headerRule[index].require}
-                      key={index}
-                      errorRows={errorIndex[index]}
-                      onValid={(errorRows) =>
-                        setErrorIndex((prev) =>
-                          prev.map((e, idx) => (index == idx ? errorRows : e)),
-                        )
-                      }
-                      description={headerRule[index].description}
-                      systemHeader={headerRule[index].label}
-                      data={internalColData[index]}
-                      regex={headerRule[index].regex ?? undefined}
-                    />
-                  );
-                })}
+                {mappedColData.map((col, index) => (
+                  <ErrorTable
+                    require={headerRule[index].require}
+                    key={index}
+                    errorRows={errorIndex[index]}
+                    onValid={(errorRows) =>
+                      setErrorIndex((prev) =>
+                        prev.map((e, idx) => (index === idx ? errorRows : e)),
+                      )
+                    }
+                    description={headerRule[index].description}
+                    systemHeader={headerRule[index].label}
+                    data={col}
+                    regex={headerRule[index].regex ?? undefined}
+                  />
+                ))}
               </div>
             </div>
 
             <p className={styles.errorTitle}>ตัวอย่างข้อมูลนำเข้า</p>
             <PreviewTable
-              tableInfo={internalColData
-                .filter((v) => v.length > 0)
-                .map((v, index) => {
-                  return {
-                    content: v,
-                    label: headerRule[index].label,
-                    errorRows: errorIndex[index],
-                  };
-                })}
+              tableInfo={mappedColData
+                .filter((col) => col.length > 0)
+                .map((col, index) => ({
+                  content: col,
+                  label: headerRule[index].label,
+                  errorRows: errorIndex[index],
+                }))}
             />
           </div>
         );
@@ -418,10 +384,15 @@ export const VehicleUpload = ({
       <div className={styles.header}>
         <div className={styles.headerInfo}>
           <div className={styles.headerTitle}>
-            <h2 className={styles.title}>เพิ่มยานพาหนะ</h2>
-            <SkillPill color="#5E7AC4" title="รถยนต์" />
+            <h2 className={styles.title}>{title}</h2>
+            {skillPill && (
+              <SkillPill
+                color={skillPill?.color}
+                title={skillPill?.title ?? ""}
+              />
+            )}
           </div>
-          <p>สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส</p>
+          {description && <p>{description}</p>}{" "}
         </div>
         <button onClick={onClose} type="button">
           <IconSvgMono src="/icon/cross.svg" size={12} color="var(--p-500)" />
@@ -460,6 +431,7 @@ export const VehicleUpload = ({
     </div>
   );
 };
+
 const ErrorTable = ({
   systemHeader,
   data,
@@ -469,12 +441,10 @@ const ErrorTable = ({
   require: isRequired,
   onValid,
 }: ErrorTableProps & { require?: boolean }) => {
-  const Error_PREVIEW = 3;
-  const errorMoreLength = (errorRows?.length ?? 0) - (Error_PREVIEW + 1);
+  const ERROR_PREVIEW = 3;
+  const errorMoreLength = (errorRows?.length ?? 0) - (ERROR_PREVIEW + 1);
 
   useEffect(() => {
-    console.log("header" + systemHeader);
-    console.log("errorRows" + errorRows);
     if (!regex || !data) return;
 
     const errorRowsTemp: number[] = [];
@@ -482,9 +452,7 @@ const ErrorTable = ({
     for (let i = 1; i < data.length; i++) {
       const value = data[i]?.trim();
 
-      if (!isRequired && value === "") {
-        continue;
-      }
+      if (!isRequired && value === "") continue;
 
       if (!regex.test(value)) {
         errorRowsTemp.push(i);
@@ -497,6 +465,7 @@ const ErrorTable = ({
   }, [data, regex, isRequired, errorRows, onValid]);
 
   if (errorRows.length === 0) return null;
+
   return (
     <div className={styles.errorTable}>
       <div className={styles.errorTableInfo}>
@@ -514,7 +483,7 @@ const ErrorTable = ({
         <p className={styles.errorTableRequire}>{description}</p>
         <div className={styles.errorTableRows}>
           {errorRows.map((err, index) => {
-            if (index > Error_PREVIEW) return null;
+            if (index > ERROR_PREVIEW) return null;
             return (
               <div className={styles.errorTableFile} key={index}>
                 <div className={styles.errorTableFileRow}>แถวที่ {err}</div>
@@ -539,9 +508,6 @@ const ErrorTable = ({
 
 export const PreviewTable = ({ tableInfo }: PreviewTableProps) => {
   const PREVIEW_LENGTH = 5;
-  // if (!colData || colData.length === 0) return null;
-
-  // const activeColumns = tableInfo.filter((row) => row.fileCol !== -1);
 
   return (
     <div className={styles.previewTable}>

@@ -1,5 +1,5 @@
-import React, { SetStateAction } from "react";
-
+import React from "react";
+import { SkillPillProps } from "@/components/ui/SkillPill/SkillPill.types";
 export type HeaderRule = {
   label: string;
   description: string;
@@ -22,11 +22,15 @@ export interface PreviewTableProps {
 }
 
 export interface UploadStepperProps {
+  title: string;
+  description?: string;
+  fileExample?: string[][];
+  skillPill?: SkillPillProps;
   file: File | undefined;
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>;
-  colData: string[][];
+  mappedColData: string[][];
   headerRule: HeaderRule[];
-  setColData: React.Dispatch<React.SetStateAction<string[][]>>;
-  handleCreateVehicles: () => void;
+  setMappedColData: React.Dispatch<React.SetStateAction<string[][]>>;
+  handleCreate: () => void;
   onClose: () => void;
 }

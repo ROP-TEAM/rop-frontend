@@ -1,8 +1,8 @@
 "use client";
 
 import { Modal } from "@/components/modal/Modal/Modal";
-import { VehicleUpload } from "@/components/modal/VehicleUpload/VehicleUpload";
-import { VehicleFileHeader } from "@/components/modal/VehicleUpload/VehicleUpload.types";
+import { VehicleUpload } from "@/components/modal/UploadStepper/UploadStepper";
+import { VehicleFileHeader } from "@/components/modal/UploadStepper/UploadStepper.types";
 
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import TimeInput from "@/components/form/TimeInput/TimeInput";

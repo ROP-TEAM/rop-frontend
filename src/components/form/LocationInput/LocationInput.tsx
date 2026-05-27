@@ -8,14 +8,17 @@ import { RootState } from "@/app/store";
 import { setOnFocus } from "@/app/features/mapClick/mapClickSlice";
 export const LocationInput = ({
   labelColor = "var(--p-800)",
+  isRequire = false,
   labelSize = "1rem",
   label = "",
+  labelWeight = "400",
   labelGap = "0.5rem",
   placeholder = "",
   value,
   color = "var(--p-200)",
   fontSize = "1rem",
   width = "100%",
+  backgroundColor = "transparent",
   inputId = "locationInput",
   onChange,
 }: LocationInputProps) => {
@@ -49,12 +52,13 @@ export const LocationInput = ({
           className={styles.label}
           style={
             {
+              "--label-weight": labelWeight,
               "--label-size": labelSize,
               "--label-color": labelColor,
             } as React.CSSProperties
           }
         >
-          {label}
+          {label} <span className={styles.require}>*</span>
         </label>
       )}
       <div
@@ -116,7 +120,7 @@ export const LocationInput = ({
               setLatRaw(lat);
               setLngRaw(lng);
 
-              onChange({ lat: Number(lng), lng: Number(lng) });
+              onChange({ lat: Number(lat), lng: Number(lng) });
             } else {
               setLatRaw(text);
               onChange({ ...value, lat: Number(text) });
@@ -127,6 +131,7 @@ export const LocationInput = ({
             {
               fontSize: fontSize,
               "--color-outFocus": color,
+              "--background-color": backgroundColor,
             } as React.CSSProperties
           }
           type="number"
@@ -177,14 +182,20 @@ export const LocationInput = ({
               setLatRaw(lat);
               setLngRaw(lng);
 
-              onChange({ lat: Number(lng), lng: Number(lng) });
+              onChange({ lat: Number(lat), lng: Number(lng) });
             } else {
               setLngRaw(text);
               onChange({ ...value, lng: Number(text) });
             }
           }}
           placeholder={placeholder}
-          style={{ fontSize, "--color-outFocus": color } as React.CSSProperties}
+          style={
+            {
+              fontSize,
+              "--color-outFocus": color,
+              "--background-color": backgroundColor,
+            } as React.CSSProperties
+          }
           type="number"
         />
       </div>

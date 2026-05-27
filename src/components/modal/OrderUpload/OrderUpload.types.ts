@@ -9,7 +9,6 @@ export type OrderHeaderKey =
   | "timeWindowEnd"
   | "location"
   | "serviceTime"
-  | "type"
   | "priority";
 
 export type OrderFileHeader = Record<
@@ -39,8 +38,24 @@ export interface PreviewTableProps {
   tableInfo: { fileCol: number; label: string; errorRows: number[] }[];
 }
 
-export interface UploadStepperProps {
+export interface OrderUploadProps {
+  file: File | undefined;
+  setFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  colData: string[][];
   orderFileHeader: OrderFileHeader;
+  setColData: React.Dispatch<React.SetStateAction<string[][]>>;
   setOrderFileHeader: React.Dispatch<React.SetStateAction<OrderFileHeader>>;
+  handleCreateOrder: () => void;
   onClose: () => void;
+}
+export interface OrderUploadStateProps {
+  state: number;
+  file: File | undefined;
+  colData: string[][];
+  fileHeader: string[];
+  orderFileHeader: OrderFileHeader;
+  ishasErrorFile: boolean;
+  setState: React.Dispatch<React.SetStateAction<number>>;
+  setOrderFileHeader: React.Dispatch<React.SetStateAction<OrderFileHeader>>;
+  handleUploadFile: (file: File) => void;
 }

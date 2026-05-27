@@ -49,7 +49,11 @@ export const SelectInput = ({
 
   useEffect(() => {
     if (internalActive) return;
-    setFocusIndex(-1);
+    const timer = setTimeout(() => {
+      setFocusIndex(-1);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [internalActive]);
   return (
     <div>
@@ -68,8 +72,13 @@ export const SelectInput = ({
                 optionRef.current[0]?.focus();
               }
             }}
+<<<<<<< HEAD
             className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value && withColorStyle ? styles.hasValue : ""}`}
             onClick={() => setInternalActive((prev) => !prev)}
+=======
+            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value ? styles.hasValue : ""}`}
+            onClick={() => setInternalActive(true)}
+>>>>>>> 32e197b (KAN-130 vehicleUpload => uploadStepper)
             type="button"
             style={
               {
@@ -100,8 +109,13 @@ export const SelectInput = ({
             <FloatingCard.body
               isHasCheck={checkList.includes(index)}
               onClick={() => {
+<<<<<<< HEAD
                 setInternalActive(false);
                 onChange(typeof item === "string" ? item : item.value);
+=======
+                onChange(typeof item === "string" ? item : item.value);
+                setInternalActive(false);
+>>>>>>> 32e197b (KAN-130 vehicleUpload => uploadStepper)
               }}
               optionRef={(el: HTMLButtonElement | null) => {
                 optionRef.current[index] = el;

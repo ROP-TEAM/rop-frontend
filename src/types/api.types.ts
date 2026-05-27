@@ -11,30 +11,35 @@ export interface TimePeriod {
 export interface VehicleBase {
   model?: string;
   name: string;
-  maxCapacity: number;
-  numberPlate?: string;
+  capacity: number;
+  plateNumber?: string;
   profile_id?: number;
-  workTime: TimePeriod;
-  breakTime: TimePeriod;
-  startLocation: Location;
-  endLocation: Location;
+  workTimeStart: number;
+  workTimeEnd: number;
+  breakTimeStart?: number;
+  breakTimeEnd?: number;
+
   maxTask?: number;
-  skills?: {  id?: number; name: string; color: string }[];
+  skills?: { id?: number; name: string; color?: string }[];
 }
 
-export interface Order {
-  id: number;
+export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
-  skills?: string[];
-  timeWindow: TimePeriod;
-  location: Location;
+  skill?: string;
+  timeWindowStart: number;
+  timeWindowEnd: number;
+  desLatitude: number;
+  desLongitude: number;
   serviceTime: number;
-  type: "pick up" | "delivery";
-  priority: "critical" | "high" | "medium" | "low";
+  type: number;
+  priority: number;
 }
 
+export interface Order extends OrderBase {
+  id: number;
+}
 export interface Vehicle extends VehicleBase {
   id: number;
 }

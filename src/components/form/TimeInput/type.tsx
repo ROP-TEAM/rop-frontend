@@ -6,7 +6,6 @@ type TimeValue = {
 type TimeInputProps = {
   value: TimeValue;
   onChange?: (val: TimeValue) => void;
-   onBlur?: (val: TimeValue) => void; 
   placeholder?: string;
   width?: string;
 };

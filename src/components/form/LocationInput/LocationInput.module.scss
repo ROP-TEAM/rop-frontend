@@ -1,6 +1,10 @@
 .label {
   font-size: var(--label-size);
   color: var(--label-color);
+  font-weight: var(--label-weight);
+  .require {
+    color: red;
+  }
 }
 .locationInput {
   margin-top: var(--label-gap);
@@ -32,8 +36,12 @@
   }
   .lat,
   .lng {
+<<<<<<< HEAD
+=======
+    border-radius: 0.125rem;
+>>>>>>> 32e197b (KAN-130 vehicleUpload => uploadStepper)
     color: var(--color-outFocus);
-    background-color: var(--p-0);
+    background-color: var(--background-color);
     border: none;
     &:hover:not(:focus) {
       background-color: var(--p-50);

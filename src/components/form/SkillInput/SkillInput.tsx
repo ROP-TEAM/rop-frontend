@@ -1,5 +1,5 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import { Modal } from "@/components/Modal/Modal/Modal";
+import { Modal } from "@/components/modal/Modal/Modal";
 import { SKillInputProps } from "./SkillInput.types";
 import styles from "./SkillInput.module.scss";
 import { SkillPill } from "@/components/ui/SkillPill/SkillPill";

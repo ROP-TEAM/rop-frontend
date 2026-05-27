@@ -1,6 +1,10 @@
 .trigger {
+<<<<<<< HEAD
   box-sizing: border-box;
   border: var(--border-default);
+=======
+  border: $border-subtle;
+>>>>>>> 32e197b (KAN-130 vehicleUpload => uploadStepper)
   width: 100%;
   text-align: center;
   padding: var(--padding-default);

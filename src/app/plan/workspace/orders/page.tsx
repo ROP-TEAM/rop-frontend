@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Modal } from "@/components/Modal/Modal/Modal";
-import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
-import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
+import { Modal } from "@/components/modal/Modal/Modal";
+import { OrderFileHeader } from "@/components/modal/OrderUpload/OrderUpload.types";
+import { OrderUpload } from "@/components/modal/OrderUpload/OrderUpload";
 const Orders = () => {
   const DEFAULT_HEADER_INDEX = -1;
   const [isUpload, setIsUpload] = useState(false);
@@ -86,15 +86,6 @@ const Orders = () => {
       regex: /^(?:0|[1-9]\d*)$/,
     },
 
-    type: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "ประเภทงาน",
-      description: "pickup หรือ delivery",
-      value: "type",
-      require: true,
-      regex: /^(pickup|delivery)$/,
-    },
     priority: {
       fileCol: DEFAULT_HEADER_INDEX,
       errorRows: [],
@@ -109,17 +100,6 @@ const Orders = () => {
   return (
     <div>
       Order
-      <Modal
-        marginTop="5rem"
-        onClose={() => setIsUpload(false)}
-        isActive={isUpload}
-      >
-        <OrderUpload
-          setOrderFileHeader={setOrderFileHeader}
-          onClose={() => setIsUpload(false)}
-          orderFileHeader={orderFileHeader}
-        ></OrderUpload>
-      </Modal>
       <button type="button" onClick={() => setIsUpload(true)}>
         Click
       </button>

@@ -1,8 +1,8 @@
 "use client";
 
-import { Modal } from "@/components/Modal/Modal/Modal";
-import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
-import { VehicleFileHeader } from "@/components/Modal/VehicleUpload/VehicleUpload.types";
+import { Modal } from "@/components/modal/Modal/Modal";
+import { VehicleUpload } from "@/components/modal/VehicleUpload/VehicleUpload";
+import { VehicleFileHeader } from "@/components/modal/VehicleUpload/VehicleUpload.types";
 
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import TimeInput from "@/components/form/TimeInput/TimeInput";
@@ -111,10 +111,9 @@ const toNumberTime = ({
 };
 
 const VehiclePage = ({ vehicles = mockVehicles }: { vehicles?: Vehicle[] }) => {
-  
   const DEFAULT_HEADER_INDEX = -1;
-  const [vehicleFileHeader, setVehicleFileHeader] =
-    useState<VehicleFileHeader>({
+  const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
+    {
       workTimeStart: {
         fileCol: DEFAULT_HEADER_INDEX,
         errorRows: [],
@@ -213,7 +212,8 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles?: Vehicle[] }) => {
         value: "numberPlate",
         require: false,
       },
-    });
+    },
+  );
 
   const [isUpload, setIsUpload] = useState<boolean>(true);
   const [vehicleData, setVehicleData] = useState<Vehicle[]>(vehicles);
@@ -506,54 +506,35 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles?: Vehicle[] }) => {
   );
 
   return (
-  <>
-    <Modal
-      isActive={isUpload}
-      marginTop="2rem"
-      onClose={() => setIsUpload(false)}
-    >
-      <VehicleUpload
+    <>
+      <Modal
+        isActive={isUpload}
+        marginTop="2rem"
         onClose={() => setIsUpload(false)}
-        vehicleFileHeader={vehicleFileHeader}
-        setVehicleFileHeader={setVehicleFileHeader}
-      />
-    </Modal>
-
-    <div className={styles.wrapper}>
-      <table
-        ref={tableRef}
-        className={`${styles.table} ${ready ? styles.fixed : styles.auto}`}
       >
-        <colgroup>
-          {colWidths.map((w, i) => (
-            <col key={i} style={{ width: w }} />
-          ))}
-        </colgroup>
-        <thead className={styles.tableHeader}>
-          <tr>
-            <th className={styles.indexCol} />
-            {columns.map((col, i) => (
-              <th key={col.label}>
-                {col.label}
-                {i < columns.length - 1 && (
-                  <span
-                    className={`${styles.resizer} ${hoveredCol === i + 1 ? styles.resizerVisible : ""}`}
-                    onMouseDown={handleMouseDown(i)}
-                    onMouseEnter={() => setHoveredCol(i + 1)}
-                    onMouseLeave={() => setHoveredCol(null)}
-                  />
-                )}
-              </th>
+        <VehicleUpload
+          onClose={() => setIsUpload(false)}
+          vehicleFileHeader={vehicleFileHeader}
+          setVehicleFileHeader={setVehicleFileHeader}
+        />
+      </Modal>
+
+      <div className={styles.wrapper}>
+        <table
+          ref={tableRef}
+          className={`${styles.table} ${ready ? styles.fixed : styles.auto}`}
+        >
+          <colgroup>
+            {colWidths.map((w, i) => (
+              <col key={i} style={{ width: w }} />
             ))}
-          </tr>
-        </thead>
-        <tbody className={styles.tableBody}>
-          {vehicleData.map((v, row) => (
-            <tr key={v.id}>
-              <td className={styles.indexCol}>{row + 1}</td>
+          </colgroup>
+          <thead className={styles.tableHeader}>
+            <tr>
+              <th className={styles.indexCol} />
               {columns.map((col, i) => (
-                <td key={col.label}>
-                  {col.render(v)}
+                <th key={col.label}>
+                  {col.label}
                   {i < columns.length - 1 && (
                     <span
                       className={`${styles.resizer} ${hoveredCol === i + 1 ? styles.resizerVisible : ""}`}
@@ -562,14 +543,33 @@ const VehiclePage = ({ vehicles = mockVehicles }: { vehicles?: Vehicle[] }) => {
                       onMouseLeave={() => setHoveredCol(null)}
                     />
                   )}
-                </td>
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-     </div>
-  </>
+          </thead>
+          <tbody className={styles.tableBody}>
+            {vehicleData.map((v, row) => (
+              <tr key={v.id}>
+                <td className={styles.indexCol}>{row + 1}</td>
+                {columns.map((col, i) => (
+                  <td key={col.label}>
+                    {col.render(v)}
+                    {i < columns.length - 1 && (
+                      <span
+                        className={`${styles.resizer} ${hoveredCol === i + 1 ? styles.resizerVisible : ""}`}
+                        onMouseDown={handleMouseDown(i)}
+                        onMouseEnter={() => setHoveredCol(i + 1)}
+                        onMouseLeave={() => setHoveredCol(null)}
+                      />
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 export default VehiclePage;

@@ -3,7 +3,7 @@ import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
-import { OrderBase } from "@/types/api.types";
+import { OrderBase } from "../features/order/order.types";
 import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/types/api.types";
@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "@/types/api.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
+import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
+import { OptimizeReqPayload } from "../features/optimize/optimize.types";
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
     label: "เวลาเริ่มทำงาน",
@@ -208,6 +210,7 @@ const Preview = () => {
     distance: 0,
     vehicle: 0,
   });
+  const [createOptimize, { isLoading }] = useCreateOptimizeMutation();
   const [optimizeResult, setOptimizeResult] = useState<string[][]>([]);
   const [loadingCount, setLoadingCount] = useState<number>(0);
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
@@ -220,7 +223,7 @@ const Preview = () => {
   const [colDataVehicle, setColDataVehicle] = useState<string[][]>([]);
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
-
+  const [error, setError] = useState<string>("");
   const getFileCondition = (): string => {
     if (vehicleBases.length === 0 && orderBases.length === 0) {
       return "ยังไม่ได้อัปโหลดไฟล์ กรุณาอัปโหลดข้อมูลรถและออเดอร์ให้ครบถ้วน";
@@ -321,7 +324,7 @@ const Preview = () => {
             newVehicle.capacity = Number(value);
             break;
 
-          case "ชื่อรถหรือพนักงาน":
+          case "ชื่อรถหรือชื่อพนักงาน":
             newVehicle.name = value;
             break;
 
@@ -403,43 +406,22 @@ const Preview = () => {
 
       orders.push(newOrder as OrderBase);
     }
-
     setOrderBases(orders);
     setIsUploadOrder(false);
   };
-  useEffect(() => {
-    console.log(vehicleBases);
-  }, [vehicleBases]);
 
   const handleClearOptimize = () => {
     setIsOptimize(false);
-
-    // setOrderBases([]);
-    // setVehicleBases([]);
-    // setVehicleFileHeader((prev) => {
-    //   const updated = vehicleFileHeader;
-    //   Object.keys(updated).forEach((key) => {
-    //     const typedKey = key as keyof VehicleFileHeader;
-    //     updated[typedKey].fileCol = -1;
-    //   });
-    //   return updated;
-    // });
-    // setOrderFileHeader((prev) => {
-    //   const updated = orderFileHeader;
-    //   Object.keys(updated).forEach((key) => {
-    //     const typedKey = key as keyof OrderFileHeader;
-    //     updated[typedKey].fileCol = -1;
-    //   });
-    //   return updated;
-    // });
-    // setColDataOrder([]);
-    // setColDataVehicle([]);
-    // setVehicleFile(undefined);
-    // setOrderFile(undefined);
   };
 
   const getDownloadFileResult = () => {
-    const header = ["ชื่อคนขับ", "ชื่อออเดอร์", "เวลาที่ไปถึง", "เวลาออก"];
+    const header = [
+      "ชื่อคนขับ",
+      "ชื่อออเดอร์",
+      "เวลาที่ไปถึง",
+      "เวลาออก",
+      "สถานะ",
+    ];
 
     const rows = optimizeResult;
 
@@ -450,14 +432,15 @@ const Preview = () => {
 
     const csvContent = [
       header.join(","),
-      ...rows.map((row: any[]) => {
-        const [driver, order, arrivalMin, serviceMin] = row;
+      ...rows.map((row) => {
+        const [driver, order, arrivalMin, serviceMin, status] = row;
 
         return [
           driver,
           order,
           parseNumberToTime(Number(arrivalMin)),
           parseNumberToTime(Number(serviceMin)),
+          status,
         ].join(",");
       }),
     ].join("\n");
@@ -477,6 +460,49 @@ const Preview = () => {
     document.body.removeChild(link);
 
     URL.revokeObjectURL(url);
+  };
+
+  const handleCreateOptimize = async () => {
+    setLoadingCount(0);
+    const start = performance.now();
+    const timer = setInterval(() => {
+      const elapsed = Math.floor((performance.now() - start) / 1000);
+      setLoadingCount(elapsed);
+    }, 100);
+    try {
+      const payload: OptimizeReqPayload = {
+        depotLat: depotLoc.lat,
+        depotLon: depotLoc.lng,
+        vehicles: vehicleBases,
+        orders: orderBases,
+        enableAlns: true,
+        timeLimitMS: 30000,
+        enableMultiTrip: true,
+      };
+      const result = await createOptimize(payload).unwrap();
+      const routes = result.routes;
+      const vehicleCount = routes.length;
+      const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
+      setOptimizeResult(
+        routes.flatMap((r: any) =>
+          r.stops.map((s: any) => [
+            r.vehicleName,
+            s.orderName,
+            s.arrivalMin,
+            s.departMin,
+            "ส่งสำเร็จ",
+          ]),
+        ),
+      );
+      clearInterval(timer);
+      setIsOptimize(true);
+    } catch (err) {
+      clearInterval(timer);
+      console.log(err);
+    } finally {
+      setLoadingCount(0);
+    }
   };
   return (
     <div>
@@ -500,11 +526,17 @@ const Preview = () => {
           <div className={styles.optimize}>
             <div className={styles.optimizeHeader}>
               <h2 className={styles.optimizeTitle}>ผลการคำนวณ</h2>
-              <Tooltip title="ลองใหม่">
-                <button onClick={() => console.log()} type="button">
-                  <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
-                </button>
-              </Tooltip>
+              {loadingCount > 0 ? (
+                <p
+                  className={styles.optimizeCount}
+                >{`กำลังโหลด ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} วินาที...`}</p>
+              ) : (
+                <Tooltip title="ลองใหม่">
+                  <button onClick={() => handleCreateOptimize()} type="button">
+                    <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
+                  </button>
+                </Tooltip>
+              )}
             </div>
             <div className={styles.optimizeContent}>
               <div className={styles.optimizeBox}>
@@ -625,7 +657,10 @@ const Preview = () => {
                   </p>
                   <button
                     className={styles.uploadAction}
-                    onClick={() => setIsUploadVehicle(true)}
+                    onClick={() => {
+                      setColDataVehicle([]);
+                      setIsUploadVehicle(true);
+                    }}
                     type="button"
                   >
                     {vehicleBases.length > 0 ? "เปลี่ยนไฟล์" : "เลือกไฟล์"}
@@ -691,7 +726,10 @@ const Preview = () => {
                       : "อัปโหลดไฟล์ข้อมูลออเดอร์ปลายทาง เช่น จุดจัดส่ง ช่วงเวลาให้บริการ น้ำหนักสินค้า และเงื่อนไขเฉพาะของงาน"}
                   </p>
                   <button
-                    onClick={() => setIsUploadOrder(true)}
+                    onClick={() => {
+                      setOrderBases([]);
+                      setIsUploadOrder(true);
+                    }}
                     className={styles.uploadAction}
                     type="button"
                   >
@@ -702,15 +740,29 @@ const Preview = () => {
             </section>
             <section className={styles.actionSection}>
               <p className={styles.actionInfo}>{getFileCondition()}</p>
-              <button
-                onClick={() => console.log()}
-                disabled={!(vehicleBases.length > 0 && orderBases.length > 0)}
-                className={`${styles.sendAction}  ${!(vehicleBases.length > 0 && orderBases.length > 0) || loadingCount > 0 ? styles.isActive : ""}`}
-              >
-                {loadingCount > 0
-                  ? `กำลังโหลด ... ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")}`
-                  : "จัดรอบรถ"}
-              </button>
+              <div>
+                {error && (
+                  <p className={styles.actionError}>เกิดข้อผิดพลาด: {error}</p>
+                )}
+                <button
+                  onClick={() => handleCreateOptimize()}
+                  disabled={
+                    !(vehicleBases.length > 0 && orderBases.length > 0) ||
+                    (depotLoc.lat == 0 && depotLoc.lng == 0)
+                  }
+                  className={`${styles.sendAction}  ${
+                    !(vehicleBases.length > 0 && orderBases.length > 0) ||
+                    loadingCount > 0 ||
+                    (depotLoc.lat == 0 && depotLoc.lng == 0)
+                      ? styles.isActive
+                      : ""
+                  }`}
+                >
+                  {loadingCount > 0.2
+                    ? `กำลังจัดรอบ ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} วินาที`
+                    : "จัดรอบรถ"}
+                </button>
+              </div>
             </section>
           </div>
         )}

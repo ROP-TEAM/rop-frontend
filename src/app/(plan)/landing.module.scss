@@ -134,6 +134,9 @@
     flex-direction: column;
     margin-bottom: 2rem;
   }
+  .actionError {
+    color: rgb(255, 44, 44);
+  }
   .actionInfo {
     font-weight: 500;
     font-size: 1rem;
@@ -177,9 +180,14 @@
   }
   .optimizeHeader {
     display: flex;
+    align-items: end;
     justify-content: space-between;
     padding: 1rem 2rem;
     border-bottom: $border-subtle;
+    .optimizeCount {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
   }
   .optimizeContent {
     // padding-top: 1rem;

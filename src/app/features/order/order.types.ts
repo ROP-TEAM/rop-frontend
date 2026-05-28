@@ -1,6 +1,6 @@
 export interface OrderBase {
-  orderName: string;
-  note?: string;
+  name: string;
+  description?: string;
   capacity: number;
   skill?: string;
   timeWindowStart: number;

@@ -269,11 +269,9 @@ export const UploadStepper = ({
 
                     const changeHeaderCol = (value: string) => {
                       const rawColIndex = header.indexOf(value);
-                      // ล้าง rule อื่นที่เลือก column เดียวกันออกก่อน
                       setMappedColData((prev) =>
                         prev.map((c) => (c[0] === value ? [] : c)),
                       );
-                      // set mappedColData ของ rule นี้จาก rawColData
                       setMappedColData((prev) => {
                         const temp = [...prev];
                         temp[index] = [...(rawColData[rawColIndex] ?? [])];

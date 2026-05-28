@@ -16,7 +16,7 @@ export interface OptimizeReqPayload {
   depotLat: number;
   depotLon: number;
   vehicles: VehicleBase[];
-  orderBase: OrderBase[];
+  orders: OrderBase[];
   enableAlns?: boolean;
   enableMultiTrip?: boolean;
   reloadMin?: number;

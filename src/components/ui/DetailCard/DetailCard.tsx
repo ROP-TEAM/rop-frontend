@@ -1,11 +1,11 @@
-import { VehicleDelete } from "@/components/Modal/VehicleDelete/VehicleDelete";
-import { VehicleProfile } from "@/components/Modal/VehicleProfile/VehicleProfile";
+import { VehicleDelete } from "@/components/modal/VehicleDelete/VehicleDelete";
+import { VehicleProfile } from "@/components/modal/VehicleProfile/VehicleProfile";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import { FloatingCard } from "../FloatingCard/FloatingCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
 import { Location } from "@/types/api.types";
-import { Modal } from "@/components/Modal/Modal/Modal";
+import { Modal } from "@/components/modal/Modal/Modal";
 import { useDispatch } from "react-redux";
 import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
 import { SegmentControl } from "../SegmentControl/SegmentControl";

@@ -1,12 +1,12 @@
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import { Modal } from "@/components/Modal/Modal/Modal";
+import { Modal } from "@/components/modal/Modal/Modal";
 import { SKillInputProps } from "./SkillInput.types";
 import styles from "./SkillInput.module.scss";
 import { SkillPill } from "@/components/ui/SkillPill/SkillPill";
 import { FloatingCard } from "@/components/ui/FloatingCard/FloatingCard";
 import React, { useRef, useState } from "react";
-import { TextInput } from "../TextInput/TextInput";
 export const SkillInput = ({
+  isMutiSelect = true,
   label,
   labelColor = "var(--p-700)",
   labelSize = "1rem",
@@ -28,7 +28,6 @@ export const SkillInput = ({
   const [lastestValue, setLastestValue] = useState<string>("");
   const newSkillRef = useRef<HTMLInputElement>(null);
 
-  const handleSendFocusInput = () => {};
   const handleAddnewSkill = () => {
     if (skillList.some((s) => s.name === "ไม่ทราบชื่อ")) return;
     setSkillList((prev) => [
@@ -73,6 +72,7 @@ export const SkillInput = ({
       )}
       <div className={styles.input}>
         <FloatingCard
+          focusBackgroundColor="transparent"
           isActive={isDrop}
           setIsActive={setIsDrop}
           isOnTop={0.8}
@@ -104,7 +104,10 @@ export const SkillInput = ({
                   className={styles.noSkill}
                   onClick={() => setIsDrop((prev) => !prev)}
                 >
-                  ไม่มีความสามารถเฉพาะ
+                  <SkillPill
+                    color="var(--p-300)"
+                    title="สินค้าทั่วไป"
+                  ></SkillPill>
                 </button>
               )}
             </div>
@@ -117,13 +120,21 @@ export const SkillInput = ({
               onClick={() => {
                 const exist = value.some((v) => v.title === s.title);
                 if (exist) {
-                  onChange(value.filter((f) => f.title !== s.title));
+                  if (isMutiSelect) {
+                    onChange(value.filter((f) => f.title !== s.title));
+                  }
+                  onChange([]);
                 } else {
-                  onChange([...value, s]);
+                  if (isMutiSelect) onChange([...value, s]);
+                  onChange([s]);
+                }
+                if (!isMutiSelect) {
+                  setIsDrop(false);
                 }
               }}
             >
-              {s.title}
+              {/* {s.title} */}{" "}
+              <SkillPill title={s.title} color={s.color}></SkillPill>
             </FloatingCard.body>
           ))}
 

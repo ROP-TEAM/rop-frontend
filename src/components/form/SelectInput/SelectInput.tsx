@@ -9,6 +9,7 @@ import styles from "./SelectInput.module.scss";
 import { SelectInputProps } from "./SelectInput.types";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { FloatingCard } from "@/components/ui/FloatingCard/FloatingCard";
+import { Option as OptionType } from "./SelectInput.types";
 export const SelectInput = ({
   value,
   options,
@@ -16,6 +17,9 @@ export const SelectInput = ({
   isOnTop = 0.8,
   placeholder,
   errorMessage,
+  labelSize = "0.725rem",
+  withColorStyle = false,
+  hasBorder = false,
   checkList = [],
   subString = 99,
   onChange,
@@ -53,6 +57,7 @@ export const SelectInput = ({
   }, [internalActive]);
   return (
     <div>
+      {label && <label style={{ fontSize: labelSize }}>{label}</label>}
       <FloatingCard
         bodyHeight="12rem"
         isOnTop={isOnTop}
@@ -70,42 +75,47 @@ export const SelectInput = ({
             className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value ? styles.hasValue : ""}`}
             onClick={() => setInternalActive(true)}
             type="button"
+            style={
+              {
+                "--border-default": hasBorder ? "var(--border-subtle)" : "",
+                "--padding-default": hasBorder
+                  ? "0.375rem 0.875rem"
+                  : "0.375rem 0.725rem",
+              } as React.CSSProperties
+            }
           >
             {value ? (
-              <p className={styles.value}>
-                {value.substring(0, subString) + "..."}
-              </p>
+              <h3 className={styles.value}>
+                {options.find((item) => item.value === value)?.label}
+                {/* {value.substring(0, subString) +
+                  (value.length > subString ? "..." : "")} */}
+              </h3>
             ) : (
               <p className={styles.placeholder}>{placeholder}</p>
             )}
             <IconSvgMono
               src="/icon/arrow-2-side.svg"
-              color={value ? "var(--s-700)" : "var(--p-500)"}
+              color={value && withColorStyle ? "var(--s-700)" : "var(--p-500)"}
               size={18}
             ></IconSvgMono>
           </button>
         }
       >
         {options.map((item, index) => {
-          let selectLabel = "";
-          if (typeof item === "string") {
-            selectLabel = item.substring(0, subString) + "...";
-          } else {
-            selectLabel = item.label;
-          }
           return (
             <FloatingCard.body
               isHasCheck={checkList.includes(index)}
-              onClick={() =>
-                onChange(typeof item === "string" ? item : item.value)
-              }
+              onClick={() => {
+                onChange(typeof item === "string" ? item : item.value);
+                setInternalActive(false);
+              }}
               optionRef={(el: HTMLButtonElement | null) => {
                 optionRef.current[index] = el;
               }}
               onKeyDown={focusIndex === index ? onFocusOption : undefined}
               key={index}
             >
-              {selectLabel}
+              {item.label}
             </FloatingCard.body>
           );
         })}

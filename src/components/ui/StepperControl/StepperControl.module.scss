@@ -1,15 +1,17 @@
 .container {
   display: flex;
   align-items: end;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 1rem;
   min-width: 0;
+  padding: 0 1.25rem;
+
   position: relative;
   overflow: visible;
   @include respond(md) {
-    padding: 0 2.5rem;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
   }
   &::after {
     content: "";

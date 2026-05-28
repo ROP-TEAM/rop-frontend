@@ -61,7 +61,14 @@ export const LocationInput = ({
           {label} <span className={styles.require}>*</span>
         </label>
       )}
-      <div className={styles.locationInput}>
+      <div
+        className={styles.locationInput}
+        style={
+          {
+            "--label-gap": labelGap,
+          } as React.CSSProperties
+        }
+      >
         <input
           ref={latRef}
           id={label}

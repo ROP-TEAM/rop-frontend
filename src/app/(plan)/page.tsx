@@ -2,21 +2,206 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
-import { Modal } from "@/components/Modal/Modal/Modal";
+import { Modal } from "@/components/modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
 import { OrderBase, TimePeriod } from "@/types/api.types";
 import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/types/api.types";
-import { useState } from "react";
-import { VehicleFileHeader } from "@/components/Modal/VehicleUpload/VehicleUpload.types";
-import { VehicleUpload } from "@/components/Modal/VehicleUpload/VehicleUpload";
+import { useEffect, useState } from "react";
+import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "@/types/api.types";
-import { OrderUpload } from "@/components/Modal/OrderUpload/OrderUpload";
-import { OrderFileHeader } from "@/components/Modal/OrderUpload/OrderUpload.types";
-import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
-const Page = () => {
-  const DEFAULT_HEADER_INDEX = -1;
+import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
+const VEHICLE_HEADER_RULE: HeaderRule[] = [
+  {
+    label: "เวลาเริ่มทำงาน",
+    description: "รูปแบบ HH:MM หรือ HH.MM",
+    require: true,
+    regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
+  },
+  {
+    label: "เวลาสิ้นสุดงาน",
+    description: "รูปแบบ HH:MM หรือ HH.MM",
+    require: true,
+    regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
+  },
+  {
+    label: "เวลาพักเริ่มต้น",
+    description: "รูปแบบ HH:MM หรือ HH.MM หากไม่มีให้เว้นว่าง",
+    require: true,
+    regex: /^((0?\d|1\d|2[0-3])[:.]([0-5]\d))?$/,
+  },
+  {
+    label: "เวลาพักสิ้นสุด",
+    description: "รูปแบบ HH:MM หรือ HH.MM หากไม่มีให้เว้นว่าง",
+    require: true,
+    regex: /^((0?\d|1\d|2[0-3])[:.]([0-5]\d))?$/,
+  },
+  {
+    label: "น้ำหนักบรรทุก",
+    description: "ตัวเลขมากกว่า 0",
+    require: true,
+    regex: /^[1-9]\d*$/,
+  },
+  {
+    label: "ชื่อรถหรือชื่อพนักงาน",
+    description: "รถบุเป็นตัวอักษร",
+    require: true,
+  },
+
+  {
+    label: "จำนวนภาระงานสูงสุด",
+    description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
+    require: false,
+    regex: /^(?:0|[1-9]\d*)?$/,
+  },
+  {
+    label: "ความสามารถเฉพาะ",
+    description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
+    require: false,
+    regex: /^([ก-๙a-zA-Z0-9\s]+(,[ก-๙a-zA-Z0-9\s]+)*)?$/,
+  },
+  {
+    label: "รุ่นรถ",
+    description: "ชื่อรุ่นรถ เช่น Toyota Revo",
+    require: false,
+  },
+  {
+    label: "ทะเบียนรถ",
+    description: "เช่น กข1234",
+    require: false,
+  },
+];
+const ORDER_HEADER_RULE: HeaderRule[] = [
+  {
+    label: "ชื่องาน",
+    description: "ชื่องานหรือรหัสออเดอร์",
+    require: true,
+  },
+  {
+    label: "น้ำหนักสินค้า",
+    description: "ตัวเลขมากกว่า 0",
+    require: true,
+    regex: /^[1-9]\d*$/,
+  },
+  {
+    label: "เวลาเปิดร้าน",
+    description: "รูปแบบ HH:MM หรือ HH.MM",
+    require: true,
+    regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
+  },
+  {
+    label: "เวลาปิดร้าน",
+    description: "รูปแบบ HH:MM หรือ HH.MM",
+    require: true,
+    regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
+  },
+  {
+    label: "ตำแหน่งจัดส่ง",
+    description: "รูปแบบ latitude,longitude",
+    require: true,
+    regex:
+      /^-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?)$/,
+  },
+  {
+    label: "เวลาให้บริการ",
+    description: "เวลาที่ให้บริกการในร้านค้า หน่วยเป็นนาที เช่น 15",
+    require: true,
+    regex: /^(?:0|[1-9]\d*)$/,
+  },
+
+  {
+    label: "รายละเอียด",
+    description: "รายละเอียดเพิ่มเติมของงาน",
+    require: false,
+  },
+  {
+    label: "ความสามารถเฉพาะ",
+    description: 'คั่นหลาย tag ด้วย , เช่น "ของเย็น,ของสด"',
+    require: false,
+    regex: /^([ก-๙a-zA-Z0-9\s]+(\s*,\s*[ก-๙a-zA-Z0-9\s]+)*)?$/,
+  },
+  {
+    label: "ลำดับความสำคัญ",
+    description: 'กรอกได้เฉพาะ "สูงมาก", "สูง", "ปานกลาง", "ต่ำ"',
+    require: false,
+    regex: /^(สูงมาก|สูง|ปานกลาง|ต่ำ)$/,
+  },
+];
+const VEHICLE_EXAM = [
+  [
+    "08:00",
+    "17:00",
+    "12:00",
+    "13:00",
+    "1200",
+    "รถคันที่ 1",
+    "25",
+    "ของเย็น,ผักสด",
+    "Toyota Revo",
+    "กข1234",
+  ],
+  [
+    "9.00",
+    "18.30",
+    "",
+    "",
+    "800",
+    "รถคันที่ 2",
+    "",
+    "เอกสาร",
+    "Isuzu D-Max",
+    "1ฒฮ8888",
+  ],
+  [
+    "07:30",
+    "16:45",
+    "11.30",
+    "12.15",
+    "1500",
+    "พนักงานสมชาย",
+    "40",
+    "ของสด,ควบคุมอุณหภูมิ",
+    "Honda HR-V",
+    "ขค5678",
+  ],
+];
+const ORDER_EXAM = [
+  [
+    "ORD001",
+    "120",
+    "08:00",
+    "17:00",
+    "16.4331,102.8245",
+    "15",
+    "ส่งสินค้าไปสาขา A",
+    "ของเย็น,ผักสด",
+    "สูง",
+  ],
+  [
+    "ORD002",
+    "50",
+    "9.00",
+    "18.30",
+    "16.4419,102.8350",
+    "10",
+    "ส่งเอกสารให้ลูกค้า",
+    "เอกสาร",
+    "ปานกลาง",
+  ],
+  [
+    "ORD003",
+    "80",
+    "07:30",
+    "16:45",
+    "16.4520,102.8102",
+    "20",
+    "ส่งผักสดร้านอาหาร",
+    "ของสด",
+    "สูงมาก",
+  ],
+];
+const Preview = () => {
   const [optimizeCount, setOptimizeCount] = useState<{
     distance: number;
     vehicle: number;
@@ -28,7 +213,6 @@ const Page = () => {
   const [loadingCount, setLoadingCount] = useState<number>(0);
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
   const [depotLoc, setDepotLoc] = useState<Location>({ lat: 0, lng: 0 });
-  const [createOptimize, { isLoading }] = useCreateOptimizeMutation();
   const [isUploadOrder, setIsUploadOrder] = useState(false);
   const [vehicleFile, setVehicleFile] = useState<File>();
   const [orderFile, setOrderFile] = useState<File>();
@@ -37,195 +221,7 @@ const Page = () => {
   const [colDataVehicle, setColDataVehicle] = useState<string[][]>([]);
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
-  const [orderFileHeader, setOrderFileHeader] = useState<OrderFileHeader>({
-    name: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "ชื่องาน",
-      description: "ชื่องานหรือรหัสออเดอร์",
-      value: "name",
-      require: true,
-    },
 
-    description: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "รายละเอียด",
-      description: "รายละเอียดเพิ่มเติมของงาน",
-      value: "description",
-      require: false,
-    },
-
-    capacity: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "น้ำหนักสินค้า",
-      description: "ตัวเลขมากกว่า 0",
-      value: "capacity",
-      require: true,
-      regex: /^[1-9]\d*$/,
-    },
-
-    skills: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "ความสามารถเฉพาะ",
-      description: 'คั่นหลาย tag ด้วย , เช่น "ของเย็น,ของสด"',
-      value: "skills",
-      require: false,
-      regex: /^([ก-๙a-zA-Z0-9\s]+(\s*,\s*[ก-๙a-zA-Z0-9\s]+)*)?$/,
-    },
-
-    timeWindowStart: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "เวลาเปิดร้าน",
-      description: "รูปแบบ HH:MM หรือ HH.MM",
-      value: "timeWindowStart",
-      require: true,
-      regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
-    },
-
-    timeWindowEnd: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "เวลาปิดร้าน",
-      description: "รูปแบบ HH:MM หรือ HH.MM",
-      value: "timeWindowEnd",
-      require: true,
-      regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
-    },
-
-    location: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "ตำแหน่งจัดส่ง",
-      description: "รูปแบบ latitude,longitude",
-      value: "location",
-      require: true,
-      regex:
-        /^-?(90(?:\.0{1,6})?|[0-8]?\d(?:\.\d{1,6})?),-?(180(?:\.0{1,6})?|1[0-7]\d(?:\.\d{1,6})?|\d{1,2}(?:\.\d{1,6})?)$/,
-    },
-
-    serviceTime: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "เวลาให้บริการ",
-      description: "หน่วยเป็นนาที เช่น 15",
-      value: "serviceTime",
-      require: true,
-      regex: /^(?:0|[1-9]\d*)$/,
-    },
-
-    priority: {
-      fileCol: DEFAULT_HEADER_INDEX,
-      errorRows: [],
-      label: "ลำดับความสำคัญ",
-      description: 'กรอกได้เฉพาะ "สูงมาก", "สูง", "ปานกลาง", "ต่ำ"',
-      value: "priority",
-      require: false,
-
-      regex: /^(สูงมาก|สูง|ปานกลาง|ต่ำ)$/,
-    },
-  });
-  const [vehicleFileHeader, setVehicleFileHeader] = useState<VehicleFileHeader>(
-    {
-      workTimeStart: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาเริ่มทำงาน",
-        description: "รูปแบบ HH:MM หรือ HH.MM",
-        value: "workTimeStart",
-        require: true,
-        regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
-      },
-
-      workTimeEnd: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาสิ้นสุดงาน",
-        description: "รูปแบบ HH:MM หรือ HH.MM",
-        value: "workTimeEnd",
-        require: true,
-        regex: /^(0?\d|1\d|2[0-3])[:.]([0-5]\d)$/,
-      },
-      breakTimeStart: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาพักเริ่มต้น",
-        description: "รูปแบบ HH:MM หรือ HH.MM หากไม่มีให้เว้นว่าง",
-        value: "breakTimeStart",
-        require: false,
-        regex: /^(([01]\d|2[0-3])[:.]([0-5]\d))?$/,
-      },
-
-      breakTimeEnd: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "เวลาพักสิ้นสุด",
-        description: "รูปแบบ HH:MM หรือ HH.MM หากไม่มีให้เว้นว่าง",
-        value: "breakTimeEnd",
-        require: false,
-        regex: /^(([01]\d|2[0-3])[:.]([0-5]\d))?$/,
-      },
-      capacity: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "น้ำหนักบรรทุก",
-        description: "ตัวเลขมากกว่า 0",
-        value: "capacity",
-        require: true,
-        regex: /^[1-9]\d*$/,
-      },
-
-      maxTask: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "จำนวนภาระงานสูงสุด",
-        description: "ตัวเลขตั้งแต่ 0 ขึ้นไป หากไม่จำกัดให้เว้นว่าง",
-        value: "maxTask",
-        require: false,
-        regex: /^(?:0|[1-9]\d*)?$/,
-      },
-
-      skills: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ความสามารถเฉพาะ",
-        description: 'คั่นด้วย , เช่น "ของเย็น,ผักสด"',
-        value: "skills",
-        require: false,
-        regex: /^([ก-๙a-zA-Z0-9\s]+(,[ก-๙a-zA-Z0-9\s]+)*)?$/,
-      },
-
-      model: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "รุ่นรถ",
-        description: "ชื่อรุ่นรถ เช่น Toyota Revo",
-        value: "model",
-        require: false,
-      },
-
-      name: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ชื่อรถหรือชื่อพนักงาน",
-        description: "สามารถเว้นว่างได้",
-        value: "name",
-        require: false,
-      },
-
-      numberPlate: {
-        fileCol: DEFAULT_HEADER_INDEX,
-        errorRows: [],
-        label: "ทะเบียนรถ",
-        description: "เช่น กข1234",
-        value: "numberPlate",
-        require: false,
-      },
-    },
-  );
   const getFileCondition = (): string => {
     if (vehicleBases.length === 0 && orderBases.length === 0) {
       return "ยังไม่ได้อัปโหลดไฟล์ กรุณาอัปโหลดข้อมูลรถและออเดอร์ให้ครบถ้วน";
@@ -254,10 +250,6 @@ const Page = () => {
     return fullName + ".csv";
   };
 
-  const getCellVehicle = (fileCol: number, row: number) => {
-    if (fileCol == DEFAULT_HEADER_INDEX) return "";
-    return colDataVehicle[fileCol][row];
-  };
   const parseNumberToTime = (minutes?: number): string => {
     if (minutes == null || minutes < 0) return "00:00";
 
@@ -268,159 +260,158 @@ const Page = () => {
       .toString()
       .padStart(2, "0")}`;
   };
-  const parseTimeToNumber = (time?: string): number => {
-    if (!time) return 0;
-
-    const [hour, minute] = time.split(/[:.]/).map(Number);
-
-    return hour * 60 + minute;
+  const parseTimeToNumber = (timeStr: string): number => {
+    const [hour, minute] = timeStr.replace(".", ":").split(":");
+    const timeNum = Number(hour) * 60 + Number(minute);
+    return timeNum;
   };
 
-  const parseLocation = (location?: string): Location => {
-    if (!location) {
-      return {
-        lat: 0,
-        lng: 0,
-      };
+  const parseLatLng = (location: string) => {
+    const latlngStr = location.split(",");
+    return latlngStr.map((loc) => +Number(loc).toFixed(6));
+  };
+
+  const parsePiorityToNumber = (piorityStr: string) => {
+    if (!piorityStr) return 1;
+    switch (piorityStr) {
+      case "สูงมาก":
+        return 3;
+      case "สูง":
+        return 2;
+      case "ปานกลาง":
+        return 1;
+      case "ต่ำ":
+        return 0;
     }
-
-    const [lat, lng] = location.split(",");
-
-    return {
-      lat: Number(lat),
-      lng: Number(lng),
-    };
+    return 1;
   };
 
-  const handleCreateVehicles = () => {
-    const header = vehicleFileHeader;
+  const handleCreateVeiclePayload = () => {
+    const RowLenght = colDataVehicle[0].length;
+    const ColLenght = VEHICLE_HEADER_RULE.length;
 
-    const rowLenght = colDataVehicle[0]?.length ?? 0;
+    const vehicles: VehicleBase[] = [];
 
-    for (let row = 1; row < rowLenght; row++) {
-      const model = getCellVehicle(header.model.fileCol, row);
+    for (let row = 1; row < RowLenght; row++) {
+      const newVehicle: Partial<VehicleBase> = {};
 
-      const name = getCellVehicle(header.name.fileCol, row);
+      for (let col = 0; col < ColLenght; col++) {
+        const label = VEHICLE_HEADER_RULE[col].label;
+        const value = colDataVehicle[col]?.[row];
 
-      const capacity = Number(getCellVehicle(header.capacity.fileCol, row));
+        if (!value) continue;
 
-      const numberPlate = getCellVehicle(header.numberPlate.fileCol, row);
+        switch (label) {
+          case "เวลาเริ่มทำงาน":
+            newVehicle.workTimeStart = parseTimeToNumber(value);
+            break;
 
-      const workTimeStart = parseTimeToNumber(
-        getCellVehicle(header.workTimeStart.fileCol, row),
-      );
+          case "เวลาสินสุดงาน":
+            newVehicle.workTimeEnd = parseTimeToNumber(value);
+            break;
 
-      const workTimeEnd = parseTimeToNumber(
-        getCellVehicle(header.workTimeEnd.fileCol, row),
-      );
+          case "เวลาพักเริ่มต้น":
+            newVehicle.breakTimeStart = parseTimeToNumber(value);
+            break;
 
-      let breakTimeStart: number | undefined = parseTimeToNumber(
-        getCellVehicle(header.breakTimeStart.fileCol, row),
-      );
+          case "เวลาพักสิ้นสุด":
+            newVehicle.breakTimeEnd = parseTimeToNumber(value);
+            break;
 
-      let breakTimeEnd: number | undefined = parseTimeToNumber(
-        getCellVehicle(header.breakTimeEnd.fileCol, row),
-      );
+          case "น้ำหนักบรรทุก":
+            newVehicle.capacity = Number(value);
+            break;
 
-      if (breakTimeStart == 0 || breakTimeEnd == 0) {
-        breakTimeStart = undefined;
-        breakTimeEnd = undefined;
+          case "ชื่อรถหรือพนักงาน":
+            newVehicle.name = value;
+            break;
+
+          case "จำนวนภาระงานสูงสุด":
+            newVehicle.maxTask = Number(value);
+            break;
+
+          case "ความสามารถเฉพาะ":
+            newVehicle.skills = value
+              .split(",")
+              .filter(Boolean)
+              .map((item) => ({ name: item.trim() }));
+            break;
+
+          case "รุ่นรถ":
+            newVehicle.model = value;
+            break;
+
+          case "ทะเบียนรถ":
+            newVehicle.plateNumber = value;
+            break;
+        }
       }
 
-      const maxTaskRaw = getCellVehicle(header.maxTask.fileCol, row);
-
-      const maxTask = maxTaskRaw ? Number(maxTaskRaw) : undefined;
-
-      const skills = getCellVehicle(header.skills.fileCol, row)
-        .split(",")
-        .map((v) => v.trim())
-        .filter(Boolean);
-
-      const vehicleBase: VehicleBase = {
-        model,
-        name,
-        capacity,
-        plateNumber: numberPlate,
-        workTimeStart: workTimeStart,
-        workTimeEnd: workTimeEnd,
-        breakTimeStart: breakTimeStart,
-        breakTimeEnd: breakTimeEnd,
-
-        maxTask,
-        skills: skills.map((item) => ({ name: item })),
-      };
-
-      setVehicleBases((prev) => [...prev, vehicleBase]);
+      vehicles.push(newVehicle as VehicleBase);
     }
+
+    setVehicleBases(vehicles);
     setIsUploadVehicle(false);
   };
-  const getCellOrder = (fileCol: number, row: number) => {
-    if (fileCol == DEFAULT_HEADER_INDEX) return "";
 
-    return colDataOrder[fileCol]?.[row] ?? "";
-  };
-  const handleCreateOrder = () => {
-    const header = orderFileHeader;
+  const handleCreateOrderPayload = () => {
+    const RowLenght = colDataOrder[0].length;
+    const ColLenght = ORDER_HEADER_RULE.length;
 
-    const rowLength = colDataOrder[0]?.length ?? 0;
+    const orders: OrderBase[] = [];
 
-    for (let row = 1; row < rowLength; row++) {
-      const name = getCellOrder(header.name.fileCol, row);
+    for (let row = 1; row < RowLenght; row++) {
+      const newOrder: Partial<OrderBase> = {};
 
-      const description =
-        getCellOrder(header.description.fileCol, row) || undefined;
+      for (let col = 0; col < ColLenght; col++) {
+        const label = ORDER_HEADER_RULE[col].label;
+        const value = colDataOrder[col]?.[row];
 
-      const capacity = Number(getCellOrder(header.capacity.fileCol, row));
+        if (!value) continue;
 
-      const timeWindowStart = parseTimeToNumber(
-        getCellOrder(header.timeWindowStart.fileCol, row),
-      );
+        switch (label) {
+          case "ชื่องาน":
+            newOrder.name = value;
+            break;
+          case "น้ำหนักสินค้า":
+            newOrder.capacity = Number(value);
+            break;
+          case "เวลาเปิดร้าน":
+            newOrder.timeWindowStart = parseTimeToNumber(value);
+            break;
+          case "เวลาปิดร้าน":
+            newOrder.timeWindowEnd = parseTimeToNumber(value);
+            break;
+          case "ตำแหน่งจัดส่ง":
+            const [lat, lng] = parseLatLng(value);
+            newOrder.desLatitude = lat;
+            newOrder.desLongitude = lng;
+            break;
+          case "เวลาให้บริการ":
+            newOrder.serviceTime = Number(value);
+            break;
+          case "รายละเอียด":
+            newOrder.description = value;
+            break;
+          case "ความสามารถเฉพาะ":
+            newOrder.skill = value;
+            break;
+          case "ลำดับความสำคัญ":
+            newOrder.priority = parsePiorityToNumber(value);
+            break;
+        }
+      }
 
-      const timeWindowEnd = parseTimeToNumber(
-        getCellOrder(header.timeWindowEnd.fileCol, row),
-      );
-
-      const location = parseLocation(
-        getCellOrder(header.location.fileCol, row),
-      );
-
-      const serviceTime = Number(getCellOrder(header.serviceTime.fileCol, row));
-
-      const priorityRaw = getCellOrder(header.priority.fileCol, row);
-
-      const priorityMap: Record<string, number> = {
-        สูงมาก: 3,
-        สูง: 2,
-        ปานกลาง: 1,
-        ต่ำ: 0,
-      };
-
-      const priority = priorityMap[priorityRaw] ?? 1;
-
-      const skills = getCellOrder(header.skills.fileCol, row)
-        .split(",")
-        .map((v) => v.trim())
-        .filter(Boolean);
-
-      const orderBase: OrderBase = {
-        name,
-        description,
-        capacity,
-        skill: skills[0],
-        timeWindowStart,
-        timeWindowEnd,
-        desLatitude: location.lat,
-        desLongitude: location.lng,
-        serviceTime,
-        type: 0,
-        priority,
-      };
-
-      setOrderBases((prev) => [...prev, orderBase]);
+      orders.push(newOrder as OrderBase);
     }
 
+    setOrderBases(orders);
     setIsUploadOrder(false);
   };
+  useEffect(() => {
+    console.log(vehicleBases);
+  }, [vehicleBases]);
+
   const handleClearOptimize = () => {
     setIsOptimize(false);
 
@@ -448,56 +439,6 @@ const Page = () => {
     // setOrderFile(undefined);
   };
 
-  const handleCreateOptimize = async () => {
-    let intervalCount: NodeJS.Timeout;
-    setLoadingCount(0);
-
-    intervalCount = setInterval(() => {
-      setLoadingCount((prev) => prev + 1);
-    }, 1000);
-    try {
-      document.body.style.cursor = "wait";
-      const result = await createOptimize({
-        depotLat: depotLoc.lat,
-        depotLon: depotLoc.lng,
-        vehicles: vehicleBases,
-        orders: orderBases,
-      });
-      const routes = result.data.data.routes;
-      if (!routes) {
-        console.log("Optimize failed", result.error);
-        return;
-      }
-      const totalDistance = result.data.data.routes.reduce(
-        (sum: number, v: any) => {
-          return sum + v.totalDistance;
-        },
-        0,
-      );
-
-      setOptimizeCount({
-        vehicle: result.data.data.routes.length,
-        distance: totalDistance,
-      });
-      setIsOptimize(true);
-      setOptimizeResult(
-        routes.flatMap((r: any) => {
-          return r.stops.map((s: any) => [
-            r.vehicleName,
-            s.orderName,
-            s.arrivalMin,
-            s.departMin,
-          ]);
-        }),
-      );
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoadingCount(0);
-      clearInterval(intervalCount);
-      document.body.style.cursor = "default";
-    }
-  };
   const getDownloadFileResult = () => {
     const header = ["ชื่อคนขับ", "ชื่อออเดอร์", "เวลาที่ไปถึง", "เวลาออก"];
 
@@ -561,7 +502,7 @@ const Page = () => {
             <div className={styles.optimizeHeader}>
               <h2 className={styles.optimizeTitle}>ผลการคำนวณ</h2>
               <Tooltip title="ลองใหม่">
-                <button onClick={() => handleCreateOptimize()} type="button">
+                <button onClick={() => console.log()} type="button">
                   <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
                 </button>
               </Tooltip>
@@ -633,20 +574,25 @@ const Page = () => {
                 className={styles.uploadContent}
               >
                 <Modal
-                  marginTop="4rem"
+                  marginTop="2rem"
                   isActive={isUploadVehicle}
                   onClose={() => setIsUploadVehicle(false)}
                 >
-                  <VehicleUpload
+                  <UploadStepper
+                    fileExample={VEHICLE_EXAM}
+                    title="เพิ่มยานพาหนะ"
+                    description="สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส"
+                    skillPill={{ title: "ยานพาหนะ", color: "var(--s-400)" }}
                     file={vehicleFile}
+                    headerRule={VEHICLE_HEADER_RULE}
                     setFile={setVehicleFile}
-                    handleCreateVehicles={handleCreateVehicles}
-                    colData={colDataVehicle}
-                    setColData={setColDataVehicle}
+                    mappedColData={colDataVehicle}
+                    setMappedColData={setColDataVehicle}
+                    handleCreate={() => {
+                      handleCreateVeiclePayload();
+                    }}
                     onClose={() => setIsUploadVehicle(false)}
-                    vehicleFileHeader={vehicleFileHeader}
-                    setVehicleFileHeader={setVehicleFileHeader}
-                  ></VehicleUpload>
+                  ></UploadStepper>
                 </Modal>
                 <div className={styles.imageContainer}>
                   <Image
@@ -701,17 +647,19 @@ const Page = () => {
                   isActive={isUploadOrder}
                   onClose={() => setIsUploadOrder(false)}
                 >
-                  <OrderUpload
-                    handleCreateOrder={handleCreateOrder}
+                  <UploadStepper
+                    fileExample={ORDER_EXAM}
+                    title="เพิ่มยานออเดอร์ปลายทาง"
+                    description="สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส"
+                    skillPill={{ title: "ออเดอร์", color: "red" }}
+                    headerRule={ORDER_HEADER_RULE}
                     file={orderFile}
                     setFile={setOrderFile}
-                    // handleCreateVehicles={handleCreateVehicles}
-                    colData={colDataOrder}
-                    setColData={setColDataOrder}
+                    mappedColData={colDataOrder}
+                    setMappedColData={setColDataOrder}
+                    handleCreate={() => handleCreateOrderPayload()}
                     onClose={() => setIsUploadOrder(false)}
-                    orderFileHeader={orderFileHeader}
-                    setOrderFileHeader={setOrderFileHeader}
-                  ></OrderUpload>
+                  ></UploadStepper>
                 </Modal>
                 <div className={styles.imageContainer}>
                   <Image
@@ -756,7 +704,7 @@ const Page = () => {
             <section className={styles.actionSection}>
               <p className={styles.actionInfo}>{getFileCondition()}</p>
               <button
-                onClick={() => handleCreateOptimize()}
+                onClick={() => console.log()}
                 disabled={!(vehicleBases.length > 0 && orderBases.length > 0)}
                 className={`${styles.sendAction}  ${!(vehicleBases.length > 0 && orderBases.length > 0) || loadingCount > 0 ? styles.isActive : ""}`}
               >
@@ -772,4 +720,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Preview;

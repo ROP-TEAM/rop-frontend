@@ -1,10 +1,9 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
-import { OrderBase, TimePeriod } from "@/types/api.types";
+import { OrderBase } from "@/types/api.types";
 import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/types/api.types";

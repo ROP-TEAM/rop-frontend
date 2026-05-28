@@ -1,11 +1,19 @@
-type TimeValue = {
-  hours: string;
-  minutes: string;
-};
+interface TimeInputProps {
+  value?: {
+    hours: string;
+    minutes: string;
+  };
 
-type TimeInputProps = {
-  value: TimeValue;
-  onChange?: (val: TimeValue) => void;
+  onChange?: (time: {
+    hours: string;
+    minutes: string;
+  }) => void;
+
+  onBlur?: (time: {
+    hours: string;
+    minutes: string;
+  }) => void;
+
   placeholder?: string;
   width?: string;
-};
+}

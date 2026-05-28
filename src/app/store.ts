@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./api/baseApi";
-import routeReducer from "./features/route/routeSlice";
+// import routeReducer from "./features/route/routeSlice";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import sidePopupReducer from "./features/sidePopup/sidePopupSlide";
@@ -15,7 +15,7 @@ const persisConfig: PersistConfig<RootReducerType> = {
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
-  route: routeReducer,
+  // route: routeReducer,
   order: orderReducer,
   sidePopup: sidePopupReducer,
   mapClick: mapClickReducer,

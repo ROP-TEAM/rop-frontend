@@ -1,16 +1,27 @@
-.container{
-    display:flex;
-    gap:0.1rem;
-    border: 0.0625rem solid;
-    padding: 0.1rem;
-    box-sizing: border-box;
+.container {
+  display: flex;
+  gap: 0.1rem;
+  box-sizing: border-box;
+  align-items: center;
 
-    input{
-        border:none;
-        width: 2ch;
-        outline: none;
-        &::placeholder{
-            text-align: center;
-        }
+  color: var(--p-1000);
+  border-radius: 0.1rem;
+
+  &:focus-within {
+    outline: 0.125rem solid var(--s-500);
+    padding: 0.25rem 0.5rem;
+    color: var(--p-700);
+  }
+
+  input {
+    border: none;
+    width: 2ch;
+    outline: none;
+    background: transparent;
+    color: inherit;
+
+    &::placeholder {
+      text-align: center;
     }
+  }
 }

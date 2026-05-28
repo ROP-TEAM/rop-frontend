@@ -13,6 +13,7 @@ import { VehicleBase } from "@/types/api.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
 import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
 import { OptimizeReqPayload } from "../features/optimize/optimize.types";
+import Skeleton from "@/components/ui/Skeleton/Skeleton";
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
     label: "เวลาเริ่มทำงาน",
@@ -476,7 +477,7 @@ const Preview = () => {
         vehicles: vehicleBases,
         orders: orderBases,
         enableAlns: true,
-        timeLimitMS: 30000,
+        timeLimitMS: 10000,
         enableMultiTrip: true,
       };
       const result = await createOptimize(payload).unwrap();
@@ -541,21 +542,37 @@ const Preview = () => {
             <div className={styles.optimizeContent}>
               <div className={styles.optimizeBox}>
                 <h2 className={styles.optimizeType}>รถที่ใช้ในการเดินทาง</h2>
-                <div className={styles.optimizeInfo}>
-                  <h1 className={styles.optimizeVariable}>
-                    {optimizeCount.vehicle} / {vehicleBases.length}
-                  </h1>
-                  <p className={styles.optimizeUnit}>คัน</p>
-                </div>
+                {loadingCount > 0 ? (
+                  <Skeleton
+                    borderRadius="4rem"
+                    width="10rem"
+                    height="3rem"
+                  ></Skeleton>
+                ) : (
+                  <div className={styles.optimizeInfo}>
+                    <h1 className={styles.optimizeVariable}>
+                      {optimizeCount.vehicle} / {vehicleBases.length}
+                    </h1>
+                    <p className={styles.optimizeUnit}>คัน</p>
+                  </div>
+                )}
               </div>
               <div className={styles.optimizeBox}>
                 <h2 className={styles.optimizeType}>ระยะทางทั้งหมด </h2>
-                <div className={styles.optimizeInfo}>
-                  <h1 className={styles.optimizeVariable}>
-                    {(optimizeCount.distance / 1000).toFixed(2)}
-                  </h1>
-                  <p className={styles.optimizeUnit}>กม.</p>
-                </div>
+                {loadingCount > 0 ? (
+                  <Skeleton
+                    borderRadius="4rem"
+                    width="10rem"
+                    height="3rem"
+                  ></Skeleton>
+                ) : (
+                  <div className={styles.optimizeInfo}>
+                    <h1 className={styles.optimizeVariable}>
+                      {(optimizeCount.distance / 1000).toFixed(2)}
+                    </h1>
+                    <p className={styles.optimizeUnit}>กม.</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles.optimizeFooter}>

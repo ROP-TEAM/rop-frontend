@@ -1,0 +1,9 @@
+.skeleton {
+  background: var(--background);
+  display: block;
+  animation: shimmer 1.6s infinite linear;
+  width: var(--width);
+  height: var(--height);
+  background-size: 40rem 100%;
+  border-radius: var(--border-radius);
+}

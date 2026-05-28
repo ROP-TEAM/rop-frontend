@@ -7,12 +7,11 @@ const nextConfig: NextConfig = {
       @use "@/styles/shadows" as *;
       @use "@/styles/responsive" as *;
       @use "@/styles/colors" as *;
-
-
+      @use "@/styles/animations" as *;
     `,
   },
   reactCompiler: true,
-  output: 'standalone',
+  output: "standalone",
   images: {
     remotePatterns: [
       {

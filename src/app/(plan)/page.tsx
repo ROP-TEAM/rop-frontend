@@ -578,8 +578,9 @@ const Preview = () => {
             <div className={styles.optimizeFooter}>
               <button
                 type="button"
+                disabled={loadingCount > 0}
                 onClick={() => getDownloadFileResult()}
-                className={styles.optimizeAction}
+                className={`${styles.optimizeAction} ${loadingCount > 0 ? styles.disabled : ""}`}
               >
                 ดาวโหลดไฟล์
               </button>

@@ -238,6 +238,9 @@
       color: var(--p-0);
       background-color: var(--s-500);
     }
+    .disabled {
+      background-color: var(--s-300);
+    }
     .optimizeCloseContainer {
       height: fit-content;
       border: $border-subtle;

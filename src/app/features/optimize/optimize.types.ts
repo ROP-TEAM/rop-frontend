@@ -4,7 +4,7 @@ import { Vehicle, VehicleBase } from "../vehicle/vehicle.types";
 interface Stop extends Order {
   arrivalMin: number;
   distanceFromPrevious: number;
-  DurationFromPrevious: number;
+  durationFromPrevious: number;
 }
 
 interface Route extends Vehicle {

@@ -3,8 +3,8 @@ import { Noto_Sans_Thai } from "next/font/google";
 import "./../styles/globals.scss";
 import { AuthProvider } from "./provider";
 export const metadata: Metadata = {
-  title: "rop-frontend",
-  description: "route-optimize-frontend",
+  title: "soroutetion",
+  description: "route-optimize-program",
 };
 const noto = Noto_Sans_Thai({
   subsets: ["thai", "latin"],

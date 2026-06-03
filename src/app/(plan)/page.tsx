@@ -248,6 +248,7 @@ const Preview = () => {
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [locationError, setLocationError] = useState("");
   const getFileCondition = (): string => {
     if (vehicleBases.length === 0 && orderBases.length === 0) {
       return "ยังไม่ได้อัปโหลดไฟล์ กรุณาอัปโหลดข้อมูลรถและออเดอร์ให้ครบถ้วน";
@@ -313,8 +314,10 @@ const Preview = () => {
   };
 
   const handleUseCurrentLocation = () => {
+    setLocationError("");
+
     if (!navigator.geolocation) {
-      alert("เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง");
+      setLocationError("*เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง");
       return;
     }
 
@@ -324,22 +327,25 @@ const Preview = () => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+
+        setLocationError("");
       },
       (error) => {
-        console.error(error);
-
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            alert("กรุณาอนุญาตการเข้าถึงตำแหน่ง");
+            setLocationError("*กรุณาอนุญาตการเข้าถึงตำแหน่ง");
             break;
+
           case error.POSITION_UNAVAILABLE:
-            alert("ไม่สามารถระบุตำแหน่งได้");
+            setLocationError("*ไม่สามารถระบุตำแหน่งได้");
             break;
+
           case error.TIMEOUT:
-            alert("หมดเวลาการค้นหาตำแหน่ง");
+            setLocationError("*หมดเวลาการค้นหาตำแหน่ง");
             break;
+
           default:
-            alert("เกิดข้อผิดพลาด");
+            setLocationError("*เกิดข้อผิดพลาด");
         }
       },
       {
@@ -685,6 +691,10 @@ const Preview = () => {
                 ใช้ตำแหน่งปัจจุบัน
               </button>
             </div>
+
+            {locationError && (
+              <p className={styles.locationError}>{locationError}</p>
+            )}
             <section className={styles.uploadContainer}>
               <div
                 style={{

@@ -312,6 +312,44 @@ const Preview = () => {
     return 1;
   };
 
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert("เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setDepotLoc({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error(error);
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            alert("กรุณาอนุญาตการเข้าถึงตำแหน่ง");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("ไม่สามารถระบุตำแหน่งได้");
+            break;
+          case error.TIMEOUT:
+            alert("หมดเวลาการค้นหาตำแหน่ง");
+            break;
+          default:
+            alert("เกิดข้อผิดพลาด");
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
+    );
+  };
+
   const handleCreateVeiclePayload = () => {
     const RowLenght = colDataVehicle[0].length;
     const ColLenght = VEHICLE_HEADER_RULE.length;
@@ -634,6 +672,18 @@ const Preview = () => {
                 value={depotLoc}
                 onChange={setDepotLoc}
               ></LocationInput>
+            </div>
+            <div className={styles.currentLocation}>
+              <Image
+                src="/icon/locaton-point.svg"
+                alt="location point"
+                width={18}
+                height={18}
+              />
+
+              <button type="button" onClick={handleUseCurrentLocation}>
+                ใช้ตำแหน่งปัจจุบัน
+              </button>
             </div>
             <section className={styles.uploadContainer}>
               <div

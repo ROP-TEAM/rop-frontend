@@ -606,7 +606,7 @@ const Preview = () => {
                 isRequire
                 color="var(--p-500)"
                 labelWeight="500"
-                label="ตำแหน่งคลังสินค้า"
+                label="พิกัดคลังสินค้า"
                 labelGap="0.5rem"
                 value={depotLoc}
                 onChange={setDepotLoc}

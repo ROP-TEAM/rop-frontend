@@ -26,6 +26,7 @@ export const UploadStepper = ({
   description,
   skillPill,
   file,
+  fileTemplateName = "ตัวอย่างไฟล์ที่ถูกต้อง",
   setFile,
   mappedColData,
   setMappedColData,
@@ -133,13 +134,12 @@ export const UploadStepper = ({
     reader.readAsText(file);
   };
 
-  const getVehicleDownloadFileExam = () => {
+  const getDownloadFileExam = () => {
     if (!fileExample || fileExample?.length == 0) return;
 
     const escapeCSV = (value: string) => `"${value.replace(/"/g, '""')}"`;
 
     const csvContent = [
-      header.map(escapeCSV).join(","),
       ...fileExample.map((row) => row.map(escapeCSV).join(",")),
     ].join("\n");
 
@@ -150,7 +150,7 @@ export const UploadStepper = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "vehicle-template.csv";
+    link.download = fileTemplateName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -200,16 +200,16 @@ export const UploadStepper = ({
                       width={20}
                       height={20}
                     />
-                    <h3 className={styles.text}>ตัวอย่างไฟล์ที่ถูกต้อง</h3>
+                    <h3 className={styles.text}>{fileTemplateName}</h3>
                   </div>
                   <p className={styles.fileTempalateDescription}>
-                    สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส
-                    วิกเพลย์บอยพลานุภาพ
+                    สามารถอัปดาวโหลดไฟล์และนำไปแก้ไข ตาม Format
+                    ตัวอย่างที่แนบไปด้วย
                   </p>
                 </div>
                 <button
                   className={styles.download}
-                  onClick={getVehicleDownloadFileExam}
+                  onClick={getDownloadFileExam}
                 >
                   ดาวโหลดไฟล์
                 </button>
@@ -390,7 +390,9 @@ export const UploadStepper = ({
               />
             )}
           </div>
-          {description && <p>{description}</p>}{" "}
+          {description && (
+            <p className={styles.headerDescription}>{description}</p>
+          )}
         </div>
         <button onClick={onClose} type="button">
           <IconSvgMono src="/icon/cross.svg" size={12} color="var(--p-500)" />

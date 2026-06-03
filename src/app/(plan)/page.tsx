@@ -132,6 +132,18 @@ const ORDER_HEADER_RULE: HeaderRule[] = [
 ];
 const VEHICLE_EXAM = [
   [
+    "เวลาเริ่มทำงาน",
+    "เวลาสิ้นสุดงาน",
+    "เวลาพักเริ่มต้น",
+    "เวลาพักสิ้นสุด",
+    "น้ำหนักบรรทุก",
+    "ชื่อรถหรือชื่อพนักงาน",
+    "จำนวนภาระงานสูงสุด",
+    "ความสามารถเฉพาะ",
+    "รุ่นรถ",
+    "ทะเบียนรถ",
+  ],
+  [
     "08:00",
     "17:00",
     "12:00",
@@ -169,6 +181,17 @@ const VEHICLE_EXAM = [
   ],
 ];
 const ORDER_EXAM = [
+  [
+    "ชื่องาน",
+    "น้ำหนักสินค้า",
+    "เวลาเปิดร้าน",
+    "เวลาปิดร้าน",
+    "ตำแหน่งจัดส่ง",
+    "เวลาให้บริการ",
+    "รายละเอียด",
+    "ความสามารถเฉพาะ",
+    "ลำดับความสำคัญ",
+  ],
   [
     "ORD001",
     "120",
@@ -530,7 +553,7 @@ const Preview = () => {
               {loadingCount > 0 ? (
                 <p
                   className={styles.optimizeCount}
-                >{`กำลังโหลด ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} วินาที...`}</p>
+                >{`กำลังโหลด ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} ...`}</p>
               ) : (
                 <Tooltip title="ลองใหม่">
                   <button onClick={() => handleCreateOptimize()} type="button">
@@ -629,6 +652,7 @@ const Preview = () => {
                 >
                   <UploadStepper
                     fileExample={VEHICLE_EXAM}
+                    fileTemplateName="vehicle-template.csv"
                     title="เพิ่มยานพาหนะ"
                     description="สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส"
                     skillPill={{ title: "ยานพาหนะ", color: "var(--s-400)" }}
@@ -701,8 +725,9 @@ const Preview = () => {
                 >
                   <UploadStepper
                     fileExample={ORDER_EXAM}
+                    fileTemplateName="order-template.csv"
                     title="เพิ่มยานออเดอร์ปลายทาง"
-                    description="สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส"
+                    description="เพื่อประสิทธิภาพสูงสุดของระบบคำนวณ จะไม่นับรวมทุกประเภทสินค้าต่อ 1 ปลายทาง"
                     skillPill={{ title: "ออเดอร์", color: "red" }}
                     headerRule={ORDER_HEADER_RULE}
                     file={orderFile}
@@ -777,7 +802,7 @@ const Preview = () => {
                   }`}
                 >
                   {loadingCount > 0.2
-                    ? `กำลังจัดรอบ ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} วินาที`
+                    ? `กำลังจัดรอบ ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} `
                     : "จัดรอบรถ"}
                 </button>
               </div>

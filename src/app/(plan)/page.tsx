@@ -481,7 +481,57 @@ const Preview = () => {
   const handleClearOptimize = () => {
     setIsOptimize(false);
   };
+  function downloadTxt() {
+    const content = `# Project Development Notice
 
+**Date:** June 3, 2026
+
+## Development Status
+
+This program is currently under active development.
+
+The primary objective of this project is to design, implement, and evaluate **Greedy-based algorithms** for solving the **Vehicle Routing Problem (VRP)** under various constraints and optimization factors.
+
+## Download and Troubleshooting
+
+For visitors and users:
+
+If downloaded files are incomplete or encounter any issues, please inspect the response payload using Developer Mode:
+
+\`\`\`text
+F12 → Network → optimize → Response Payload
+\`\`\`
+
+This can help identify missing or malformed data during the current development stage.
+
+## Feedback and Contact
+
+Suggestions, bug reports, and feedback are highly appreciated.
+
+Please feel free to contact us:
+
+**Email:** kritsada.ba@kkumail.com
+
+## Contributors
+
+Developed by **Computer Engineering students at Khon Kaen University**.
+`;
+
+    const blob = new Blob([content], {
+      type: "text/markdown;charset=utf-8",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "README.md";
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
   const getDownloadFileResult = () => {
     const header = [
       "ชื่อคนขับ",
@@ -494,7 +544,6 @@ const Preview = () => {
     const rows = optimizeResult;
 
     if (!rows?.length) {
-      alert("ไม่มีข้อมูลสำหรับดาวน์โหลด");
       return;
     }
 
@@ -584,11 +633,19 @@ const Preview = () => {
                 ทั้งนี้ผลลัพธ์อาจแตกต่างกันเล็กน้อยในแต่ละครั้ง
                 ซึ่งเป็นพฤติกรรมปกติของระบบที่ออกแบบมาเพื่อเลือกแนวทางการจัดรอบที่เหมาะสมที่สุด
                 หรือ
-                <span className={styles.report}> พบปัญหาการใช้งาน</span>
+                <button type="button" onClick={downloadTxt}>
+                  <span className={styles.report}> พบปัญหาการใช้งาน</span>
+                </button>
               </span>
             </div>
           </div>
-          <button className={styles.titleAction}>ติดต่อเรา</button>
+          <button
+            className={styles.titleAction}
+            type="button"
+            onClick={downloadTxt}
+          >
+            ติดต่อเรา
+          </button>
         </div>
         {isOptimize ? (
           <div className={styles.optimize}>
@@ -714,7 +771,7 @@ const Preview = () => {
                     fileExample={VEHICLE_EXAM}
                     fileTemplateName="vehicle-template.csv"
                     title="เพิ่มยานพาหนะ"
-                    description="สคริปต์ลาเต้ฟรุตชะโนด สี่แยกชัวร์คูลเลอร์จังโก้ซานตาคลอส"
+                    description="ไฟล์ออเดอร์รถทั้งหมดสามารถเดินรถได้ โดยจะสามารถจัดรอบรถแบบวันต่อวันเท่านั้น"
                     skillPill={{ title: "ยานพาหนะ", color: "var(--s-400)" }}
                     file={vehicleFile}
                     headerRule={VEHICLE_HEADER_RULE}

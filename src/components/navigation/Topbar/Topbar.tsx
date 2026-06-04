@@ -6,9 +6,6 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { controlToggle } from "@/app/features/sidePopup/sidePopupSlide";
 export const Topbar = () => {
-  const sidePopupSlice = useSelector(
-    (state: RootState) => state.sidePopupReducer,
-  );
   const dispatch = useDispatch();
   return (
     <div className={styles.topbar}>

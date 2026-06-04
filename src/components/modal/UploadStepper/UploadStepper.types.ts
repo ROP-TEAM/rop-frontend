@@ -27,6 +27,7 @@ export interface UploadStepperProps {
   fileExample?: string[][];
   skillPill?: SkillPillProps;
   file: File | undefined;
+  fileTemplateName?: string;
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   mappedColData: string[][];
   headerRule: HeaderRule[];

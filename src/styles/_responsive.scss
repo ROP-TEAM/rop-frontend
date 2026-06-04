@@ -10,7 +10,7 @@ $breakpoints: (
   $size: map-get($breakpoints, $breakpoint);
 
   @if $size {
-    @media (min-width: $size) {
+    @media (max-width: $size) {
       @content;
     }
   } @else {

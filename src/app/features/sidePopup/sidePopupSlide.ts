@@ -6,7 +6,7 @@ interface sidePopupSlide {
 }
 
 const initialState: sidePopupSlide = {
-  isShowControl: true,
+  isShowControl:false,
   isShowDetail: false,
 };
 const sidePopupSlide = createSlice({

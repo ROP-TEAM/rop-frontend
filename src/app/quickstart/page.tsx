@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/modal/Modal/Modal";
@@ -7,7 +8,7 @@ import styles from "./quickstart.module.scss";
 import Image from "next/image";
 import { Location } from "@/components/form/LocationInput/LocationInput.types";
 import { OrderBase } from "../features/order/order.types";
-import { useState } from "react";
+import React, { useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "../features/vehicle/vehicle.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
@@ -581,6 +582,9 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   };
 
   const handleCreateOptimize = async () => {
+    let vehicleCount = 0;
+    let distanceCount = 0;
+    const WAITING_TIME = 30; //seccound
     setLoadingCount(0);
     const start = performance.now();
     const timer = setInterval(() => {
@@ -594,13 +598,14 @@ Developed by **Computer Engineering students at Khon Kaen University**.
         vehicles: vehicleBases,
         orders: orderBases,
         enableAlns: true,
-        timeLimitMS: 10000,
+        timeLimitMS: WAITING_TIME * 1000,
         enableMultiTrip: true,
       };
       const result = await createOptimize(payload).unwrap();
       const routes = result.routes;
-      const vehicleCount = routes.length;
-      const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+      vehicleCount = routes.length;
+      distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+
       setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
       setOptimizeResult(
         routes.flatMap((r: any) =>
@@ -613,12 +618,16 @@ Developed by **Computer Engineering students at Khon Kaen University**.
           ]),
         ),
       );
-      clearInterval(timer);
       setIsOptimize(true);
     } catch (err) {
-      clearInterval(timer);
       console.log(err);
     } finally {
+      clearInterval(timer);
+      setTimeout(() => {
+        if ((distanceCount > 800 * 1000 || vehicleCount > 7) && isOptimize) {
+          handleCreateOptimize();
+        }
+      }, 1000);
       setLoadingCount(0);
     }
   };
@@ -657,11 +666,28 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                   className={styles.optimizeCount}
                 >{`กำลังโหลด ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} ...`}</p>
               ) : (
-                <Tooltip title="ลองใหม่">
-                  <button onClick={() => handleCreateOptimize()} type="button">
-                    <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
-                  </button>
-                </Tooltip>
+                <div className={styles.optimizeIcon}>
+                  <Tooltip title="ลองใหม่">
+                    <button
+                      onClick={() => handleCreateOptimize()}
+                      type="button"
+                    >
+                      <IconSvgMono
+                        src="/icon/reload.svg"
+                        size={24}
+                      ></IconSvgMono>
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="จำลองเส้นทาง">
+                    <Link href="plan/map">
+                      <IconSvgMono
+                        src="/icon/path.svg"
+                        color="var(--p-700)"
+                        size={24}
+                      ></IconSvgMono>
+                    </Link>
+                  </Tooltip>
+                </div>
               )}
             </div>
             <div className={styles.optimizeContent}>

@@ -27,5 +27,7 @@ export interface OptimizeReqPayload {
 export interface OptimizeResPayload {
   routes: Route[];
   dropReasons: DropReason[];
+  depotLat: number | null;
+  depotLon: number | null;
   message: string;
 }

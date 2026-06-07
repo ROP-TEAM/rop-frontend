@@ -15,12 +15,16 @@ import {
 import { RootState } from "@/app/store";
 import { setLatLng } from "@/app/features/mapClick/mapClickSlice";
 import mockOptimize from "@/data/mock/optimize_1.json";
+import { Niconne } from "next/font/google";
 const MapWorkspace = () => {
   const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   const dispatch = useDispatch();
-  const [manageState, setManageState] = useState<"vehicle" | "order">(
-    "vehicle",
+  const optimizeResult = useSelector(
+    (state: RootState) => state.optimize.optimize,
   );
+  // const [manageState, setManageState] = useState<"vehicle" | "order">(
+  //   "vehicle",
+  // );
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 16.441879460231092,
@@ -33,7 +37,6 @@ const MapWorkspace = () => {
     id: "google-map-script",
     googleMapsApiKey: apiKey,
   });
-  const [hoverDirection, setHoverDirection] = useState<number | null>(null);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
@@ -47,14 +50,6 @@ const MapWorkspace = () => {
     setMap(null);
   }, []);
 
-  function mulberry32(seed: number) {
-    return function () {
-      let t = (seed += 0x6d2b79f5);
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
   const DarkPastelColor: string[] = [
     "#E63946",
     "#1D3557",
@@ -73,27 +68,53 @@ const MapWorkspace = () => {
     "#B5838D",
   ];
 
-  const hexToRgba = (hex: string, opacity: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-  };
   const polylineRefs = useRef<google.maps.Polyline[]>([]);
   const markerRefs = useRef<google.maps.Marker[][]>([]);
+  const activePolylineRefs = useRef<number | null>(null);
+
+  const setPolyLineStyles = (selectIndex: number) => {
+    polylineRefs.current.forEach((p, i) => {
+      p.setOptions({
+        strokeOpacity: i === selectIndex ? 1.0 : 0.4,
+        strokeWeight: i === selectIndex ? 6 : 4,
+        zIndex: i === selectIndex ? 999 : i,
+      });
+    });
+    markerRefs.current[selectIndex]?.forEach((m) => m.setVisible(true));
+  };
+
+  const clearPolyLineStyles = () => {
+    polylineRefs.current.forEach((p) => {
+      p.setOptions({ strokeOpacity: 0.85, strokeWeight: 4 });
+    });
+    activePolylineRefs.current = null;
+    markerRefs.current.forEach((c) => {
+      c?.forEach((m) => m.setVisible(false));
+    });
+  };
 
   useEffect(() => {
-    if (!isLoaded || !map) return;
+    console.log(optimizeResult);
+    if (!isLoaded || !map || !optimizeResult) return;
+    const depotLat = optimizeResult.depotLat;
+    const depotLon = optimizeResult.depotLon;
+    if (!depotLat || !depotLon) return;
+    if (!optimizeResult.routes || optimizeResult.routes.length === 0) return;
 
-    mockOptimize.routes.forEach((vehicle, index) => {
+    optimizeResult.routes.forEach((vehicle, index) => {
       const service = new google.maps.DirectionsService();
       const route = vehicle.stops;
-      const destinationRoute = route[route.length - 1];
 
       service.route(
         {
-          origin: { lat: 16.2916, lng: 102.6161 },
-          destination: { lat: 16.2916, lng: 102.6161 },
+          origin: {
+            lat: depotLat,
+            lng: depotLon,
+          },
+          destination: {
+            lat: depotLat,
+            lng: depotLon,
+          },
           waypoints: route.map((n) => ({
             location: { lat: n.desLatitude, lng: n.desLongitude },
             stopover: true,
@@ -101,9 +122,8 @@ const MapWorkspace = () => {
           optimizeWaypoints: false,
           travelMode: google.maps.TravelMode.DRIVING,
         },
+
         (result, status) => {
-          console.log(`route ${index} status:`, status);
-          console.log(`route ${index} result:`, result);
           if (status === "OK" && result) {
             const polyline = new google.maps.Polyline({
               path: result.routes[0].overview_path,
@@ -113,22 +133,22 @@ const MapWorkspace = () => {
               zIndex: index,
               map,
             });
-
+            console.log(activePolylineRefs.current);
             const markers = route.map((stop, stopIndex) => {
               return new google.maps.Marker({
                 position: { lat: stop.desLatitude, lng: stop.desLongitude },
                 map,
                 visible: false,
-                title: stop.orderName ?? `Stop`,
+                title: stop.name ?? `Stop`,
                 label: {
-                  text: String(stopIndex + 1),
+                  text: `${String(stopIndex + 1)} ${vehicle.skills?.some((s) => s.name == stop.skill) ? "!" : ""}`,
                   color: "#FFFFFF",
-                  fontSize: "13px",
+                  fontSize: "0.825rem",
                   fontWeight: "bold",
                 },
                 icon: {
                   path: google.maps.SymbolPath.CIRCLE,
-                  scale: 7,
+                  scale: 10,
                   fillColor: "red",
                   fillOpacity: 1,
                   strokeColor: "#ffffff",
@@ -137,9 +157,19 @@ const MapWorkspace = () => {
               });
             });
             markerRefs.current[index] = markers;
-
+            polyline.addListener("click", () => {
+              const activeIndex = activePolylineRefs.current;
+              const exit = activeIndex !== null;
+              if (exit) {
+                markerRefs.current[activeIndex].forEach((m) =>
+                  m.setVisible(false),
+                );
+              }
+              setPolyLineStyles(index);
+              activePolylineRefs.current = index;
+            });
             polyline.addListener("mouseover", () => {
-              console.log(route);
+              if (activePolylineRefs.current !== null) return;
               polylineRefs.current.forEach((p, i) => {
                 p.setOptions({
                   strokeOpacity: i === index ? 1.0 : 0.4,
@@ -147,14 +177,14 @@ const MapWorkspace = () => {
                   zIndex: i === index ? 999 : i,
                 });
               });
-              markerRefs.current[index]?.forEach((m) => m.setVisible(true));
+              markerRefs.current[index]?.forEach((m, idm) =>
+                m.setVisible(true),
+              );
             });
 
             polyline.addListener("mouseout", () => {
-              polylineRefs.current.forEach((p) => {
-                p.setOptions({ strokeOpacity: 0.85, strokeWeight: 4 });
-              });
-              markerRefs.current[index]?.forEach((m) => m.setVisible(false));
+              if (activePolylineRefs.current !== null) return;
+              clearPolyLineStyles();
             });
 
             polylineRefs.current[index] = polyline;
@@ -162,7 +192,7 @@ const MapWorkspace = () => {
         },
       );
     });
-  }, [isLoaded, map]);
+  }, [isLoaded, map, optimizeResult]);
 
   return (
     <div className={styles.map}>
@@ -201,6 +231,9 @@ const MapWorkspace = () => {
       <div className={styles.containerMap}>
         {isLoaded ? (
           <GoogleMap
+            onClick={() => {
+              clearPolyLineStyles();
+            }}
             mapContainerStyle={{ width: "100%", height: "100%" }}
             zoom={8}
             onLoad={onLoad}

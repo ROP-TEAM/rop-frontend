@@ -6,11 +6,13 @@ import storage from "redux-persist/lib/storage";
 import sidePopupReducer from "./features/sidePopup/sidePopupSlide";
 import orderReducer from "./features/order/orderSlice";
 import mapClickReducer from "./features/mapClick/mapClickSlice";
+import optimizeReducer from "./features/optimize/optimizeSlice";
+
 type RootReducerType = ReturnType<typeof rootReducer>;
 const persisConfig: PersistConfig<RootReducerType> = {
   key: "root",
   storage,
-  whitelist: ["route", "order"],
+  whitelist: ["route", "order", "optimize"],
 };
 
 const rootReducer = combineReducers({
@@ -19,6 +21,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   sidePopup: sidePopupReducer,
   mapClick: mapClickReducer,
+  optimize: optimizeReducer,
 });
 
 const persistedReducer = persistReducer(persisConfig, rootReducer);

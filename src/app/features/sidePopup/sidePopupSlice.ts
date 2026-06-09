@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface sidePopupSlide {
+interface sidePopupSlice {
   isShowControl: boolean;
   isShowDetail: boolean;
 }
 
-const initialState: sidePopupSlide = {
-  isShowControl:false,
+const initialState: sidePopupSlice = {
+  isShowControl: true,
   isShowDetail: false,
 };
 const sidePopupSlide = createSlice({

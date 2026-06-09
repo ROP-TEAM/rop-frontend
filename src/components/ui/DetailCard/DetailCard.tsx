@@ -4,23 +4,26 @@ import { TextInput } from "@/components/form/TextInput/TextInput";
 import { FloatingCard } from "../FloatingCard/FloatingCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
-import { Location } from "@/types/api.types";
+import { Location } from "@/components/form/LocationInput/LocationInput.types";
 import { Modal } from "@/components/modal/Modal/Modal";
-import { useDispatch } from "react-redux";
-import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
+import { useDispatch, useSelector } from "react-redux";
+import { detailClose } from "@/app/features/sidePopup/sidePopupSlice";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SkillInput } from "@/components/form/SkillInput/SkillInput";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
 import { SkillPillProps } from "../SkillPill/SkillPill.types";
+import { RootState } from "@/app/store";
+
 export const DetailCard = () => {
-  const [name, setName] = useState<string>("สมชายแซ่ตั้งรถขนของเย็น");
+  const currentVehicle = useSelector((state: RootState) => state.detailVehicle);
+  const [name, setName] = useState<string>("");
   const [detailState, setDetailState] = useState("property");
   const [isShowOverview, setIsShowOverview] = useState(true);
-  const [isShowOrder, setIsShowOrder] = useState(true);
-  const [maxTask, setMaxTask] = useState<number>(0);
+  const [isShowOrder, setIsShowOrder] = useState(false);
+  const [maxTask, setMaxTask] = useState<number>(currentVehicle.maxTask ?? 0);
   const [maxCapacity, setMaxCapacity] = useState<number>(0);
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
@@ -58,6 +61,12 @@ export const DetailCard = () => {
     },
   ];
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(currentVehicle);
+    setName(currentVehicle.name);
+  }, [currentVehicle]);
+
   return (
     <div className={styles.container}>
       <div className={styles.control}>
@@ -69,7 +78,7 @@ export const DetailCard = () => {
               color="var(--p-700)"
             ></IconSvgMono>
           </button>
-          <h4 className={styles.editAt}>แก้ไขล่าสุด 05-03-2026</h4>
+          <h4 className={styles.editAt}>แก้ไขล่าสุด XX-XX-202X</h4>
           <div className={styles.optionAction}>
             <FloatingCard
               bodyWidth="8rem"

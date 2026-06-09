@@ -4,7 +4,7 @@ import styles from "./Topbar.module.scss";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { controlToggle } from "@/app/features/sidePopup/sidePopupSlide";
+import { controlToggle } from "@/app/features/sidePopup/sidePopupSlice";
 export const Topbar = () => {
   const dispatch = useDispatch();
   return (

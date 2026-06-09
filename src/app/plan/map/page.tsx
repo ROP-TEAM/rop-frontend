@@ -11,20 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   controlClose,
   detailOpen,
-} from "@/app/features/sidePopup/sidePopupSlide";
+} from "@/app/features/sidePopup/sidePopupSlice";
 import { RootState } from "@/app/store";
 import { setLatLng } from "@/app/features/mapClick/mapClickSlice";
-import mockOptimize from "@/data/mock/optimize_1.json";
-import { Niconne } from "next/font/google";
 const MapWorkspace = () => {
   const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   const dispatch = useDispatch();
   const optimizeResult = useSelector(
     (state: RootState) => state.optimize.optimize,
   );
-  // const [manageState, setManageState] = useState<"vehicle" | "order">(
-  //   "vehicle",
-  // );
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 16.441879460231092,
@@ -94,7 +89,6 @@ const MapWorkspace = () => {
   };
 
   useEffect(() => {
-    console.log(optimizeResult);
     if (!isLoaded || !map || !optimizeResult) return;
     const depotLat = optimizeResult.depotLat;
     const depotLon = optimizeResult.depotLon;
@@ -212,13 +206,24 @@ const MapWorkspace = () => {
               ออเดอร์
             </button>
           </div>
-          <button
-            onClick={() => dispatch(detailOpen())}
-            className={styles.vehicleContainer}
-          >
+          <button className={styles.vehicleContainer}>
             {isVehicleState ? (
-              <div>
-                <VehicleCard></VehicleCard>
+              <div className={styles.vehicleCardContainer}>
+                {optimizeResult.routes.map((r, index) => (
+                  <VehicleCard
+                    key={index}
+                    name={r.name}
+                    id={index}
+                    model={r.model}
+                    capacity={r.capacity}
+                    plateNumber={r.plateNumber}
+                    workTimeStart={r.workTimeStart}
+                    workTimeEnd={r.workTimeEnd}
+                    breakTimeStart={r.workTimeStart}
+                    breakTimeEnd={r.workTimeEnd}
+                    skills={r.skills}
+                  ></VehicleCard>
+                ))}
               </div>
             ) : (
               <div>

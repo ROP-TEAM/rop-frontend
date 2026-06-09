@@ -8,14 +8,16 @@ import styles from "./quickstart.module.scss";
 import Image from "next/image";
 import { Location } from "@/components/form/LocationInput/LocationInput.types";
 import { OrderBase } from "../features/order/order.types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "../features/vehicle/vehicle.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
 import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
 import { OptimizeReqPayload } from "../features/optimize/optimize.types";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+``;
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
     label: "เวลาเริ่มทำงาน",
@@ -251,6 +253,43 @@ const Preview = () => {
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [locationError, setLocationError] = useState("");
+  const result = useSelector((state: RootState) => state.optimize);
+  useEffect(() => {
+    console.log(result);
+    if (result.optimize.message == "OK") {
+      const routes = result.optimize.routes;
+      const vehicleCount = routes.length;
+      const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+
+      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
+      setOptimizeResult(
+        routes.flatMap((r) =>
+          r.stops.map((s: any) => {
+            return [
+              r.name,
+              r.skills?.map((sk) => sk.name).join(" | ") ?? "",
+              (r.totalDistance / 1000).toFixed(2),
+              parseNumberToTime(r.totalDuration),
+              s.orderName,
+              `"${s.desLatitude},${s.desLongitude}"`,
+              String(r.stops.length),
+              String(s.capacity),
+              s.skill ?? "",
+              parseNumberToTime(s.timeWindowStart),
+              parseNumberToTime(s.timeWindowEnd),
+              parseNumberToTime(s.arrivalMin),
+              parseNumberToTime(s.serviceTime + s.arrivalMin),
+              (s.distanceFromPrevious / 1000).toFixed(2),
+              String(s.DurationFromPrevious),
+              "ส่งสำเร็จ",
+            ];
+          }),
+        ),
+      );
+      setIsOptimize(true);
+    }
+  }, [result]);
+
   const getFileCondition = (): string => {
     if (vehicleBases.length === 0 && orderBases.length === 0) {
       return "ยังไม่ได้อัปโหลดไฟล์ กรุณาอัปโหลดข้อมูลรถและออเดอร์ให้ครบถ้วน";
@@ -537,10 +576,22 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   const getDownloadFileResult = () => {
     const header = [
       "ชื่อคนขับ",
+      "ทักษะ",
+      "ระยะทางรวม (กม.)",
+      "เวลารวม (ชั่วโมง)",
       "ชื่อออเดอร์",
-      "เวลาที่ไปถึง",
+      "พิกัดปลายทาง",
+      "จำนวนงานในเส้นทาง",
+      "น้ำหนักสินค้า",
+      "ทักษะที่ต้องการ",
+      "เวลาเปิดร้าน",
+      "เวลาปิดร้าน",
+      "เวลาไปถึง",
       "เวลาออก",
+      "ระยะทางจากจุดก่อนหน้า (กม.)",
+      "เวลาเดินทางจากจุดก่อนหน้า (นาที)",
       "สถานะ",
+      "หมายเหตุ",
     ];
 
     const rows = optimizeResult;
@@ -552,18 +603,10 @@ Developed by **Computer Engineering students at Khon Kaen University**.
     const csvContent = [
       header.join(","),
       ...rows.map((row) => {
-        const [driver, order, arrivalMin, serviceMin, status] = row;
-
-        return [
-          driver,
-          order,
-          parseNumberToTime(Number(arrivalMin)),
-          parseNumberToTime(Number(serviceMin)),
-          status,
-        ].join(",");
+        return [row].join(",");
       }),
     ].join("\n");
-
+    console.log(csvContent);
     const blob = new Blob(["\uFEFF" + csvContent], {
       type: "text/csv;charset=utf-8;",
     });
@@ -582,9 +625,9 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   };
 
   const handleCreateOptimize = async () => {
-    let vehicleCount = 0;
-    let distanceCount = 0;
-    const WAITING_TIME = 30; //seccound
+    if (isLoading) return;
+
+    const WAITING_TIME = 10;
     setLoadingCount(0);
     const start = performance.now();
     const timer = setInterval(() => {
@@ -601,33 +644,12 @@ Developed by **Computer Engineering students at Khon Kaen University**.
         timeLimitMS: WAITING_TIME * 1000,
         enableMultiTrip: true,
       };
-      const result = await createOptimize(payload).unwrap();
-      const routes = result.routes;
-      vehicleCount = routes.length;
-      distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
-
-      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
-      setOptimizeResult(
-        routes.flatMap((r: any) =>
-          r.stops.map((s: any) => [
-            r.vehicleName,
-            s.orderName,
-            s.arrivalMin,
-            s.departMin,
-            "ส่งสำเร็จ",
-          ]),
-        ),
-      );
-      setIsOptimize(true);
+      await createOptimize(payload).unwrap();
+      localStorage.setItem("vehicleCount", String(vehicleBases.length));
     } catch (err) {
       console.log(err);
     } finally {
       clearInterval(timer);
-      setTimeout(() => {
-        if ((distanceCount > 800 * 1000 || vehicleCount > 7) && isOptimize) {
-          handleCreateOptimize();
-        }
-      }, 1000);
       setLoadingCount(0);
     }
   };
@@ -702,7 +724,8 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 ) : (
                   <div className={styles.optimizeInfo}>
                     <h1 className={styles.optimizeVariable}>
-                      {optimizeCount.vehicle} / {vehicleBases.length}
+                      {optimizeCount.vehicle} /{" "}
+                      {localStorage.getItem("vehicleCount")}
                     </h1>
                     <p className={styles.optimizeUnit}>คัน</p>
                   </div>

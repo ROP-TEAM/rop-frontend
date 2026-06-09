@@ -6,7 +6,7 @@ import styles from "./timeline.module.scss";
 import React from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { detailOpen } from "@/app/features/sidePopup/sidePopupSlide";
+import { detailOpen } from "@/app/features/sidePopup/sidePopupSlice";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 const vehicles = [

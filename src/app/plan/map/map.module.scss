@@ -39,3 +39,8 @@
 .containerMap {
   flex: 1;
 }
+.vehicleCardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

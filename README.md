@@ -10,6 +10,12 @@ The system currently supports **Heterogeneous Fleet Vehicle Routing Problem with
 
 At present, Soroutetion is still in the **prototype stage** and requires further research, development, testing, and validation to improve its stability, scalability, and optimization performance in production environments.
 
+Users may either run the application locally for development purposes or access the hosted version directly via:
+
+**https://soroutetion.com/**
+
+The hosted platform provides the same core optimization functionality without requiring any local installation or configuration.
+
 ---
 
 ## Supported Optimization Features
@@ -83,20 +89,6 @@ Examples:
 - Critical maintenance jobs
 
 The optimizer attempts to prioritize important tasks while maintaining overall route efficiency.
-
----
-
-## System Architecture
-
-Current architecture consists of:
-
-- Frontend (React / Next.js)
-- Route Optimization Engine
-- API Services
-- Interactive Map Visualization
-- CSV Import / Export
-
----
 
 ## Installation
 

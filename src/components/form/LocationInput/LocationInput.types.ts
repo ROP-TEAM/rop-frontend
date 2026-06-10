@@ -1,4 +1,7 @@
-import { Location } from "@/types/api.types";
+export interface Location {
+  lat: number;
+  lng: number;
+}
 export interface LocationInputProps {
   labelColor?: string;
   labelSize?: string;

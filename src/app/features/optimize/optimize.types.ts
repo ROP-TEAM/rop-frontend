@@ -4,7 +4,7 @@ import { Vehicle, VehicleBase } from "../vehicle/vehicle.types";
 interface Stop extends Order {
   arrivalMin: number;
   distanceFromPrevious: number;
-  durationFromPrevious: number;
+  DurationFromPrevious: number;
 }
 
 interface Route extends Vehicle {
@@ -12,6 +12,7 @@ interface Route extends Vehicle {
   totalDistance: number;
   stops: Stop[];
 }
+
 export interface OptimizeReqPayload {
   depotLat: number;
   depotLon: number;
@@ -27,5 +28,7 @@ export interface OptimizeReqPayload {
 export interface OptimizeResPayload {
   routes: Route[];
   dropReasons: DropReason[];
+  depotLat: number | null;
+  depotLon: number | null;
   message: string;
 }

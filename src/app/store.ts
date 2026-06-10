@@ -3,20 +3,25 @@ import { baseApi } from "./api/baseApi";
 import routeReducer from "./features/route/routeSlice";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import sidePopupReducer from "./features/sidePopup/sidePopupSlide";
 import orderReducer from "./features/order/orderSlice";
-import mapclickReducer from "./features/mapClick/mapClickSlice";
+import mapClickReducer from "./features/mapClick/mapClickSlice";
+import optimizeReducer from "./features/optimize/optimizeSlice";
+
 type RootReducerType = ReturnType<typeof rootReducer>;
 const persisConfig: PersistConfig<RootReducerType> = {
   key: "root",
   storage,
-  whitelist: ["route", "order"],
+  whitelist: ["route", "order", "optimize"],
 };
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   route: routeReducer,
   order: orderReducer,
-  mapclick: mapclickReducer,
+  sidePopup: sidePopupReducer,
+  mapClick: mapClickReducer,
+  optimize: optimizeReducer,
 });
 
 const persistedReducer = persistReducer(persisConfig, rootReducer);

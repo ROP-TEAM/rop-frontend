@@ -1,19 +1,24 @@
 "use client";
+import Link from "next/link";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
-import { OrderBase } from "../features/order/order.types";
 import styles from "./landing.module.scss";
 import Image from "next/image";
-import { Location } from "@/types/api.types";
-import { useEffect, useState } from "react";
+import { Location } from "@/components/form/LocationInput/LocationInput.types";
+import { OrderBase } from "../features/order/order.types";
+import React, { useEffect, useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
-import { VehicleBase } from "@/types/api.types";
+import { VehicleBase } from "../features/vehicle/vehicle.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
 import { useCreateOptimizeMutation } from "../features/optimize/optimizeApi";
 import { OptimizeReqPayload } from "../features/optimize/optimize.types";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { clearOptimizeResult } from "../features/optimize/optimizeSlice";
+``;
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
     label: "เวลาเริ่มทำงาน",
@@ -238,7 +243,10 @@ const Preview = () => {
   const [optimizeResult, setOptimizeResult] = useState<string[][]>([]);
   const [loadingCount, setLoadingCount] = useState<number>(0);
   const [isUploadVehicle, setIsUploadVehicle] = useState(false);
-  const [depotLoc, setDepotLoc] = useState<Location>({ lat: 0, lng: 0 });
+  const [depotLoc, setDepotLoc] = useState<Location>({
+    lat: 16.439627,
+    lng: 102.828504,
+  });
   const [isUploadOrder, setIsUploadOrder] = useState(false);
   const [vehicleFile, setVehicleFile] = useState<File>();
   const [orderFile, setOrderFile] = useState<File>();
@@ -248,7 +256,44 @@ const Preview = () => {
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [locationError, setLocationError] = useState("");
+  const result = useSelector((state: RootState) => state.optimize);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (result.optimize.message == "OK") {
+      const routes = result.optimize.routes;
+      const vehicleCount = routes.length;
+      const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+
+      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
+      setOptimizeResult(
+        routes.flatMap((r) =>
+          r.stops.map((s: any) => {
+            return [
+              r.name,
+              r.skills?.map((sk) => sk.name).join(" | ") ?? "",
+              (r.totalDistance / 1000).toFixed(2),
+              parseNumberToTime(r.totalDuration),
+              s.orderName,
+              `"${s.desLatitude},${s.desLongitude}"`,
+              String(r.stops.length),
+              String(s.capacity),
+              s.skill ?? "",
+              parseNumberToTime(s.timeWindowStart),
+              parseNumberToTime(s.timeWindowEnd),
+              parseNumberToTime(s.arrivalMin),
+              parseNumberToTime(s.serviceTime + s.arrivalMin),
+              (s.distanceFromPrevious / 1000).toFixed(2),
+              String(s.DurationFromPrevious),
+              "ส่งสำเร็จ",
+            ];
+          }),
+        ),
+      );
+      setIsOptimize(true);
+    }
+  }, [result]);
+
   const getFileCondition = (): string => {
     if (vehicleBases.length === 0 && orderBases.length === 0) {
       return "ยังไม่ได้อัปโหลดไฟล์ กรุณาอัปโหลดข้อมูลรถและออเดอร์ให้ครบถ้วน";
@@ -311,49 +356,6 @@ const Preview = () => {
         return 0;
     }
     return 1;
-  };
-
-  const handleUseCurrentLocation = () => {
-    setLocationError("");
-
-    if (!navigator.geolocation) {
-      setLocationError("*เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setDepotLoc({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-
-        setLocationError("");
-      },
-      (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            setLocationError("*กรุณาอนุญาตการเข้าถึงตำแหน่ง");
-            break;
-
-          case error.POSITION_UNAVAILABLE:
-            setLocationError("*ไม่สามารถระบุตำแหน่งได้");
-            break;
-
-          case error.TIMEOUT:
-            setLocationError("*หมดเวลาการค้นหาตำแหน่ง");
-            break;
-
-          default:
-            setLocationError("*เกิดข้อผิดพลาด");
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      },
-    );
   };
 
   const handleCreateVeiclePayload = () => {
@@ -480,6 +482,7 @@ const Preview = () => {
 
   const handleClearOptimize = () => {
     setIsOptimize(false);
+    dispatch(clearOptimizeResult());
   };
   function downloadTxt() {
     const content = `# Project Development Notice
@@ -535,10 +538,22 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   const getDownloadFileResult = () => {
     const header = [
       "ชื่อคนขับ",
+      "ทักษะ",
+      "ระยะทางรวม (กม.)",
+      "เวลารวม (ชั่วโมง)",
       "ชื่อออเดอร์",
-      "เวลาที่ไปถึง",
+      "พิกัดปลายทาง",
+      "จำนวนงานในเส้นทาง",
+      "น้ำหนักสินค้า",
+      "ทักษะที่ต้องการ",
+      "เวลาเปิดร้าน",
+      "เวลาปิดร้าน",
+      "เวลาไปถึง",
       "เวลาออก",
+      "ระยะทางจากจุดก่อนหน้า (กม.)",
+      "เวลาเดินทางจากจุดก่อนหน้า (นาที)",
       "สถานะ",
+      "หมายเหตุ",
     ];
 
     const rows = optimizeResult;
@@ -550,18 +565,10 @@ Developed by **Computer Engineering students at Khon Kaen University**.
     const csvContent = [
       header.join(","),
       ...rows.map((row) => {
-        const [driver, order, arrivalMin, serviceMin, status] = row;
-
-        return [
-          driver,
-          order,
-          parseNumberToTime(Number(arrivalMin)),
-          parseNumberToTime(Number(serviceMin)),
-          status,
-        ].join(",");
+        return [row].join(",");
       }),
     ].join("\n");
-
+    console.log(csvContent);
     const blob = new Blob(["\uFEFF" + csvContent], {
       type: "text/csv;charset=utf-8;",
     });
@@ -580,6 +587,9 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   };
 
   const handleCreateOptimize = async () => {
+    if (isLoading) return;
+
+    const WAITING_TIME = 15;
     setLoadingCount(0);
     const start = performance.now();
     const timer = setInterval(() => {
@@ -593,31 +603,15 @@ Developed by **Computer Engineering students at Khon Kaen University**.
         vehicles: vehicleBases,
         orders: orderBases,
         enableAlns: true,
-        timeLimitMS: 10000,
+        timeLimitMS: WAITING_TIME * 1000,
         enableMultiTrip: true,
       };
-      const result = await createOptimize(payload).unwrap();
-      const routes = result.routes;
-      const vehicleCount = routes.length;
-      const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
-      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
-      setOptimizeResult(
-        routes.flatMap((r: any) =>
-          r.stops.map((s: any) => [
-            r.vehicleName,
-            s.orderName,
-            s.arrivalMin,
-            s.departMin,
-            "ส่งสำเร็จ",
-          ]),
-        ),
-      );
-      clearInterval(timer);
-      setIsOptimize(true);
+      await createOptimize(payload).unwrap();
+      localStorage.setItem("vehicleCount", String(vehicleBases.length));
     } catch (err) {
-      clearInterval(timer);
       console.log(err);
     } finally {
+      clearInterval(timer);
       setLoadingCount(0);
     }
   };
@@ -656,11 +650,28 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                   className={styles.optimizeCount}
                 >{`กำลังโหลด ${Math.floor(loadingCount / 60)}.${(loadingCount % 60).toString().padStart(2, "0")} ...`}</p>
               ) : (
-                <Tooltip title="ลองใหม่">
-                  <button onClick={() => handleCreateOptimize()} type="button">
-                    <IconSvgMono src="/icon/reload.svg" size={24}></IconSvgMono>
-                  </button>
-                </Tooltip>
+                <div className={styles.optimizeIcon}>
+                  <Tooltip title="ลองใหม่">
+                    <button
+                      onClick={() => handleCreateOptimize()}
+                      type="button"
+                    >
+                      <IconSvgMono
+                        src="/icon/reload.svg"
+                        size={24}
+                      ></IconSvgMono>
+                    </button>
+                  </Tooltip>
+                  {/* <Tooltip title="จำลองเส้นทาง">
+                    <Link href="plan/map">
+                      <IconSvgMono
+                        src="/icon/path.svg"
+                        color="var(--p-700)"
+                        size={24}
+                      ></IconSvgMono>
+                    </Link>
+                  </Tooltip> */}
+                </div>
               )}
             </div>
             <div className={styles.optimizeContent}>
@@ -675,7 +686,8 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 ) : (
                   <div className={styles.optimizeInfo}>
                     <h1 className={styles.optimizeVariable}>
-                      {optimizeCount.vehicle} / {vehicleBases.length}
+                      {optimizeCount.vehicle} /{" "}
+                      {localStorage.getItem("vehicleCount")}
                     </h1>
                     <p className={styles.optimizeUnit}>คัน</p>
                   </div>
@@ -736,22 +748,7 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 onChange={setDepotLoc}
               ></LocationInput>
             </div>
-            <div className={styles.currentLocation}>
-              <Image
-                src="/icon/locaton-point.svg"
-                alt="location point"
-                width={18}
-                height={18}
-              />
 
-              <button type="button" onClick={handleUseCurrentLocation}>
-                ใช้ตำแหน่งปัจจุบัน
-              </button>
-            </div>
-
-            {locationError && (
-              <p className={styles.locationError}>{locationError}</p>
-            )}
             <section className={styles.uploadContainer}>
               <div
                 style={{

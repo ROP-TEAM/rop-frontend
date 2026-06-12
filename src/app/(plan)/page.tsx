@@ -633,13 +633,15 @@ Developed by **Computer Engineering students at Khon Kaen University**.
               </span>
             </div>
           </div>
-          <button
+          <Link
             className={styles.titleAction}
-            type="button"
-            onClick={downloadTxt}
+            target="blank"
+            href={
+              "https://drive.google.com/drive/folders/1ZnNWtNPHO2OMS1fZpKjwbhb8eVnsfijm"
+            }
           >
-            ติดต่อเรา
-          </button>
+            วิธีการใช้งาน
+          </Link>
         </div>
         {isOptimize ? (
           <div className={styles.optimize}>

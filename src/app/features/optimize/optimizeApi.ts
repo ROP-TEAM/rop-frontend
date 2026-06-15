@@ -11,7 +11,7 @@ export const optimizeApi = baseApi.injectEndpoints({
     createOptimize: builder.mutation<OptimizeResPayload, OptimizeReqPayload>({
       query: (body) => ({
         url: "/api/optimize",
-        method: "POST",
+        method: "",
         body,
       }),
       transformResponse: (response: ApiResponse<OptimizeResPayload>) =>

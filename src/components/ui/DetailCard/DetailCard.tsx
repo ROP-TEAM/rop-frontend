@@ -4,30 +4,42 @@ import { TextInput } from "@/components/form/TextInput/TextInput";
 import { FloatingCard } from "../FloatingCard/FloatingCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import styles from "./DetailCard.module.scss";
-import { Location } from "@/types/api.types";
+import { Location } from "@/components/form/LocationInput/LocationInput.types";
 import { Modal } from "@/components/modal/Modal/Modal";
-import { useDispatch } from "react-redux";
-import { detailClose } from "@/app/features/sidePopup/sidePopupSlide";
+import { useDispatch, useSelector } from "react-redux";
+import { detailClose } from "@/app/features/sidePopup/sidePopupSlice";
 import { SegmentControl } from "../SegmentControl/SegmentControl";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SkillInput } from "@/components/form/SkillInput/SkillInput";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import { SegmentProp } from "../SegmentControl/SegmentControl.types";
 import { SkillPillProps } from "../SkillPill/SkillPill.types";
+import { RootState } from "@/app/store";
+import { setOptimizeResult } from "@/app/features/optimize/optimizeSlice";
+
 export const DetailCard = () => {
-  const [name, setName] = useState<string>("สมชายแซ่ตั้งรถขนของเย็น");
+  const currentVehicle = useSelector((state: RootState) => state.detailVehicle);
+  const [name, setName] = useState<string>("");
   const [detailState, setDetailState] = useState("property");
   const [isShowOverview, setIsShowOverview] = useState(true);
-  const [isShowOrder, setIsShowOrder] = useState(true);
-  const [maxTask, setMaxTask] = useState<number>(0);
+  const [isShowOrder, setIsShowOrder] = useState(false);
+  const [maxTask, setMaxTask] = useState<number>(currentVehicle.maxTask ?? 0);
   const [maxCapacity, setMaxCapacity] = useState<number>(0);
   const [startLoc, setStartLoc] = useState<Location>({ lat: 0, lng: 0 });
-  const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
+  // const [endLoc, setEndLoc] = useState<Location>({ lat: 0, lng: 0 });
   const [skills, setSkills] = useState<SkillPillProps[]>([]);
   const [isOption, setIsOption] = useState<boolean>(false);
   const [isPatch, setIsPatch] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const resultOptimize = useSelector(
+    (state: RootState) => state.optimize,
+  ).optimize;
+  const totalCapacity = resultOptimize.routes[currentVehicle.id].stops.reduce(
+    (sum, s) => sum + s.capacity,
+    0,
+  );
+
   const skillPill: SkillPillProps[] = [
     {
       title: "รถขนของเย็น",
@@ -58,6 +70,36 @@ export const DetailCard = () => {
     },
   ];
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const depotLat = resultOptimize.depotLat;
+    const depotLng = resultOptimize.depotLon;
+
+    if (!depotLat || !depotLng) return;
+    setStartLoc({ lat: depotLat, lng: depotLng });
+    setName(currentVehicle.name);
+    setMaxTask(currentVehicle.maxTask ?? 0);
+    setMaxCapacity(currentVehicle.capacity);
+    setSkills(
+      currentVehicle.skills?.map((s) => ({
+        title: s.name,
+        color: s.color,
+        isHasClose: false,
+      })) ?? [],
+    );
+  }, [currentVehicle]);
+
+  const parseNumberToTime = (minutes?: number): string => {
+    if (minutes == null || minutes < 0) return "00:00";
+
+    const hour = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.control}>
@@ -69,8 +111,8 @@ export const DetailCard = () => {
               color="var(--p-700)"
             ></IconSvgMono>
           </button>
-          <h4 className={styles.editAt}>แก้ไขล่าสุด 05-03-2026</h4>
-          <div className={styles.optionAction}>
+          <h4 className={styles.editAt}>แก้ไขล่าสุด XX-XX-202X</h4>
+          {/* <div className={styles.optionAction}>
             <FloatingCard
               bodyWidth="8rem"
               isOnRight
@@ -120,7 +162,7 @@ export const DetailCard = () => {
                 onClose={() => setIsPatch(false)}
               ></VehicleProfile>
             </Modal>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className={styles.detail}>
@@ -128,6 +170,7 @@ export const DetailCard = () => {
           <div className={styles.imageContainer}></div>
           <div>
             <TextInput
+              isDisable={true}
               value={name}
               onChange={setName}
               color="var(--p-800)"
@@ -136,11 +179,11 @@ export const DetailCard = () => {
             <div className={styles.detailCarContainer}>
               <div className={styles.detailCar}>
                 <p>หมาเลขทะเบียน</p>
-                <h4>กขค 123</h4>
+                <h4>{currentVehicle.plateNumber}</h4>
               </div>
               <div className={styles.detailCar}>
                 <p>รุ่น</p>
-                <h4>TOYOTA V OAT</h4>
+                <h4>{currentVehicle.model}</h4>
               </div>
             </div>
           </div>
@@ -174,22 +217,32 @@ export const DetailCard = () => {
                 <div className={styles.propertyInfo}>
                   <div>
                     <p className="">เวลาทำการ</p>
-                    <h3 className={styles.time}>09.00 น. - 18.00 น.</h3>
+                    <h3 className={styles.time}>
+                      {parseNumberToTime(currentVehicle.workTimeStart)} น. -{" "}
+                      {parseNumberToTime(currentVehicle.workTimeEnd)} น.
+                    </h3>
                   </div>
                   <div>
                     <p className="">เวลาพักทำการ</p>
-                    <h3 className={styles.time}>09.00 น. - 18.00 น.</h3>
+                    <h3 className={styles.time}>
+                      {parseNumberToTime(currentVehicle.breakTimeStart)} น. -{" "}
+                      {parseNumberToTime(currentVehicle.breakTimeEnd)} น.
+                    </h3>
                   </div>
+                  {maxTask !== 0 && (
+                    <NumberInput
+                      isDisable
+                      isFloat={false}
+                      value={maxTask}
+                      onChange={setMaxTask}
+                      color="var(--p-800)"
+                      labelColor="var(--p-500)"
+                      labelSize="0.725rem"
+                      label="จำนวนออเดอร์สูงสุด"
+                    ></NumberInput>
+                  )}
                   <NumberInput
-                    isFloat={false}
-                    value={maxTask}
-                    onChange={setMaxTask}
-                    color="var(--p-800)"
-                    labelColor="var(--p-500)"
-                    labelSize="0.725rem"
-                    label="จำนวนออเดอร์สูงสุด"
-                  ></NumberInput>
-                  <NumberInput
+                    isDisable
                     value={maxCapacity}
                     onChange={setMaxCapacity}
                     color="var(--p-800)"
@@ -198,24 +251,18 @@ export const DetailCard = () => {
                     label="จำนวนน้ำหนักสูงสุด(ตัน)"
                   ></NumberInput>
                   <LocationInput
+                    isDisable
                     inputId="startLocation"
                     color="var(--s-500)"
                     labelColor="var(--p-500)"
                     labelSize="0.725rem"
                     onChange={setStartLoc}
                     value={startLoc}
-                    label="ตำแหน่งเริ่มต้น"
+                    label="ตำแหน่งที่ทำการ"
                   />
-                  <LocationInput
-                    inputId="endLocation"
-                    color="var(--s-500)"
-                    labelColor="var(--p-500)"
-                    labelSize="0.725rem"
-                    onChange={setEndLoc}
-                    value={endLoc}
-                    label="ตำแหน่งสิ้นสุด"
-                  />
+
                   <SkillInput
+                    isDisable
                     labelColor="var(--p-500)"
                     labelSize="0.725rem"
                     label="ความสามารถเฉพาะ"
@@ -248,26 +295,43 @@ export const DetailCard = () => {
                       <div className={styles.capacityTitle}>
                         <p>ความจุน้ำหนัก</p>
                         <h4 className={styles.capacityPercent}>
-                          {((123 / 456) * 100).toFixed(1)}%
+                          {(
+                            (totalCapacity / currentVehicle.capacity) *
+                            100
+                          ).toFixed(1)}
+                          %
                         </h4>
                       </div>
                       <div
                         className={styles.maxCapacity}
                         style={
                           {
-                            "--capacityRadio": `${(123 / 456) * 100}%`,
+                            "--capacityRadio": `${(totalCapacity / currentVehicle.capacity) * 100}%`,
                           } as React.CSSProperties
                         }
                       ></div>
-                      <p>123 กก./456 กก.</p>
+                      <p>
+                        {totalCapacity} กก./{currentVehicle.capacity} กก.
+                      </p>
                     </div>
                     <div className={styles.content}>
-                      <p>ระยะเวลารวม</p>
-                      <h4>11 ชั่วโมง 2 นาที</h4>
+                      <p>ระยะเวลารวม (ชั่วโมง)</p>
+                      <h4>
+                        {parseNumberToTime(
+                          resultOptimize.routes[currentVehicle.id]
+                            .totalDuration,
+                        )}
+                      </h4>
                     </div>
                     <div className={styles.content}>
                       <p>ระยะทางรวม</p>
-                      <h4>{40.5} กก.</h4>
+                      <h4>
+                        {(
+                          resultOptimize.routes[currentVehicle.id]
+                            .totalDistance / 1000
+                        ).toFixed(2)}
+                        กม.
+                      </h4>
                     </div>
                   </div>
                 )}
@@ -286,44 +350,48 @@ export const DetailCard = () => {
                     ></IconSvgMono>
                   </button>
                 </div>
-
-                <div className={styles.orderCard}>
-                  <div>
-                    <h3>#ID1567IO45</h3>
-                  </div>
-                  <p className={styles.note}>
-                    น้ำโค้ก 15 แพ็ค , น้ำอัดลม 75 ขวด , เบียร์
-                    16ลัง,ดีน่าโปรตีนนมผงแบบลัง 15 แพ็ค
-                  </p>
-                  <div className={styles.orderCardFooter}>
-                    <div className={styles.orderCardFooterRight}>
-                      <div className={styles.iconContainer}>
-                        <IconSvgMono
-                          color="var(--s-500)"
-                          size={20}
-                          src="/icon/clock-people.svg"
-                        ></IconSvgMono>
-                        <p className={styles.travelTime}>15 นาที</p>
+                {resultOptimize.routes[currentVehicle.id].stops.map(
+                  (s, index) => (
+                    <div key={index} className={styles.orderCard}>
+                      <div>
+                        <h3>{s.name ?? "ไม่ระบุชื่อ"}</h3>
                       </div>
-                      <div className={styles.iconContainer}>
-                        <IconSvgMono
-                          color="var(--p-500)"
-                          size={20}
-                          src="/icon/way.svg"
-                        ></IconSvgMono>
-                        <p>32.7 กก. </p>
+                      <p className={styles.note}>{s.description}</p>
+                      <div className={styles.orderCardFooter}>
+                        <div className={styles.orderCardFooterRight}>
+                          <div className={styles.iconContainer}>
+                            <IconSvgMono
+                              color="var(--s-500)"
+                              size={20}
+                              src="/icon/clock-people.svg"
+                            ></IconSvgMono>
+                            <p className={styles.travelTime}>
+                              {s.serviceTime} นาที
+                            </p>
+                          </div>
+                          <div className={styles.iconContainer}>
+                            <IconSvgMono
+                              color="var(--p-500)"
+                              size={20}
+                              src="/icon/way.svg"
+                            ></IconSvgMono>
+                            <p>
+                              {(s.distanceFromPrevious / 1000).toFixed(2)} กม.
+                            </p>
+                          </div>
+                        </div>
+                        <div className={styles.iconContainer}>
+                          <IconSvgMono
+                            color="var(--p-500)"
+                            size={20}
+                            src="/icon/flag.svg"
+                          ></IconSvgMono>
+                          <p>{parseNumberToTime(s.arrivalMin)} </p>
+                        </div>
                       </div>
                     </div>
-                    <div className={styles.iconContainer}>
-                      <IconSvgMono
-                        color="var(--p-500)"
-                        size={20}
-                        src="/icon/flag.svg"
-                      ></IconSvgMono>
-                      <p>16.09 น. </p>
-                    </div>
-                  </div>
-                </div>
+                  ),
+                )}
               </div>
             </div>
           )}

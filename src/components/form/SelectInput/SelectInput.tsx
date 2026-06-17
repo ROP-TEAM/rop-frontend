@@ -22,7 +22,8 @@ export const SelectInput = ({
   hasBorder = false,
   checkList = [],
   subString = 99,
-  onChange,
+  isDisable = false,
+  onChange = () => {},
 }: SelectInputProps) => {
   const [internalActive, setInternalActive] = useState(false);
   const optionRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -56,7 +57,7 @@ export const SelectInput = ({
     return () => clearTimeout(timer);
   }, [internalActive]);
   return (
-    <div>
+    <div style={{ pointerEvents: isDisable ? "none" : "auto" }}>
       {label && <label style={{ fontSize: labelSize }}>{label}</label>}
       <FloatingCard
         bodyHeight="12rem"
@@ -72,7 +73,7 @@ export const SelectInput = ({
                 optionRef.current[0]?.focus();
               }
             }}
-            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value ? styles.hasValue : ""}`}
+            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value && withColorStyle ? styles.hasValue : ""}`}
             onClick={() => setInternalActive(true)}
             type="button"
             style={
@@ -80,7 +81,7 @@ export const SelectInput = ({
                 "--border-default": hasBorder ? "var(--border-subtle)" : "",
                 "--padding-default": hasBorder
                   ? "0.375rem 0.875rem"
-                  : "0.375rem 0.725rem",
+                  : "0.375rem 0",
               } as React.CSSProperties
             }
           >
@@ -93,11 +94,15 @@ export const SelectInput = ({
             ) : (
               <p className={styles.placeholder}>{placeholder}</p>
             )}
-            <IconSvgMono
-              src="/icon/arrow-2-side.svg"
-              color={value && withColorStyle ? "var(--s-700)" : "var(--p-500)"}
-              size={18}
-            ></IconSvgMono>
+            {!isDisable && (
+              <IconSvgMono
+                src="/icon/arrow-2-side.svg"
+                color={
+                  value && withColorStyle ? "var(--s-700)" : "var(--p-500)"
+                }
+                size={18}
+              ></IconSvgMono>
+            )}
           </button>
         }
       >

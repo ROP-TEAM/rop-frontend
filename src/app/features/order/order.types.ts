@@ -2,7 +2,7 @@ export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
-  skill?: string;
+  skill?: { name: string; color: string };
   timeWindowStart: number;
   timeWindowEnd: number;
   desLatitude: number;
@@ -24,4 +24,5 @@ export interface Stop extends Order {
 export interface DropReason extends Stop {
   detail: string;
   code: string;
+  order: OrderBase;
 }

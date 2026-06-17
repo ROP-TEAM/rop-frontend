@@ -261,36 +261,60 @@ const Preview = () => {
 
   useEffect(() => {
     if (result.optimize.message == "OK") {
-      const routes = result.optimize.routes;
+      const routes = result.optimize.routes ?? [];
+      const dropReason = result.optimize.dropReasons ?? [];
       const vehicleCount = routes.length;
       const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
-
       setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
-      setOptimizeResult(
-        routes.flatMap((r) =>
-          r.stops.map((s: any) => {
-            return [
-              r.name,
-              r.skills?.map((sk) => sk.name).join(" | ") ?? "",
-              (r.totalDistance / 1000).toFixed(2),
-              parseNumberToTime(r.totalDuration),
-              s.orderName,
-              `"${s.desLatitude},${s.desLongitude}"`,
-              String(r.stops.length),
-              String(s.capacity),
-              s.skill ?? "",
-              parseNumberToTime(s.timeWindowStart),
-              parseNumberToTime(s.timeWindowEnd),
-              parseNumberToTime(s.arrivalMin),
-              parseNumberToTime(s.serviceTime + s.arrivalMin),
-              (s.distanceFromPrevious / 1000).toFixed(2),
-              String(s.DurationFromPrevious),
-              "ส่งสำเร็จ",
-            ];
-          }),
+      setOptimizeResult([
+        ...routes.flatMap((r) =>
+          r.stops.map((s) => [
+            r.name,
+            r.skills?.map((sk) => sk.name).join(`"|"`) ?? "",
+            (r.totalDistance / 1000).toFixed(2),
+            parseNumberToTime(r.totalDuration),
+            s.name,
+            `"${s.desLatitude},${s.desLongitude}"`,
+            String(r.stops.length),
+            String(s.capacity),
+            s.skill ?? "",
+            parseNumberToTime(s.timeWindowStart),
+            parseNumberToTime(s.timeWindowEnd),
+            parseNumberToTime(s.arrivalMin),
+            parseNumberToTime(s.serviceTime + s.arrivalMin),
+            (s.distanceFromPrevious / 1000).toFixed(2),
+            String(s.DurationFromPrevious),
+            "ส่งสำเร็จ",
+          ]),
         ),
-      );
+        ...dropReason.flatMap((d) => {
+          const order = d.order;
+          return [
+            [
+              "-",
+              "",
+              "",
+              "",
+              order.name,
+              `"${order.desLatitude},${order.desLongitude}"`,
+              "",
+              String(order.capacity),
+              order.skill ?? "",
+              parseNumberToTime(order.timeWindowStart),
+              parseNumberToTime(order.timeWindowEnd),
+              "",
+              "",
+              "",
+              "",
+              d.detail,
+            ],
+          ];
+        }),
+      ]);
       setIsOptimize(true);
+
+      const orderCount = routes.reduce((sum, s) => sum + s.stops.length, 0);
+      console.log(orderCount);
     }
   }, [result]);
 

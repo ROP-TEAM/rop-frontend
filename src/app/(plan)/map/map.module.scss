@@ -1,0 +1,56 @@
+.map {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.management {
+  width: 20rem;
+  border-right: $border-subtle;
+  display: flex;
+  flex-direction: column;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border-bottom: $border-subtle;
+    padding: 0.725rem;
+    padding-right: 1.5rem;
+  }
+  .stateControl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0.725rem;
+    border-bottom: $border-subtle;
+
+    button {
+      text-align: start;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.controlContainer {
+  padding: 0.725rem;
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.containerMap {
+  flex: 1;
+  min-height: 0;
+}
+.vehicleCardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.orderCardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

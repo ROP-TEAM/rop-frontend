@@ -13,6 +13,7 @@ export interface TextInputProps {
   backgroundColor?: string;
   pading?: string;
   require?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   errorMessage?: string;
+  isDisable?: boolean;
 }

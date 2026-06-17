@@ -23,10 +23,8 @@ const mapClickSlice = createSlice({
       action: PayloadAction<{
         lat: number;
         lng: number;
-        // elementInputId: string;
       }>,
     ) => {
-    //   if (state.elementInputId !== action.payload.elementInputId) return;
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },

@@ -1,12 +1,11 @@
 "use client";
 import { LocationInputProps } from "./LocationInput.types";
 import styles from "./LocationInput.module.scss";
-import React, { useEffect, useRef } from "react";
+import React, { ChangeEvent, useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { setOnFocus } from "@/app/features/mapClick/mapClickSlice";
-import Image from "next/image";
 export const LocationInput = ({
   labelColor = "var(--p-800)",
   isRequire = false,
@@ -21,16 +20,15 @@ export const LocationInput = ({
   width = "100%",
   backgroundColor = "transparent",
   inputId = "locationInput",
+  isDisable = false,
   onChange,
 }: LocationInputProps) => {
   const latFocused = useRef(false);
   const lngFocused = useRef(false);
-
   const latRef = useRef<HTMLInputElement>(null);
   const handleSetFocusLat = () => {
     latRef.current?.focus();
   };
-  const [locationError, setLocationError] = useState("");
   const [latRaw, setLatRaw] = useState<string>(value?.lat?.toFixed(6));
   const [lngRaw, setLngRaw] = useState<string>(value?.lng?.toFixed(6));
   const { isOnFocus, elementInputId, lat, lng } = useSelector(
@@ -47,48 +45,6 @@ export const LocationInput = ({
     setLngRaw(lng.toFixed(6));
     onChange({ lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) });
   }, [lat, lng]);
-  const handleUseCurrentLocation = () => {
-    setLocationError("");
-
-    if (!navigator.geolocation) {
-      setLocationError("*เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        onChange({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-
-        setLocationError("");
-      },
-      (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            setLocationError("*กรุณาอนุญาตการเข้าถึงตำแหน่ง");
-            break;
-
-          case error.POSITION_UNAVAILABLE:
-            setLocationError("*ไม่สามารถระบุตำแหน่งได้");
-            break;
-
-          case error.TIMEOUT:
-            setLocationError("*หมดเวลาการค้นหาตำแหน่ง");
-            break;
-
-          default:
-            setLocationError("*เกิดข้อผิดพลาด");
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      },
-    );
-  };
   return (
     <div>
       {label && (
@@ -115,6 +71,7 @@ export const LocationInput = ({
         }
       >
         <input
+          disabled={isDisable}
           ref={latRef}
           id={label}
           onFocus={(e) => {
@@ -137,7 +94,6 @@ export const LocationInput = ({
           }}
           onBlur={(e) => {
             const raw = e.target.value;
-            latFocused.current = false;
             const num = parseFloat(raw);
             setTimeout(
               () =>
@@ -186,6 +142,7 @@ export const LocationInput = ({
           ,
         </h3>
         <input
+          disabled={isDisable}
           className={styles.lng}
           onFocus={() => {
             dispatch(setOnFocus({ isOnFocus: true, elementInputId: inputId }));
@@ -206,7 +163,6 @@ export const LocationInput = ({
           }}
           onBlur={(e) => {
             const raw = e.target.value;
-            lngFocused.current = false;
             setTimeout(
               () =>
                 dispatch(
@@ -246,20 +202,6 @@ export const LocationInput = ({
           type="number"
         />
       </div>
-      <div className={styles.currentLocation}>
-        <Image
-          src="/icon/locaton-point.svg"
-          alt="location point"
-          width={18}
-          height={18}
-        />
-
-        <button type="button" onClick={handleUseCurrentLocation}>
-          ใช้ตำแหน่งปัจจุบัน
-        </button>
-      </div>
-
-      {locationError && <p className={styles.locationError}>{locationError}</p>}
     </div>
   );
 };

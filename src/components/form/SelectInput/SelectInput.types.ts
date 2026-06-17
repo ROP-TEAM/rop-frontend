@@ -14,5 +14,6 @@ export interface SelectInputProps {
   activeFontColor?: string;
   withColorStyle?: boolean;
   subString?: number;
-  onChange: (value: string) => void;
+  isDisable?: boolean;
+  onChange?: (value: string) => void;
 }

@@ -12,7 +12,8 @@ export const NumberInput = ({
   color = "var(--p-200)",
   fontSize = "1rem",
   width = "100%",
-  onChange,
+  isDisable = false,
+  onChange = () => {},
 }: NumberInputProps) => {
   const handleNumberInput = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
@@ -40,6 +41,7 @@ export const NumberInput = ({
       <input
         id={label}
         min={0}
+        disabled={isDisable}
         className={styles.input}
         value={Number(value).toString()}
         onChange={(e) => handleNumberInput(e)}

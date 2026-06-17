@@ -13,13 +13,13 @@ export const SkillInput = ({
   skills,
   value,
   onChange,
+  isDisable = false,
 }: SKillInputProps) => {
   const [isPatch, setIsPatch] = useState<boolean>(false);
   const [isDrop, setIsDrop] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [skillList, setSkillList] = useState<{ name: string; color: string }[]>(
     [
-      { name: "ของเย็น", color: "#F87171" },
       // { name: "ขนม", color: "#60A5FA" },
       // { name: "ของทอด", color: "#F87171" },
       // { name: "ปลาแห้ง", color: "#4ADE80" },
@@ -70,7 +70,10 @@ export const SkillInput = ({
           {label}
         </label>
       )}
-      <div className={styles.input}>
+      <div
+        className={styles.input}
+        style={{ pointerEvents: isDisable ? "none" : "auto" }}
+      >
         <FloatingCard
           focusBackgroundColor="transparent"
           isActive={isDrop}

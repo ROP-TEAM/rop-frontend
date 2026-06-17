@@ -1,0 +1,306 @@
+.vehicleUpload {
+  padding-top: 1.725rem;
+  width: clamp(16rem, 80vw, 32rem);
+}
+.content {
+  padding: 1.725rem;
+}
+.header {
+  padding: 0 1.725rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  .headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .title {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+}
+.fileInfo {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  p {
+    font-size: 0.725rem;
+  }
+}
+.fileTemplate {
+  margin-top: 1.725rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 16rem);
+  background-color: var(--p-100);
+  padding: 1rem;
+  border-radius: 0.25rem;
+
+  .fileTemplateHeader {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    .text {
+      font-size: 0.725rem;
+    }
+  }
+  .fileTempalateDescription {
+    margin-top: 0.5rem;
+    font-size: 0.625rem;
+  }
+  .download {
+    background-color: var(--p-0);
+    text-wrap: nowrap;
+    font-weight: 500;
+    padding: 0.25rem 0.725rem;
+    border-radius: 0.125rem;
+    font-size: 0.725rem;
+    border: $border-subtle;
+    color: var(--p-500);
+  }
+}
+.footer {
+  padding: 1rem 1.725rem;
+  border: $border-subtle;
+
+  .error {
+    margin-left: auto;
+    font-size: 0.725rem;
+    color: red;
+    padding-bottom: 0.5rem;
+    width: fit-content;
+  }
+  .action {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 0.5rem;
+    .cancel {
+      font-weight: 500;
+    }
+    .confirm {
+      font-weight: 500;
+      padding: 0.25rem 0.725rem;
+      color: var(--p-0);
+      border-radius: 0.2rem;
+      background-color: var(--s-500);
+    }
+    .isDisabled {
+      background-color: var(--s-300);
+    }
+  }
+}
+
+.manage {
+  padding: 0.725rem 1.25rem;
+
+  .fileWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.125rem;
+    background-color: var(--p-100);
+    .fileWrapperInfo {
+      display: flex;
+      align-items: end;
+      gap: 0.5rem;
+      .fileCount {
+        font-size: 0.725rem;
+      }
+    }
+  }
+  .changeFile {
+    border-radius: 0.125rem;
+    outline: $border-subtle;
+    font-weight: 600;
+    font-size: 0.625em;
+    padding: 0.125rem 0.5rem;
+  }
+  .tableWrapper {
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    border: $border-subtle;
+  }
+  .selectTable {
+    width: 100%;
+
+    border-collapse: collapse;
+    .selectHeader {
+      color: var(--p-500);
+      font-size: 0.75rem;
+      background-color: var(--p-100);
+      th {
+        padding: 0.5rem 1rem;
+      }
+    }
+    .selectInternal {
+      td {
+        padding: 0.5rem 1rem;
+      }
+      .selectSystem {
+        width: 50%;
+        .selectTitle {
+          font-size: 0.725rem;
+          .require {
+            color: red;
+          }
+        }
+        .selectDescription {
+          font-size: 0.65rem;
+          color: var(--p-300);
+        }
+      }
+      .selectImport {
+        width: 50%;
+      }
+    }
+  }
+}
+.contentAction {
+  max-height: 27rem;
+  // padding-bottom: 1.725rem;
+  overflow-y: auto;
+}
+.invalidFile {
+  padding: 0.5rem 1.725rem 1.725rem 1.725rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  .caution {
+    margin-top: 1rem;
+    border: 0.0625rem solid red;
+    border-radius: 0.5rem;
+    padding: 0.725rem;
+    display: flex;
+    background-color: rgb(255, 236, 236);
+    .cautionInfo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      .cautionTitle {
+        color: red;
+      }
+      .cautionDescription {
+        font-size: 0.725rem;
+      }
+    }
+  }
+  .errorTableWarpper {
+    .errorTitle {
+      color: var(--p-300);
+    }
+  }
+}
+.errorTable {
+  margin: 1rem 0;
+  border: $border-subtle;
+  border-radius: 0.25rem;
+  .errorTableInfo {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.375rem 0.725rem;
+    background-color: rgb(255, 236, 236);
+    .errorTableName {
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: red;
+    }
+    .errorTableReview {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      .errorTableDetail {
+        color: red;
+        font-weight: 400;
+        font-size: 0.725rem;
+      }
+      .errorTableColName {
+        color: red;
+        font-size: 0.725rem;
+        font-weight: 600;
+      }
+    }
+  }
+  .errorTableContent {
+    padding: 0.725rem 0.725rem 0;
+    .errorTableRequire {
+      font-size: 0.725rem;
+    }
+    .errorTableRows {
+      padding: 0.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .errorTableMore {
+        margin-top: 0.5rem;
+        font-size: 0.725rem;
+      }
+      .errorTableFile {
+        display: flex;
+        gap: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: $border-subtle;
+        .errorTableFileRow {
+          border-radius: 0.25rem;
+          font-weight: 600;
+          padding: 0.125rem 0.5rem 0rem;
+          font-size: 0.725rem;
+          color: var(--p-400);
+          background-color: var(--p-100);
+          width: fit-content;
+        }
+        .errorTableFileContent {
+          border-radius: 0.25rem;
+          color: red;
+          font-size: 0.725rem;
+          width: fit-content;
+          padding: 0.125rem 0.5rem 0rem;
+          background-color: rgb(255, 236, 236);
+        }
+      }
+    }
+  }
+}
+.previewTable {
+  display: flex;
+  border-radius: 0.25rem;
+  border: $border-subtle;
+  width: 27.5rem;
+  overflow-x: hidden;
+  .headerIndex {
+    font-size: 0.725rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--p-100);
+  }
+  .headerSystem {
+    overflow-x: scroll;
+    display: flex;
+
+    .headerChild {
+      text-wrap: nowrap;
+      padding: 0.5rem 2rem 0.5rem 0.5rem;
+      background-color: var(--p-100);
+      gap: 1rem;
+      font-size: 0.725rem;
+    }
+  }
+  .contentPreview {
+    text-wrap: nowrap;
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
+    font-size: 0.725rem;
+  }
+  .contentPreviewIndex {
+    text-wrap: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 0.725rem;
+  }
+  .isError {
+    color: red;
+    background-color: rgb(255, 236, 236);
+  }
+}

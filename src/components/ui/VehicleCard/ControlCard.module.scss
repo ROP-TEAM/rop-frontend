@@ -1,0 +1,36 @@
+.container {
+  padding: 0.725rem;
+  background-color: var(--p-100);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.2rem;
+}
+.header {
+  .name {
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+}
+.body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .model {
+    color: var(--p-600);
+  }
+  .detail {
+    display: flex;
+    gap: 0.5rem;
+    .detailIcon {
+      display: flex;
+      align-items: end;
+      gap: 0.25rem;
+      p {
+        color: var(--p-600);
+        padding-top: 0.25rem;
+        font-size: 0.725rem;
+      }
+    }
+  }
+}

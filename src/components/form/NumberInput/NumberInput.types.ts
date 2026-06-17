@@ -9,5 +9,6 @@ export interface NumberInputProps {
   fontSize?: string;
   color?: string;
   width?: string;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
+  isDisable?: boolean;
 }

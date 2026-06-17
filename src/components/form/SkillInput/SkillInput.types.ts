@@ -9,4 +9,5 @@ export interface SKillInputProps {
   skills: SkillPillProps[];
   value: SkillPillProps[];
   onChange: (value: SkillPillProps[]) => void;
+  isDisable?: boolean;
 }

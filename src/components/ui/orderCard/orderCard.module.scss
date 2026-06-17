@@ -1,0 +1,50 @@
+.container {
+  border: $border-subtle;
+  padding: 0.725rem 1.25rem;
+  border-radius: 0.25rem;
+}
+
+.orderInfo {
+  .orderInfoHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .orderName {
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+  }
+  .arrowDown {
+    transform: rotate(180deg);
+  }
+
+  .orderDescription {
+    font-size: 0.725rem;
+  }
+}
+
+.orderContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  .line {
+    border-top: $border-subtle;
+    width: 100%;
+    background-color: var(--p-100);
+  }
+}
+.priority {
+  .priority_title {
+    font-weight: 400;
+  }
+  .priority_bullet {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+.time {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}

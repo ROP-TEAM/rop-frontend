@@ -2,6 +2,7 @@ export interface Location {
   lat: number;
   lng: number;
 }
+
 export interface LocationInputProps {
   labelColor?: string;
   labelSize?: string;
@@ -17,4 +18,5 @@ export interface LocationInputProps {
   width?: string;
   inputId?: string;
   onChange: (value: Location) => void;
+  isDisable?: boolean;
 }

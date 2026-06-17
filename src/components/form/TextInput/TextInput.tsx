@@ -17,7 +17,8 @@ export const TextInput = ({
   backgroundColor = "var(--p-0)",
   pading = "",
   require = false,
-  onChange,
+  isDisable = false,
+  onChange = () => {},
 }: TextInputProps) => {
   return (
     <div>
@@ -36,6 +37,7 @@ export const TextInput = ({
       <input
         className={styles.input}
         value={value}
+        disabled={isDisable}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         style={

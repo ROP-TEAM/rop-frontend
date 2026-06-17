@@ -3,10 +3,11 @@ import { baseApi } from "./api/baseApi";
 import routeReducer from "./features/route/routeSlice";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import sidePopupReducer from "./features/sidePopup/sidePopupSlide";
+import sidePopupReducer from "./features/sidePopup/sidePopupSlice";
 import orderReducer from "./features/order/orderSlice";
 import mapClickReducer from "./features/mapClick/mapClickSlice";
 import optimizeReducer from "./features/optimize/optimizeSlice";
+import detailVehicleReducer from "./features/detailVehicle/detailVehicleSlice";
 
 type RootReducerType = ReturnType<typeof rootReducer>;
 const persisConfig: PersistConfig<RootReducerType> = {
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   sidePopup: sidePopupReducer,
   mapClick: mapClickReducer,
   optimize: optimizeReducer,
+  detailVehicle: detailVehicleReducer,
 });
 
 const persistedReducer = persistReducer(persisConfig, rootReducer);

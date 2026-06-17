@@ -2,7 +2,7 @@ import IconSvgMono from "@/components/Icon/SvgIcon";
 import { CardOrder } from "../CardOrder/CardOrder";
 import styles from "./OrderContainer.module.scss";
 import { useDispatch } from "react-redux";
-import { detailOpen } from "@/app/features/sidePopup/sidePopupSlide";
+import { detailOpen } from "@/app/features/sidePopup/sidePopupSlice";
 export const OrderContainer = () => {
   const dispatch = useDispatch();
   return (

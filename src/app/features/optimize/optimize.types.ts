@@ -1,6 +1,6 @@
-import { DropReason, Order, OrderBase } from "../order/order.types";
+import { DropReason, Order } from "../order/order.types";
 import { Vehicle, VehicleBase } from "../vehicle/vehicle.types";
-
+import { OrderBase } from "@/types/api.types";
 interface Stop extends Order {
   arrivalMin: number;
   distanceFromPrevious: number;

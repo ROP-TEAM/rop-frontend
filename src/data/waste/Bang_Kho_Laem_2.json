@@ -1,0 +1,4107 @@
+{
+  "district": "Bang_Kho_Laem",
+  "distance_source": "osrm-local",
+  "depot": [13.699069668965517, 100.50724024827586],
+  "speed_kmh": 7.5,
+  "capacity_kg": 15000,
+  "summary": {
+    "district": "Bang_Kho_Laem",
+    "bins": 145,
+    "dist_src": "osrm-local",
+    "depot_lat": 13.69907,
+    "depot_lng": 100.50724,
+    "base_trips_wk": 283,
+    "opt_trips_wk": 243,
+    "trips_saving_pct": 14.1,
+    "base_peak_trucks_day": 42,
+    "opt_peak_trucks_day": 36,
+    "base_km_wk": 1669.9,
+    "opt_km_wk": 1491.9,
+    "km_saving_pct": 10.7,
+    "base_hours_wk": 1450.1,
+    "opt_hours_wk": 1426.5,
+    "hours_saving_pct": 1.6
+  },
+  "days": [
+    {
+      "day": 0,
+      "day_name": "Sun",
+      "bins": 141,
+      "kg": 135480,
+      "trucks": 34,
+      "opt_km": 208.247,
+      "interbin_km": 49.227,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 3140,
+          "trucks": 1,
+          "interbin_m": 6074,
+          "opt_m": 11809,
+          "max_route_min": 336,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11809,
+              "service_min": 242,
+              "route_min": 336,
+              "kg": 3140,
+              "stops": [
+                "บางค-G147",
+                "บางค-G007",
+                "บางค-G015",
+                "บางค-G004",
+                "บางค-G099"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 10,
+          "kg": 3430,
+          "trucks": 1,
+          "interbin_m": 7374,
+          "opt_m": 12901,
+          "max_route_min": 367,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 12901,
+              "service_min": 264,
+              "route_min": 367,
+              "kg": 3430,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G017",
+                "บางค-G093",
+                "บางค-G063",
+                "บางค-G040",
+                "บางค-G042",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 1,
+      "day_name": "Mon",
+      "bins": 141,
+      "kg": 138445,
+      "trucks": 35,
+      "opt_km": 215.455,
+      "interbin_km": 49.304,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 4,
+          "kg": 3105,
+          "trucks": 1,
+          "interbin_m": 6151,
+          "opt_m": 11886,
+          "max_route_min": 334,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11886,
+              "service_min": 239,
+              "route_min": 334,
+              "kg": 3105,
+              "stops": ["บางค-G147", "บางค-G196", "ป้อม-G015", "บางค-G099"]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:00-04:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 3000,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7130,
+          "max_route_min": 288,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7130,
+              "service_min": 231,
+              "route_min": 288,
+              "kg": 3000,
+              "stops": ["บางค-G112"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 10,
+          "kg": 3430,
+          "trucks": 1,
+          "interbin_m": 7374,
+          "opt_m": 12901,
+          "max_route_min": 367,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 12901,
+              "service_min": 264,
+              "route_min": 367,
+              "kg": 3430,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G017",
+                "บางค-G093",
+                "บางค-G063",
+                "บางค-G040",
+                "บางค-G042",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "day_name": "Tue",
+      "bins": 140,
+      "kg": 135575,
+      "trucks": 35,
+      "opt_km": 214.511,
+      "interbin_km": 48.347,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "07:00-15:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7144,
+          "max_route_min": 77,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7144,
+              "service_min": 20,
+              "route_min": 77,
+              "kg": 260,
+              "stops": ["บางค-G069"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 4,
+          "kg": 3105,
+          "trucks": 1,
+          "interbin_m": 6151,
+          "opt_m": 11886,
+          "max_route_min": 334,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11886,
+              "service_min": 239,
+              "route_min": 334,
+              "kg": 3105,
+              "stops": ["บางค-G147", "บางค-G196", "ป้อม-G015", "บางค-G099"]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 9,
+          "kg": 3300,
+          "trucks": 1,
+          "interbin_m": 6416,
+          "opt_m": 11943,
+          "max_route_min": 349,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11943,
+              "service_min": 254,
+              "route_min": 349,
+              "kg": 3300,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G040",
+                "บางค-G063",
+                "บางค-G093",
+                "บางค-G017",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "day_name": "Wed",
+      "bins": 142,
+      "kg": 138480,
+      "trucks": 35,
+      "opt_km": 215.378,
+      "interbin_km": 49.227,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 3140,
+          "trucks": 1,
+          "interbin_m": 6074,
+          "opt_m": 11809,
+          "max_route_min": 336,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11809,
+              "service_min": 242,
+              "route_min": 336,
+              "kg": 3140,
+              "stops": [
+                "บางค-G147",
+                "บางค-G007",
+                "บางค-G015",
+                "บางค-G004",
+                "บางค-G099"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:00-04:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 3000,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7130,
+          "max_route_min": 288,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7130,
+              "service_min": 231,
+              "route_min": 288,
+              "kg": 3000,
+              "stops": ["บางค-G112"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 10,
+          "kg": 3430,
+          "trucks": 1,
+          "interbin_m": 7374,
+          "opt_m": 12901,
+          "max_route_min": 367,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 12901,
+              "service_min": 264,
+              "route_min": 367,
+              "kg": 3430,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G017",
+                "บางค-G093",
+                "บางค-G063",
+                "บางค-G040",
+                "บางค-G042",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "day_name": "Thu",
+      "bins": 139,
+      "kg": 135315,
+      "trucks": 34,
+      "opt_km": 207.367,
+      "interbin_km": 48.347,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 4,
+          "kg": 3105,
+          "trucks": 1,
+          "interbin_m": 6151,
+          "opt_m": 11886,
+          "max_route_min": 334,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11886,
+              "service_min": 239,
+              "route_min": 334,
+              "kg": 3105,
+              "stops": ["บางค-G147", "บางค-G196", "ป้อม-G015", "บางค-G099"]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 9,
+          "kg": 3300,
+          "trucks": 1,
+          "interbin_m": 6416,
+          "opt_m": 11943,
+          "max_route_min": 349,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11943,
+              "service_min": 254,
+              "route_min": 349,
+              "kg": 3300,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G040",
+                "บางค-G063",
+                "บางค-G093",
+                "บางค-G017",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "day_name": "Fri",
+      "bins": 142,
+      "kg": 138705,
+      "trucks": 36,
+      "opt_km": 222.599,
+      "interbin_km": 49.304,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "07:00-15:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7144,
+          "max_route_min": 77,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7144,
+              "service_min": 20,
+              "route_min": 77,
+              "kg": 260,
+              "stops": ["บางค-G069"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 4,
+          "kg": 3105,
+          "trucks": 1,
+          "interbin_m": 6151,
+          "opt_m": 11886,
+          "max_route_min": 334,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11886,
+              "service_min": 239,
+              "route_min": 334,
+              "kg": 3105,
+              "stops": ["บางค-G147", "บางค-G196", "ป้อม-G015", "บางค-G099"]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:00-04:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 3000,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7130,
+          "max_route_min": 288,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7130,
+              "service_min": 231,
+              "route_min": 288,
+              "kg": 3000,
+              "stops": ["บางค-G112"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 10,
+          "kg": 3430,
+          "trucks": 1,
+          "interbin_m": 7374,
+          "opt_m": 12901,
+          "max_route_min": 367,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 12901,
+              "service_min": 264,
+              "route_min": 367,
+              "kg": 3430,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G017",
+                "บางค-G093",
+                "บางค-G063",
+                "บางค-G040",
+                "บางค-G042",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "day_name": "Sat",
+      "bins": 140,
+      "kg": 135445,
+      "trucks": 34,
+      "opt_km": 208.324,
+      "interbin_km": 49.304,
+      "windows": [
+        {
+          "window": "00:00-08:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 91,
+          "kg": 94935,
+          "trucks": 20,
+          "interbin_m": 21987,
+          "opt_m": 99105,
+          "max_route_min": 471,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 680,
+              "service_min": 452,
+              "route_min": 457,
+              "kg": 5870,
+              "stops": ["บางค-G215", "บางค-G114", "บางค-G146"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 2367,
+              "service_min": 398,
+              "route_min": 417,
+              "kg": 5170,
+              "stops": [
+                "บางค-G201",
+                "บางค-G088",
+                "บางค-G054",
+                "บางค-G053",
+                "บางค-G052",
+                "บางค-G179",
+                "บางค-G259",
+                "บางค-G145"
+              ]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 3358,
+              "service_min": 444,
+              "route_min": 471,
+              "kg": 5770,
+              "stops": [
+                "บางค-G091",
+                "บางค-G236",
+                "บางค-G228",
+                "บางค-G125",
+                "บางค-G174",
+                "บางค-G198"
+              ]
+            },
+            {
+              "vehicle": "T04",
+              "distance": 2209,
+              "service_min": 335,
+              "route_min": 352,
+              "kg": 4350,
+              "stops": ["บางค-G117"]
+            },
+            {
+              "vehicle": "T05",
+              "distance": 3116,
+              "service_min": 435,
+              "route_min": 460,
+              "kg": 5660,
+              "stops": [
+                "บางค-G144",
+                "บางค-G227",
+                "บางค-G239",
+                "บางค-G055",
+                "บางค-G056",
+                "บางค-G214",
+                "บางค-G205"
+              ]
+            },
+            {
+              "vehicle": "T06",
+              "distance": 3584,
+              "service_min": 290,
+              "route_min": 319,
+              "kg": 3770,
+              "stops": [
+                "บางค-G211",
+                "บางค-G212",
+                "บางค-G226",
+                "บางค-G175",
+                "บางค-G172"
+              ]
+            },
+            {
+              "vehicle": "T07",
+              "distance": 3772,
+              "service_min": 357,
+              "route_min": 387,
+              "kg": 4640,
+              "stops": [
+                "บางค-G136",
+                "บางค-G142",
+                "บางค-G095",
+                "บางค-G074",
+                "บางค-G025"
+              ]
+            },
+            {
+              "vehicle": "T08",
+              "distance": 2950,
+              "service_min": 393,
+              "route_min": 417,
+              "kg": 5110,
+              "stops": ["บางค-G123", "บางค-G060", "บางค-G068"]
+            },
+            {
+              "vehicle": "T09",
+              "distance": 4155,
+              "service_min": 401,
+              "route_min": 434,
+              "kg": 5210,
+              "stops": ["บางค-G224", "บางค-G220", "บางค-G115"]
+            },
+            {
+              "vehicle": "T10",
+              "distance": 6993,
+              "service_min": 275,
+              "route_min": 331,
+              "kg": 3575,
+              "stops": [
+                "บางค-G102",
+                "บางค-G103",
+                "บางค-G020",
+                "บางค-G104",
+                "บางค-G105",
+                "บางค-G013",
+                "บางค-G157",
+                "บางค-G192"
+              ]
+            },
+            {
+              "vehicle": "T11",
+              "distance": 4619,
+              "service_min": 416,
+              "route_min": 453,
+              "kg": 5410,
+              "stops": [
+                "บางค-G132",
+                "บางค-G242",
+                "บางค-G216",
+                "บางค-G072",
+                "บางค-G026",
+                "บางค-G073"
+              ]
+            },
+            {
+              "vehicle": "T12",
+              "distance": 4912,
+              "service_min": 430,
+              "route_min": 469,
+              "kg": 5590,
+              "stops": ["บางค-G176", "บางค-G006", "บางค-G173", "บางค-G200"]
+            },
+            {
+              "vehicle": "T13",
+              "distance": 4970,
+              "service_min": 420,
+              "route_min": 460,
+              "kg": 5460,
+              "stops": [
+                "บางค-G113",
+                "บางค-G064",
+                "บางค-G170",
+                "บางค-G023",
+                "บางค-G024"
+              ]
+            },
+            {
+              "vehicle": "T14",
+              "distance": 6695,
+              "service_min": 418,
+              "route_min": 471,
+              "kg": 5430,
+              "stops": [
+                "บางค-G058",
+                "บางค-G057",
+                "บางค-G070",
+                "บางค-G251",
+                "บางค-G143",
+                "บางค-G222"
+              ]
+            },
+            {
+              "vehicle": "T15",
+              "distance": 9385,
+              "service_min": 378,
+              "route_min": 453,
+              "kg": 4910,
+              "stops": [
+                "บางค-G036",
+                "บางค-G076",
+                "บางค-G035",
+                "บางค-G202",
+                "บางค-G016",
+                "บางค-G027",
+                "บางค-G171",
+                "บางค-G219",
+                "บางค-G008",
+                "บางค-G061"
+              ]
+            },
+            {
+              "vehicle": "T16",
+              "distance": 6832,
+              "service_min": 370,
+              "route_min": 425,
+              "kg": 4810,
+              "stops": ["บางค-G126", "บางค-G185"]
+            },
+            {
+              "vehicle": "T17",
+              "distance": 10406,
+              "service_min": 276,
+              "route_min": 359,
+              "kg": 3590,
+              "stops": [
+                "บางค-G187",
+                "บางค-G232",
+                "บางค-G262",
+                "บางค-G001",
+                "บางค-G002",
+                "บางค-G230"
+              ]
+            },
+            {
+              "vehicle": "T18",
+              "distance": 5995,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G129"]
+            },
+            {
+              "vehicle": "T19",
+              "distance": 6031,
+              "service_min": 355,
+              "route_min": 403,
+              "kg": 4610,
+              "stops": ["บางค-G118"]
+            },
+            {
+              "vehicle": "T20",
+              "distance": 6076,
+              "service_min": 231,
+              "route_min": 279,
+              "kg": 3000,
+              "stops": ["บางค-G116"]
+            }
+          ]
+        },
+        {
+          "window": "04:00-12:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 480,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 7393,
+          "max_route_min": 96,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7393,
+              "service_min": 37,
+              "route_min": 96,
+              "kg": 480,
+              "stops": ["บางค-G092"]
+            }
+          ]
+        },
+        {
+          "window": "05:00-13:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 520,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 4465,
+          "max_route_min": 76,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 4465,
+              "service_min": 40,
+              "route_min": 76,
+              "kg": 520,
+              "stops": ["บางค-G149"]
+            }
+          ]
+        },
+        {
+          "window": "08:00-16:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 4,
+          "kg": 3105,
+          "trucks": 1,
+          "interbin_m": 6151,
+          "opt_m": 11886,
+          "max_route_min": 334,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 11886,
+              "service_min": 239,
+              "route_min": 334,
+              "kg": 3105,
+              "stops": ["บางค-G147", "บางค-G196", "ป้อม-G015", "บางค-G099"]
+            }
+          ]
+        },
+        {
+          "window": "16:00-00:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 8,
+          "kg": 3540,
+          "trucks": 1,
+          "interbin_m": 2528,
+          "opt_m": 6793,
+          "max_route_min": 327,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6793,
+              "service_min": 272,
+              "route_min": 327,
+              "kg": 3540,
+              "stops": [
+                "บางค-G028",
+                "บางค-G075",
+                "บางค-G233",
+                "บางค-G150",
+                "บางค-G231",
+                "บางค-G186",
+                "บางค-G034",
+                "บางค-G033"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "18:00-02:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 260,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 6452,
+          "max_route_min": 72,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6452,
+              "service_min": 20,
+              "route_min": 72,
+              "kg": 260,
+              "stops": ["บางค-G111"]
+            }
+          ]
+        },
+        {
+          "window": "19:00-03:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 12,
+          "kg": 9820,
+          "trucks": 2,
+          "interbin_m": 7771,
+          "opt_m": 19984,
+          "max_route_min": 476,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 8516,
+              "service_min": 408,
+              "route_min": 476,
+              "kg": 5300,
+              "stops": [
+                "บางค-G261",
+                "บางค-G206",
+                "บางค-G138",
+                "บางค-G163",
+                "บางค-G066"
+              ]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 11468,
+              "service_min": 348,
+              "route_min": 439,
+              "kg": 4520,
+              "stops": [
+                "บางค-G031",
+                "บางค-G101",
+                "บางค-G159",
+                "บางค-G154",
+                "บางค-G207",
+                "บางค-G167",
+                "บางค-G162"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "19:00-05:00",
+          "scheduled": true,
+          "span_min": 600,
+          "bins": 6,
+          "kg": 12910,
+          "trucks": 3,
+          "interbin_m": 2295,
+          "opt_m": 24665,
+          "max_route_min": 931,
+          "window_ok": false,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 7284,
+              "service_min": 115,
+              "route_min": 173,
+              "kg": 1495,
+              "stops": ["สาทร-G193", "สาทร-G001", "บางค-G234", "บางค-G217"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 8227,
+              "service_min": 20,
+              "route_min": 86,
+              "kg": 260,
+              "stops": ["บางค-G237"]
+            },
+            {
+              "vehicle": "T03",
+              "distance": 9154,
+              "service_min": 858,
+              "route_min": 931,
+              "kg": 11155,
+              "stops": ["บางค-G247"]
+            }
+          ]
+        },
+        {
+          "window": "20:30-04:30",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 5,
+          "kg": 5670,
+          "trucks": 2,
+          "interbin_m": 1200,
+          "opt_m": 12406,
+          "max_route_min": 424,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 6375,
+              "service_min": 373,
+              "route_min": 424,
+              "kg": 4850,
+              "stops": ["สาทร-G002", "บางค-G263", "สาทร-G172", "สาทร-G136"]
+            },
+            {
+              "vehicle": "T02",
+              "distance": 6031,
+              "service_min": 63,
+              "route_min": 111,
+              "kg": 820,
+              "stops": ["สาทร-G162"]
+            }
+          ]
+        },
+        {
+          "window": "21:00-05:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 10,
+          "kg": 3430,
+          "trucks": 1,
+          "interbin_m": 7374,
+          "opt_m": 12901,
+          "max_route_min": 367,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 12901,
+              "service_min": 264,
+              "route_min": 367,
+              "kg": 3430,
+              "stops": [
+                "บางค-G051",
+                "บางค-G203",
+                "บางค-G067",
+                "บางค-G039",
+                "บางค-G017",
+                "บางค-G093",
+                "บางค-G063",
+                "บางค-G040",
+                "บางค-G042",
+                "บางค-G065"
+              ]
+            }
+          ]
+        },
+        {
+          "window": "22:00-06:00",
+          "scheduled": true,
+          "span_min": 480,
+          "bins": 1,
+          "kg": 775,
+          "trucks": 1,
+          "interbin_m": 0,
+          "opt_m": 2274,
+          "max_route_min": 78,
+          "window_ok": true,
+          "unassigned": 0,
+          "routes": [
+            {
+              "vehicle": "T01",
+              "distance": 2274,
+              "service_min": 60,
+              "route_min": 78,
+              "kg": 775,
+              "stops": ["บางค-G195"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

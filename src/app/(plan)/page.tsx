@@ -7,7 +7,7 @@ import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
 import styles from "./landing.module.scss";
 import Image from "next/image";
 import { Location } from "@/components/form/LocationInput/LocationInput.types";
-import { OrderBase } from "../features/order/order.types";
+import { OrderBase } from "@/types/api.types";
 import React, { useEffect, useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "../features/vehicle/vehicle.types";
@@ -488,7 +488,7 @@ const Preview = () => {
             newOrder.description = value;
             break;
           case "ความสามารถเฉพาะ":
-            newOrder.skill = { name: value, color: "" };
+            newOrder.skill = value;
             break;
           case "ลำดับความสำคัญ":
             newOrder.priority = parsePriorityToNumber(value);

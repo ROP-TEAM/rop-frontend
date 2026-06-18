@@ -8,7 +8,7 @@ import styles from "./mock.module.scss";
 import { VehicleCard } from "@/components/ui/VehicleCard/ControlCard";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { useDispatch, useSelector } from "react-redux";
-import mockOptimize from "@/data/waste/Bang_Kho_Laem_1.json";
+import mockOptimize from "@/data/waste/Bang_Kho_Laem _2.json";
 import {
   controlClose,
   detailClose,
@@ -41,9 +41,8 @@ const MockWorkspace = () => {
   const center = useSelector((state: RootState) => state.mapCenter);
   useEffect(() => {
     if (!map || !mockOptimize) return;
-
-    const lat = mockOptimize.depotLat;
-    const lng = mockOptimize.depotLon;
+    const lat = mockOptimize?.depot_lat ?? 16.0;
+    const lng = mockOptimize?.depot_lng ?? 103;
 
     if (lat == null || lng == null) return;
 

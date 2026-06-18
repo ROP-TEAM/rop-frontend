@@ -271,9 +271,16 @@ const Preview = () => {
       const routes = result.optimize.routes;
       const vehicleCount = routes.length;
       const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
-      const orderCount = routes.reduce((sum, route) => sum + route.stops.length, 0)
+      const orderCount = routes.reduce(
+        (sum, route) => sum + route.stops.length,
+        0,
+      );
 
-      setOptimizedCount({ vehicle: vehicleCount, distance: distanceCount, order: orderCount  });
+      setOptimizedCount({
+        vehicle: vehicleCount,
+        distance: distanceCount,
+        order: orderCount,
+      });
       setOptimizeResult(
         routes.flatMap((r) =>
           r.stops.map((s: any) => {
@@ -956,7 +963,8 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                   onClick={() => setOpenWeightModal(true)}
                   disabled={
                     !(vehicleBases.length > 0 && orderBases.length > 0) ||
-                    (depotLoc.lat == 0 && depotLoc.lng == 0) || loadingCount != 0 
+                    (depotLoc.lat == 0 && depotLoc.lng == 0) ||
+                    loadingCount != 0
                   }
                   className={`${styles.sendAction}  ${
                     !(vehicleBases.length > 0 && orderBases.length > 0) ||
@@ -987,7 +995,8 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                       <h2 className={styles.title}>การตั้งค่าน้ำหนัก </h2>
                     </div>
                     <p>
-                      กำหนดค่าน้ำหนักด้านระยะทางและค่าใช้จ่าย เพื่อเพิ่มประสิทธิภาพการจัดเส้นทางตามเป้าหมายงานของคุณ
+                      กำหนดค่าน้ำหนักด้านระยะทางและค่าใช้จ่าย
+                      เพื่อเพิ่มประสิทธิภาพการจัดเส้นทางตามเป้าหมายงานของคุณ
                     </p>
                   </div>
                 </div>

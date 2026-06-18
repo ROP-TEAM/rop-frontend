@@ -324,19 +324,19 @@ export const DetailCard = () => {
                       </h4>
                     </div>
                     <div className={styles.content}>
-                      <p>ระยะทางรวม</p>
+                      <p>ระยะทางรวม (กม)</p>
                       <h4>
                         {(
                           resultOptimize.routes[currentVehicle.id]
                             .totalDistance / 1000
                         ).toFixed(2)}
-                        กม.
                       </h4>
                     </div>
                   </div>
                 )}
               </div>
               <div className={styles.order}>
+                v
                 <div className={styles.title}>
                   <h3>ออเดอร์ที่บรรทุก</h3>
                   <button

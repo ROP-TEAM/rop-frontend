@@ -4,6 +4,7 @@ import { Vehicle } from "@/app/features/vehicle/vehicle.types";
 import { useDispatch } from "react-redux";
 import { detailOpen } from "@/app/features/sidePopup/sidePopupSlice";
 import { addVehicle } from "@/app/features/detailVehicle/detailVehicleSlice";
+import { VehicleCardProps } from "./VehicleCard.types";
 export const VehicleCard = ({
   id,
   name,
@@ -17,7 +18,8 @@ export const VehicleCard = ({
   breakTimeEnd,
   maxTask,
   skills,
-}: Vehicle) => {
+  isSelected,
+}: VehicleCardProps) => {
   const dispatch = useDispatch();
   const onOpenDetail = () => {
     const vehicle: Vehicle = {
@@ -51,10 +53,9 @@ export const VehicleCard = ({
   return (
     <div
       onClick={() => {
-        console.log("Hello");
         onOpenDetail();
       }}
-      className={styles.container}
+      className={`${styles.container} ${isSelected ? styles.selected : ""}`}
     >
       <div className={styles.header}>
         <h3 className={styles.name}>{name}</h3>

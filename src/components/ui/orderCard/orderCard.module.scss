@@ -1,9 +1,12 @@
 .container {
   border: $border-subtle;
   padding: 0.725rem 1.25rem;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
 }
 
+.selected {
+  border: 0.125rem solid var(--s-500);
+}
 .orderInfo {
   .orderInfoHeader {
     display: flex;

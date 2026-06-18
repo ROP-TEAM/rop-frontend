@@ -3,12 +3,13 @@ import { SkillPillProps } from "@/components/ui/SkillPill/SkillPill.types";
 import { NumberInput } from "@/components/form/NumberInput/NumberInput";
 import { SelectInput } from "@/components/form/SelectInput/SelectInput";
 import { LocationInput } from "@/components/form/LocationInput/LocationInput";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { TextInput } from "@/components/form/TextInput/TextInput";
 import styles from "./orderCard.module.scss";
 import { Location } from "@/types/api.types";
 import { OrderBase } from "@/app/features/order/order.types";
+import { orderCardProps } from "./orderCard.types";
 
 const Priority = ({ p }: { p: number }) => {
   const priorityMapping = [
@@ -43,6 +44,7 @@ const Priority = ({ p }: { p: number }) => {
 };
 
 export const OrderCard = ({
+  id,
   name,
   description,
   capacity,
@@ -54,7 +56,8 @@ export const OrderCard = ({
   desLongitude,
   type,
   priority,
-}: OrderBase) => {
+  isSelect = false,
+}: orderCardProps) => {
   const [isExplain, setIsExplain] = useState(false);
   const [orderLoc, setOrderLoc] = useState<Location>({ lat: 0, lng: 0 });
 
@@ -66,7 +69,11 @@ export const OrderCard = ({
       value: "1",
     },
   ];
-
+  useEffect(() => {
+    if (isSelect && !isExplain) {
+      setIsExplain(true);
+    }
+  }, [isSelect]);
   const parseNumberToTime = (minutes?: number): string => {
     if (minutes == null || minutes < 0) return "00:00";
 
@@ -78,7 +85,7 @@ export const OrderCard = ({
       .padStart(2, "0")}`;
   };
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isSelect ? styles.selected : ""}`}>
       <SkillInput
         isDisable
         isMutiSelect={false}
@@ -89,13 +96,16 @@ export const OrderCard = ({
       <div className={styles.orderInfo}>
         <div className={styles.orderInfoHeader}>
           <div className={styles.orderName}>
-            <TextInput
+            <h2>
+              {name ?? "ไม่ระบุชื่อ"} {`(${id + 1})`}
+            </h2>
+            {/* <TextInput
               isDisable
               color="var(--p-800)"
               fontWeight="500"
               value={name ?? "ไม่ระบุชื่อ"}
               onChange={() => {}}
-            ></TextInput>
+            ></TextInput> */}
           </div>
           <button
             className={`${isExplain ? styles.arrowDown : ""}`}

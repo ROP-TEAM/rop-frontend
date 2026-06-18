@@ -18,6 +18,8 @@ import { RootState } from "@/app/store";
 import { setLatLng } from "@/app/features/mapClick/mapClickSlice";
 import { addVehicle } from "@/app/features/detailVehicle/detailVehicleSlice";
 import { Vehicle } from "@/types/api.types";
+import { setMapCenter } from "@/app/features/mapCenter/mapCetnerSlice";
+import { Location } from "@/components/form/LocationInput/LocationInput.types";
 const MapWorkspace = () => {
   const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   const dispatch = useDispatch();
@@ -25,23 +27,31 @@ const MapWorkspace = () => {
     (state: RootState) => state.optimize.optimize,
   );
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [center, setCenter] = useState<{ lat: number; lng: number }>({
-    lat: 16.441879460231092,
-    lng: 102.8275588872729,
-  });
+  const [activeCard, setActiveCard] = useState({ vehicle: -1, order: -1 });
 
-  const [isVehicleState, setIsVehicleState] = useState<boolean>(false);
+  const [isVehicleState, setIsVehicleState] = useState<boolean>(true);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY ?? "";
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: apiKey,
   });
+  const center = useSelector((state: RootState) => state.mapCenter);
+  useEffect(() => {
+    if (!map || !optimizeResult) return;
+
+    const lat = optimizeResult.depotLat;
+    const lng = optimizeResult.depotLon;
+
+    if (lat == null || lng == null) return;
+
+    map.panTo({ lat, lng });
+    map.setZoom(18);
+  }, [map, optimizeResult]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
     const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-
+    map.setZoom(18);
     setMap(map);
   }, []);
 
@@ -161,7 +171,7 @@ const MapWorkspace = () => {
                 id: index,
               };
               dispatch(addVehicle(vehicleIdx));
-              dispatch(DetailToggle());
+              dispatch(detailOpen());
               const activeIndex = activePolylineRefs.current;
               const exit = activeIndex !== null;
               if (exit) {
@@ -198,6 +208,52 @@ const MapWorkspace = () => {
       );
     });
   }, [isLoaded, map, optimizeResult]);
+
+  const handleOrderCardClick = (idv: number, ido: number) => {
+    const vehicle = optimizeResult.routes[idv];
+    if (!vehicle) return;
+    setActiveCard({ vehicle: idv, order: ido });
+    if (activePolylineRefs.current !== null) {
+      markerRefs.current[activePolylineRefs.current]?.forEach((m) =>
+        m.setVisible(false),
+      );
+    }
+
+    const vehicleIdx = { ...vehicle, id: idv };
+    dispatch(addVehicle(vehicleIdx));
+    dispatch(detailOpen());
+
+    setPolyLineStyles(idv);
+    activePolylineRefs.current = idv;
+
+    const stop = vehicle.stops?.[ido];
+    if (stop && map) {
+      map.panTo({ lat: stop.desLatitude, lng: stop.desLongitude });
+    }
+  };
+
+  const handleVehicleCardClick = (index: number) => {
+    const vehicle = optimizeResult.routes[index];
+    if (!vehicle) return;
+
+    if (activePolylineRefs.current !== null) {
+      markerRefs.current[activePolylineRefs.current]?.forEach((m) =>
+        m.setVisible(false),
+      );
+    }
+    setActiveCard({ order: -1, vehicle: index });
+    const vehicleIdx = { ...vehicle, id: index };
+    dispatch(addVehicle(vehicleIdx));
+    dispatch(detailOpen());
+
+    setPolyLineStyles(index);
+    activePolylineRefs.current = index;
+
+    const firstStop = vehicle.stops?.[0];
+    if (firstStop && map) {
+      map.panTo({ lat: firstStop.desLatitude, lng: firstStop.desLongitude });
+    }
+  };
   useEffect(() => {
     if (!map) return;
 
@@ -228,10 +284,28 @@ const MapWorkspace = () => {
             </button>
           </div>
           <div className={styles.stateControl}>
-            <button onClick={() => setIsVehicleState(true)} type="button">
+            <button
+              className={styles.stateControl_action}
+              style={
+                {
+                  "--background-color": isVehicleState ? "var(--p-100)" : "",
+                } as React.CSSProperties
+              }
+              onClick={() => setIsVehicleState(true)}
+              type="button"
+            >
               ยานพาหนะ
             </button>
-            <button onClick={() => setIsVehicleState(false)} type="button">
+            <button
+              className={styles.stateControl_action}
+              style={
+                {
+                  "--background-color": isVehicleState ? "" : "var(--p-100)",
+                } as React.CSSProperties
+              }
+              onClick={() => setIsVehicleState(false)}
+              type="button"
+            >
               ออเดอร์
             </button>
           </div>
@@ -239,39 +313,53 @@ const MapWorkspace = () => {
             {isVehicleState ? (
               <div className={styles.vehicleCardContainer}>
                 {optimizeResult.routes.map((r, index) => (
-                  <VehicleCard
+                  <div
                     key={index}
-                    name={r.name}
-                    id={index}
-                    model={r.model}
-                    capacity={r.capacity}
-                    plateNumber={r.plateNumber}
-                    workTimeStart={r.workTimeStart}
-                    workTimeEnd={r.workTimeEnd}
-                    breakTimeStart={r.breakTimeStart}
-                    breakTimeEnd={r.breakTimeEnd}
-                    skills={r.skills}
-                  ></VehicleCard>
+                    onClick={() => handleVehicleCardClick(index)}
+                  >
+                    <VehicleCard
+                      isSelected={activeCard.vehicle == index}
+                      name={r.name}
+                      id={index}
+                      model={r.model}
+                      capacity={r.capacity}
+                      plateNumber={r.plateNumber}
+                      workTimeStart={r.workTimeStart}
+                      workTimeEnd={r.workTimeEnd}
+                      breakTimeStart={r.breakTimeStart}
+                      breakTimeEnd={r.breakTimeEnd}
+                      skills={r.skills}
+                    ></VehicleCard>
+                  </div>
                 ))}
               </div>
             ) : (
               <div className={styles.orderCardContainer}>
-                {optimizeResult.routes.map((vehicle) => {
-                  return vehicle.stops?.map((order) => {
+                {optimizeResult.routes.map((vehicle, idv) => {
+                  return vehicle.stops?.map((order, ido) => {
                     return (
-                      <OrderCard
-                        name={order.name}
-                        capacity={order.capacity}
-                        skill={order.skill}
-                        timeWindowStart={order.timeWindowStart}
-                        timeWindowEnd={order.timeWindowEnd}
-                        desLatitude={order.desLatitude}
-                        desLongitude={order.desLongitude}
-                        serviceTime={order.serviceTime}
-                        type={order.type}
-                        priority={order.priority}
-                        key={order.id}
-                      />
+                      <div
+                        key={ido}
+                        onClick={() => handleOrderCardClick(idv, ido)}
+                      >
+                        <OrderCard
+                          id={ido}
+                          isSelect={
+                            idv == activeCard.vehicle && ido == activeCard.order
+                          }
+                          name={order.name}
+                          capacity={order.capacity}
+                          skill={order.skill}
+                          timeWindowStart={order.timeWindowStart}
+                          timeWindowEnd={order.timeWindowEnd}
+                          desLatitude={order.desLatitude}
+                          desLongitude={order.desLongitude}
+                          serviceTime={order.serviceTime}
+                          type={order.type}
+                          priority={order.priority}
+                          key={order.id}
+                        />
+                      </div>
                     );
                   });
                 })}

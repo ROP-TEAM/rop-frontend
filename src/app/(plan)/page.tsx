@@ -366,22 +366,6 @@ const Preview = () => {
     const latlngStr = location.split(",");
     return latlngStr.map((loc) => +Number(loc).toFixed(6));
   };
-
-  const parsePiorityToNumber = (piorityStr: string) => {
-    if (!piorityStr) return 1;
-    switch (piorityStr) {
-      case "สูงมาก":
-        return 3;
-      case "สูง":
-        return 2;
-      case "ปานกลาง":
-        return 1;
-      case "ต่ำ":
-        return 0;
-    }
-    return 1;
-  };
-
   const handleCreateVeiclePayload = () => {
     const RowLenght = colDataVehicle[0].length;
     const ColLenght = VEHICLE_HEADER_RULE.length;

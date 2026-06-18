@@ -6,6 +6,9 @@
   gap: 0.5rem;
   border-radius: 0.2rem;
 }
+.selected {
+  border: 0.125rem solid var(--s-500);
+}
 .header {
   .name {
     font-size: 0.8rem;

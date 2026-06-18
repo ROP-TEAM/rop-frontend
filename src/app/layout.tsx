@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Noto_Sans_Thai } from "next/font/google";
 import "./../styles/globals.scss";
 import { AuthProvider } from "./provider";
+import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+
 export const metadata: Metadata = {
   title: "soroutetion",
   description: "route-optimize-program",
@@ -20,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <MantineProvider>{children}</MantineProvider>
+          </AuthProvider>
       </body>
     </html>
   );

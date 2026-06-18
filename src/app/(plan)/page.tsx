@@ -18,6 +18,7 @@ import Skeleton from "@/components/ui/Skeleton/Skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { clearOptimizeResult } from "../features/optimize/optimizeSlice";
+import { Slider } from "@mantine/core";
 ``;
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
@@ -255,6 +256,10 @@ const Preview = () => {
   const [colDataVehicle, setColDataVehicle] = useState<string[][]>([]);
   const [colDataOrder, setColDataOrder] = useState<string[][]>([]);
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
+  const [weightDistance, setWeightDistance] = useState<number>(50);
+  const [weightCost, setWeightCost] = useState<number>(50);
+  const [openWeightModal, setOpenWeightModal] = useState<boolean>(false);
+  const TOTAL_SUM_WEIGHT = 100;
   const [error, setError] = useState<string>("");
   const result = useSelector((state: RootState) => state.optimize);
   const dispatch = useDispatch();
@@ -605,9 +610,13 @@ Developed by **Computer Engineering students at Khon Kaen University**.
         enableAlns: true,
         timeLimitMS: WAITING_TIME * 1000,
         enableMultiTrip: true,
+        weightCost: weightCost / 100,
+        weightDistance: weightDistance / 100,
       };
       await createOptimize(payload).unwrap();
       localStorage.setItem("vehicleCount", String(vehicleBases.length));
+
+      console.log("pai laew ja", payload);
     } catch (err) {
       console.log(err);
     } finally {
@@ -615,6 +624,21 @@ Developed by **Computer Engineering students at Khon Kaen University**.
       setLoadingCount(0);
     }
   };
+
+  const handleSliderChange = (w: number, val: number) => {
+    if (w == 0) {
+      setWeightCost(val);
+      setWeightDistance(TOTAL_SUM_WEIGHT - val);
+      return;
+    } else if (w == 1) {
+      setWeightDistance(val);
+      setWeightCost(TOTAL_SUM_WEIGHT - val);
+      return;
+    }
+    console.log("weight type out of range");
+    return;
+  };
+
   return (
     <div>
       <div className={styles.container}>
@@ -655,7 +679,10 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 <div className={styles.optimizeIcon}>
                   <Tooltip title="ลองใหม่">
                     <button
-                      onClick={() => handleCreateOptimize()}
+                      onClick={() => {
+                        setOpenWeightModal(true);
+                        console.log(openWeightModal);
+                      }}
                       type="button"
                     >
                       <IconSvgMono
@@ -904,10 +931,10 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                   <p className={styles.actionError}>เกิดข้อผิดพลาด: {error}</p>
                 )}
                 <button
-                  onClick={() => handleCreateOptimize()}
+                  onClick={() => setOpenWeightModal(true)}
                   disabled={
                     !(vehicleBases.length > 0 && orderBases.length > 0) ||
-                    (depotLoc.lat == 0 && depotLoc.lng == 0)
+                    (depotLoc.lat == 0 && depotLoc.lng == 0) || loadingCount != 0 
                   }
                   className={`${styles.sendAction}  ${
                     !(vehicleBases.length > 0 && orderBases.length > 0) ||
@@ -923,6 +950,92 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 </button>
               </div>
             </section>
+
+            <Modal
+              marginTop="2rem"
+              isActive={openWeightModal}
+              onClose={() => {
+                setOpenWeightModal(false);
+              }}
+            >
+              <div className={styles.vehicleUpload}>
+                <div className={styles.header}>
+                  <div className={styles.headerInfo}>
+                    <div className={styles.headerTitle}>
+                      <h2 className={styles.title}>การตั้งค่าน้ำหนัก </h2>
+                    </div>
+                    <p>
+                      กำหนดค่าน้ำหนักด้านระยะทางและค่าใช้จ่าย เพื่อเพิ่มประสิทธิภาพการจัดเส้นทางตามเป้าหมายงานของคุณ
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.contentAction}>
+                  <div className={styles.slider_wrapper}>
+                    <h3>ค่าน้ำหนักต้นทุนในการขนส่ง</h3>
+                    <br />
+                    <Slider
+                      value={weightCost}
+                      onChange={(val) => {
+                        handleSliderChange(0, val);
+                      }}
+                      min={0}
+                      max={100}
+                      labelAlwaysOn
+                      marks={[
+                        { value: 20, label: "20%" },
+                        { value: 50, label: "50%" },
+                        { value: 80, label: "80%" },
+                      ]}
+                    />
+                  </div>
+
+                  <div className={styles.slider_wrapper}>
+                    <h3>ค่าน้ำหนักระยะทาง</h3>
+                    <br />
+                    <Slider
+                      // on
+                      value={weightDistance}
+                      onChange={(val) => {
+                        handleSliderChange(1, val);
+                      }}
+                      min={0}
+                      step={1}
+                      max={100}
+                      labelAlwaysOn
+                      color="blue"
+                      marks={[
+                        { value: 20, label: "20%" },
+                        { value: 50, label: "50%" },
+                        { value: 80, label: "80%" },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.footer}>
+                  <div className={styles.action}>
+                    <button
+                      className={styles.cancel}
+                      onClick={() => {
+                        setOpenWeightModal(false);
+                      }}
+                    >
+                      ยกเลิก
+                    </button>
+                    <button
+                      className={styles.confirm}
+                      onClick={() => {
+                        handleCreateOptimize();
+                        setOpenWeightModal(false);
+                      }}
+                    >
+                      ยืนยัน
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Modal>
           </div>
         )}
       </div>

@@ -23,6 +23,8 @@ export interface OptimizeReqPayload {
   reloadMin?: number;
   seed?: number;
   timeLimitMS?: number;
+  weightDistance?: number;
+  weightCost?: number;
 }
 
 export interface OptimizeResPayload {

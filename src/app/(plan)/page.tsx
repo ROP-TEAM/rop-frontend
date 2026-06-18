@@ -233,12 +233,14 @@ const ORDER_EXAM = [
   ],
 ];
 const Preview = () => {
-  const [optimizeCount, setOptimizeCount] = useState<{
+  const [optimizedCount, setOptimizedCount] = useState<{
     distance: number;
     vehicle: number;
+    order: number;
   }>({
     distance: 0,
     vehicle: 0,
+    order: 0,
   });
   const [createOptimize, { isLoading }] = useCreateOptimizeMutation();
   const [optimizeResult, setOptimizeResult] = useState<string[][]>([]);
@@ -269,8 +271,9 @@ const Preview = () => {
       const routes = result.optimize.routes;
       const vehicleCount = routes.length;
       const distanceCount = routes.reduce((sum, v) => sum + v.totalDistance, 0);
+      const orderCount = routes.reduce((sum, route) => sum + route.stops.length, 0)
 
-      setOptimizeCount({ vehicle: vehicleCount, distance: distanceCount });
+      setOptimizedCount({ vehicle: vehicleCount, distance: distanceCount, order: orderCount  });
       setOptimizeResult(
         routes.flatMap((r) =>
           r.stops.map((s: any) => {
@@ -615,6 +618,7 @@ Developed by **Computer Engineering students at Khon Kaen University**.
       };
       await createOptimize(payload).unwrap();
       localStorage.setItem("vehicleCount", String(vehicleBases.length));
+      localStorage.setItem("orderCount", String(orderBases.length));
 
       console.log("pai laew ja", payload);
     } catch (err) {
@@ -715,7 +719,7 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 ) : (
                   <div className={styles.optimizeInfo}>
                     <h1 className={styles.optimizeVariable}>
-                      {optimizeCount.vehicle} /{" "}
+                      {optimizedCount.vehicle} /{" "}
                       {localStorage.getItem("vehicleCount")}
                     </h1>
                     <p className={styles.optimizeUnit}>คัน</p>
@@ -733,9 +737,27 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 ) : (
                   <div className={styles.optimizeInfo}>
                     <h1 className={styles.optimizeVariable}>
-                      {(optimizeCount.distance / 1000).toFixed(2)}
+                      {(optimizedCount.distance / 1000).toFixed(2)}
                     </h1>
                     <p className={styles.optimizeUnit}>กม.</p>
+                  </div>
+                )}
+              </div>
+              <div className={styles.optimizeBox}>
+                <h2 className={styles.optimizeType}>รายการที่จัดส่ง</h2>
+                {loadingCount > 0 ? (
+                  <Skeleton
+                    borderRadius="4rem"
+                    width="10rem"
+                    height="3rem"
+                  ></Skeleton>
+                ) : (
+                  <div className={styles.optimizeInfo}>
+                    <h1 className={styles.optimizeVariable}>
+                      {optimizedCount.order} /{" "}
+                      {localStorage.getItem("orderCount")}
+                    </h1>
+                    <p className={styles.optimizeUnit}>รายการ</p>
                   </div>
                 )}
               </div>

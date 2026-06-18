@@ -277,7 +277,7 @@ const Preview = () => {
             `"${s.desLatitude},${s.desLongitude}"`,
             String(r.stops.length),
             String(s.capacity),
-            s.skill ?? "",
+            s.skill?.name ?? "",
             parseNumberToTime(s.timeWindowStart),
             parseNumberToTime(s.timeWindowEnd),
             parseNumberToTime(s.arrivalMin),
@@ -297,9 +297,9 @@ const Preview = () => {
               "",
               order.name,
               `"${order.desLatitude},${order.desLongitude}"`,
-              "",
+              order.skill?.name ?? "",
               String(order.capacity),
-              order.skill ?? "",
+              "สวัสดี",
               parseNumberToTime(order.timeWindowStart),
               parseNumberToTime(order.timeWindowEnd),
               "",
@@ -434,6 +434,20 @@ const Preview = () => {
     setIsUploadVehicle(false);
   };
 
+  const parsePriorityToNumber = (priority: string) => {
+    switch (priority) {
+      case "ต่ำ":
+        return 1;
+      case "ปานกลาง":
+        return 2;
+      case "สูง":
+        return 3;
+      case "สูงมาก":
+        return 4;
+      default:
+        return 0;
+    }
+  };
   const handleCreateOrderPayload = () => {
     const RowLenght = colDataOrder[0].length;
     const ColLenght = ORDER_HEADER_RULE.length;
@@ -474,10 +488,10 @@ const Preview = () => {
             newOrder.description = value;
             break;
           case "ความสามารถเฉพาะ":
-            newOrder.skill = value;
+            newOrder.skill = { name: value, color: "" };
             break;
           case "ลำดับความสำคัญ":
-            newOrder.priority = parsePiorityToNumber(value);
+            newOrder.priority = parsePriorityToNumber(value);
             break;
         }
       }

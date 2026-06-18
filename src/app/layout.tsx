@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Thai } from "next/font/google";
 import "./../styles/globals.scss";
-import { AuthProvider } from "./provider";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
@@ -17,16 +16,14 @@ const noto = Noto_Sans_Thai({
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={noto.className}>
-        <AuthProvider>
+      <body className={noto.className} className="m-0 p-0 overflow-hidden">
           <MantineProvider>{children}</MantineProvider>
-          </AuthProvider>
-      </body>
+          </body>
     </html>
   );
 }

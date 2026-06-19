@@ -1,0 +1,16 @@
+.container{
+    display:flex;
+    gap:0.1rem;
+    border: 0.0625rem solid;
+    padding: 0.1rem;
+    box-sizing: border-box;
+
+    input{
+        border:none;
+        width: 2ch;
+        outline: none;
+        &::placeholder{
+            text-align: center;
+        }
+    }
+}

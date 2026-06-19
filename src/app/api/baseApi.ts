@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "localhost:3000" }),
-  tagTypes: ["route"],
+  baseQuery: fetchBaseQuery({ baseUrl: "https://soroutetion.com" }),
+  tagTypes: ["route", "optimize"],
   endpoints: () => ({}),
 });

@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { Noto_Sans_Thai } from "next/font/google";
+import "./../styles/globals.scss";
+import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
 export const metadata: Metadata = {
-  title: "Fleet Tracking Map",
-  description: "Real-time fleet visualization with Deck.gl + MapLibre",
+  title: "soroutetion",
+  description: "route-optimize-program",
 };
+const noto = Noto_Sans_Thai({
+  subsets: ["thai", "latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // เลือกน้ำหนักที่ใช้
+  variable: "--font-noto-sans-thai",
+});
 
 export default function RootLayout({
   children,
@@ -13,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="m-0 p-0 overflow-hidden">{children}</body>
+      <body className={noto.className} className="m-0 p-0 overflow-hidden">
+          <MantineProvider>{children}</MantineProvider>
+          </body>
     </html>
   );
 }

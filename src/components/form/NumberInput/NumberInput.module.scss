@@ -1,0 +1,21 @@
+.label {
+  font-size: var(--label-size);
+  color: var(--label-color);
+}
+
+.input {
+  box-sizing: border-box;
+  padding: 0.25rem 0;
+  color: var(--color-outFocus);
+  background-color: var(--p-0);
+  border: none;
+  &:hover:not(:focus) {
+    background-color: var(--p-50);
+  }
+  &:focus {
+    background-color: var(--p-100);
+    outline-color: var(--s-500);
+    color: var(--p-700);
+    padding: 0.25rem 0.5rem;
+  }
+}

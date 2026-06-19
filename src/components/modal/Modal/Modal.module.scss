@@ -1,0 +1,16 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: color-mix(in srgb, var(--p-800) 15%, transparent);
+  z-index: 10;
+}
+.modal {
+  margin-top: var(--margin-Top);
+  margin-inline: auto;
+  width: fit-content;
+  background-color: var(--p-0);
+  border-radius: 0.2rem;
+}

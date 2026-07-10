@@ -1,0 +1,21 @@
+.dragFile {
+  width: 100%;
+  height: 14rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .contentText {
+    width: 8rem;
+    text-align: center;
+    color: var(--p-300);
+    font-size: 0.725rem;
+  }
+}

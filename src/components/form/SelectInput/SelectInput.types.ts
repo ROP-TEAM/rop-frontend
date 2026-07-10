@@ -1,0 +1,19 @@
+export type Option = { label: string; value: string; color?: string };
+export interface SelectInputProps {
+  value: string;
+  options: Option[];
+  label?: string;
+  labelSize?: string;
+  checkList?: number[];
+  isOnTop?: boolean | number;
+  placeholder?: string;
+  errorMessage?: string;
+  activeBorder?: string;
+  hasBorder?: boolean;
+  activeBackground?: string;
+  activeFontColor?: string;
+  hasColorStyle?: boolean;
+  subString?: number;
+  isDisable?: boolean;
+  onChange?: (value: string) => void;
+}

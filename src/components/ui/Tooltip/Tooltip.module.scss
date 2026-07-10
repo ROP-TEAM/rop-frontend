@@ -1,0 +1,33 @@
+@keyframes fadeUp {
+  from {
+    transform: translateY(0.6rem) translateX(-50%);
+  }
+  to {
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+}
+
+.title {
+  font-weight: 500;
+  text-wrap: nowrap;
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: black;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.2rem;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+
+.tooltip:hover .title {
+  display: block;
+}

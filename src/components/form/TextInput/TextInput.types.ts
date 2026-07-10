@@ -1,9 +1,19 @@
 export interface TextInputProps {
+  fontWeight?: string;
   label?: string;
-  placeholder: string;
+  labelColor?: string;
+  labelGap?: string;
+  labelSize?: string;
+  placeholder?: string;
   value: string;
   fontSize?: string;
   color?: string;
   width?: string;
-  onChange: (value: string) => void;
+  border?: string;
+  backgroundColor?: string;
+  pading?: string;
+  require?: boolean;
+  onChange?: (value: string) => void;
+  errorMessage?: string;
+  isDisable?: boolean;
 }

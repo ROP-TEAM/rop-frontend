@@ -294,6 +294,8 @@ export const UploadStepper = ({
                         </td>
                         <td className={styles.selectImport}>
                           <SelectInput
+                            hasColorStyle
+                            hasBorder={true}
                             subString={16}
                             isOnTop={0.65}
                             activeFontColor="var(--s-500)"

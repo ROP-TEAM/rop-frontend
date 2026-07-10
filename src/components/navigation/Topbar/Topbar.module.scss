@@ -4,3 +4,8 @@
   justify-content: space-between;
   border-bottom: $border-subtle;
 }
+.navHome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

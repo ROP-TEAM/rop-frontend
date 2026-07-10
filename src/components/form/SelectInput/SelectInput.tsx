@@ -9,7 +9,6 @@ import styles from "./SelectInput.module.scss";
 import { SelectInputProps } from "./SelectInput.types";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { FloatingCard } from "@/components/ui/FloatingCard/FloatingCard";
-import { Option as OptionType } from "./SelectInput.types";
 export const SelectInput = ({
   value,
   options,
@@ -18,7 +17,7 @@ export const SelectInput = ({
   placeholder,
   errorMessage,
   labelSize = "0.725rem",
-  withColorStyle = false,
+  hasColorStyle = false,
   hasBorder = false,
   checkList = [],
   subString = 99,
@@ -73,7 +72,7 @@ export const SelectInput = ({
                 optionRef.current[0]?.focus();
               }
             }}
-            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value && withColorStyle ? styles.hasValue : ""}`}
+            className={`${styles.trigger}  ${internalActive ? styles.active : ""} ${value && hasColorStyle ? styles.hasValue : ""}`}
             onClick={() => setInternalActive(true)}
             type="button"
             style={
@@ -88,8 +87,6 @@ export const SelectInput = ({
             {value ? (
               <h3 className={styles.value}>
                 {options.find((item) => item.value === value)?.label}
-                {/* {value.substring(0, subString) +
-                  (value.length > subString ? "..." : "")} */}
               </h3>
             ) : (
               <p className={styles.placeholder}>{placeholder}</p>
@@ -97,9 +94,7 @@ export const SelectInput = ({
             {!isDisable && (
               <IconSvgMono
                 src="/icon/arrow-2-side.svg"
-                color={
-                  value && withColorStyle ? "var(--s-700)" : "var(--p-500)"
-                }
+                color={value && hasColorStyle ? "var(--s-700)" : "var(--p-500)"}
                 size={18}
               ></IconSvgMono>
             )}

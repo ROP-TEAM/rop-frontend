@@ -12,7 +12,7 @@ export interface SelectInputProps {
   hasBorder?: boolean;
   activeBackground?: string;
   activeFontColor?: string;
-  withColorStyle?: boolean;
+  hasColorStyle?: boolean;
   subString?: number;
   isDisable?: boolean;
   onChange?: (value: string) => void;

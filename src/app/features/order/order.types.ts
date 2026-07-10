@@ -2,7 +2,7 @@ export interface OrderBase {
   name: string;
   description?: string;
   capacity: number;
-  skill?: { name: string; color: string };
+  skill?: string;
   timeWindowStart: number;
   timeWindowEnd: number;
   desLatitude: number;

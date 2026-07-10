@@ -4,11 +4,10 @@ import { LocationInput } from "@/components/form/LocationInput/LocationInput";
 import IconSvgMono from "@/components/Icon/SvgIcon";
 import { Modal } from "@/components/modal/Modal/Modal";
 import { Tooltip } from "@/components/ui/Tooltip/Tooltip";
-import styles from "./landing.module.scss";
+import styles from "./quickStart.module.scss";
 import Image from "next/image";
 import { Location } from "@/components/form/LocationInput/LocationInput.types";
-import { OrderBase } from "@/types/api.types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { HeaderRule } from "@/components/modal/UploadStepper/UploadStepper.types";
 import { VehicleBase } from "../features/vehicle/vehicle.types";
 import { UploadStepper } from "@/components/modal/UploadStepper/UploadStepper";
@@ -17,8 +16,10 @@ import { OptimizeReqPayload } from "../features/optimize/optimize.types";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
+import { OrderBase } from "../features/order/order.types";
 import { clearOptimizeResult } from "../features/optimize/optimizeSlice";
-``;
+import { useRouter } from "next/navigation";
+
 const VEHICLE_HEADER_RULE: HeaderRule[] = [
   {
     label: "เวลาเริ่มทำงาน",
@@ -231,7 +232,7 @@ const ORDER_EXAM = [
     "สูงมาก",
   ],
 ];
-const Preview = () => {
+const QuickStart = () => {
   const [optimizeCount, setOptimizeCount] = useState<{
     distance: number;
     vehicle: number;
@@ -257,6 +258,7 @@ const Preview = () => {
   const [isOptimize, setIsOptimize] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const result = useSelector((state: RootState) => state.optimize);
+  const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -277,7 +279,7 @@ const Preview = () => {
             `"${s.desLatitude},${s.desLongitude}"`,
             String(r.stops.length),
             String(s.capacity),
-            s.skill?.name ?? "",
+            s.skill ?? "",
             parseNumberToTime(s.timeWindowStart),
             parseNumberToTime(s.timeWindowEnd),
             parseNumberToTime(s.arrivalMin),
@@ -297,7 +299,7 @@ const Preview = () => {
               "",
               order.name,
               `"${order.desLatitude},${order.desLongitude}"`,
-              order.skill?.name ?? "",
+              order.skill ?? "",
               String(order.capacity),
               "สวัสดี",
               parseNumberToTime(order.timeWindowStart),
@@ -675,7 +677,9 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                 <div className={styles.optimizeIcon}>
                   <Tooltip title="ลองใหม่">
                     <button
-                      onClick={() => handleCreateOptimize()}
+                      onClick={() => {
+                        handleCreateOptimize();
+                      }}
                       type="button"
                     >
                       <IconSvgMono
@@ -684,15 +688,19 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                       ></IconSvgMono>
                     </button>
                   </Tooltip>
-                  {/* <Tooltip title="จำลองเส้นทาง">
-                    <Link href="plan/map">
-                      <IconSvgMono
-                        src="/icon/path.svg"
-                        color="var(--p-700)"
-                        size={24}
-                      ></IconSvgMono>
+                  {/* <Link href="/map" prefetch={false}> */}
+
+                  <Tooltip title="จำลองเส้นทาง">
+                    <Link href="/map">
+                      <button type="button">
+                        <IconSvgMono
+                          src="/icon/map.svg"
+                          size={24}
+                        ></IconSvgMono>
+                      </button>
                     </Link>
-                  </Tooltip> */}
+                  </Tooltip>
+                  {/* </Link> */}
                 </div>
               )}
             </div>
@@ -950,4 +958,4 @@ Developed by **Computer Engineering students at Khon Kaen University**.
   );
 };
 
-export default Preview;
+export default QuickStart;

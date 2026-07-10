@@ -1,6 +1,5 @@
 "use client";
-import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
-import { Polyline } from "@react-google-maps/api";
+
 import { OrderCard } from "@/components/ui/orderCard/orderCard";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -12,14 +11,10 @@ import {
   controlClose,
   detailClose,
   detailOpen,
-  DetailToggle,
 } from "@/app/features/sidePopup/sidePopupSlice";
 import { RootState } from "@/app/store";
 import { setLatLng } from "@/app/features/mapClick/mapClickSlice";
 import { addVehicle } from "@/app/features/detailVehicle/detailVehicleSlice";
-import { Vehicle } from "@/types/api.types";
-import { setMapCenter } from "@/app/features/mapCenter/mapCetnerSlice";
-import { Location } from "@/components/form/LocationInput/LocationInput.types";
 const MapWorkspace = () => {
   const sidePopupSlice = useSelector((state: RootState) => state.sidePopup);
   const dispatch = useDispatch();
@@ -148,7 +143,7 @@ const MapWorkspace = () => {
                 visible: false,
                 title: stop.name ?? `Stop`,
                 label: {
-                  text: `${String(stopIndex + 1)} ${vehicle.skills?.some((s) => s.name == stop.skill?.name) ? "!" : ""}`,
+                  text: `${String(stopIndex + 1)} ${vehicle.skills?.some((s) => s.name == stop.skill) ? "!" : ""}`,
                   color: "#FFFFFF",
                   fontSize: "0.825rem",
                   fontWeight: "bold",

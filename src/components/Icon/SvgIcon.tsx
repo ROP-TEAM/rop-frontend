@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 
 type Props = {
   svg?: string;
@@ -15,10 +15,10 @@ type Props = {
   fixColor?: boolean;
 };
 
-const svgCache = new Map<
-  string,
-  { inner: string; attrs: Record<string, string> }
->();
+type Processed = { inner: string; attrs: Record<string, string> };
+
+const svgCache = new Map<string, Processed>();
+const inFlight = new Map<string, Promise<Processed>>(); // ✅ dedupe fetch ซ้ำ
 
 function processSvg(
   raw: string,
@@ -29,7 +29,7 @@ function processSvg(
     width,
     height,
   }: Pick<Props, "color" | "fixColor" | "size" | "width" | "height">,
-) {
+): Processed {
   let s = raw.replace(/<\?xml.*?\?>\s*/g, "");
   const finalColor = color ?? "currentColor";
   if (!fixColor) {
@@ -38,12 +38,8 @@ function processSvg(
   }
 
   const m = s.match(/<svg([^>]*)>([\s\S]*?)<\/svg>/i);
-  let attrsText = "";
-  let inner = s;
-  if (m) {
-    attrsText = m[1] || "";
-    inner = m[2] || "";
-  }
+  const attrsText = m?.[1] ?? "";
+  const inner = m?.[2] ?? s;
 
   const attrs: Record<string, string> = {};
   attrsText.replace(/([^\s=]+)\s*=\s*"([^"]*)"/g, (_, k, v) => {
@@ -63,7 +59,43 @@ function processSvg(
   return { inner, attrs };
 }
 
-export default function IconSvgMono({
+async function loadSvg(
+  cacheKey: string,
+  svg: string | undefined,
+  src: string | undefined,
+  opts: Pick<Props, "color" | "fixColor" | "size" | "width" | "height">,
+): Promise<Processed | null> {
+  if (svgCache.has(cacheKey)) return svgCache.get(cacheKey)!;
+  if (inFlight.has(cacheKey)) return inFlight.get(cacheKey)!;
+
+  const p = (async () => {
+    let raw: string | null = null;
+    if (svg) {
+      raw = svg;
+    } else if (src) {
+      const res = await fetch(src);
+      if (!res.ok) {
+        console.warn("Failed to fetch svg:", src, res.status);
+        return null as unknown as Processed;
+      }
+      raw = await res.text();
+    }
+    if (raw == null) return null as unknown as Processed;
+
+    const processed = processSvg(raw, opts);
+    svgCache.set(cacheKey, processed);
+    return processed;
+  })();
+
+  inFlight.set(cacheKey, p);
+  try {
+    return await p;
+  } finally {
+    inFlight.delete(cacheKey);
+  }
+}
+
+function IconSvgMonoBase({
   svg,
   src,
   width = 24,
@@ -77,74 +109,32 @@ export default function IconSvgMono({
   const cacheKey = `${src ?? svg ?? ""}|${size ?? width}x${size ?? height}|${color ?? ""}|${fixColor}`;
 
   const cached = svgCache.get(cacheKey);
-  const [svgInner, setSvgInner] = useState<string | null>(
-    cached?.inner ?? null,
-  );
-  const [svgAttrs, setSvgAttrs] = useState<Record<string, string>>(
-    cached?.attrs ?? {},
-  );
+  const [data, setData] = useState<Processed | null>(cached ?? null);
 
   useEffect(() => {
     if (svgCache.has(cacheKey)) {
-      const c = svgCache.get(cacheKey)!;
-      setSvgInner(c.inner);
-      setSvgAttrs(c.attrs);
+      setData(svgCache.get(cacheKey)!);
       return;
     }
 
     let cancelled = false;
-
-    (async () => {
-      try {
-        let raw: string | null = null;
-        if (svg) {
-          raw = svg;
-        } else if (src) {
-          const res = await fetch(src);
-          if (!res.ok) {
-            console.warn("Failed to fetch svg:", src, res.status);
-            return;
-          }
-          raw = await res.text();
-        }
-
-        if (raw == null) {
-          if (!cancelled) {
-            setSvgInner(null);
-            setSvgAttrs({});
-          }
-          return;
-        }
-
-        const { inner, attrs } = processSvg(raw, {
-          color,
-          fixColor,
-          size,
-          width,
-          height,
-        });
-        svgCache.set(cacheKey, { inner, attrs }); // ✅ เก็บ cache
-
-        if (!cancelled) {
-          setSvgInner(inner);
-          setSvgAttrs(attrs);
-        }
-      } catch (e) {
-        console.warn("Error processing svg:", e);
-      }
-    })();
+    loadSvg(cacheKey, svg, src, { color, fixColor, size, width, height }).then(
+      (res) => {
+        if (!cancelled && res) setData(res);
+      },
+    );
 
     return () => {
       cancelled = true;
     };
   }, [cacheKey, svg, src, width, height, size, color, fixColor]);
 
-  if (!svgInner) return null;
+  if (!data) return null;
 
   const svgProps: React.SVGProps<SVGSVGElement> = {};
-  for (const k in svgAttrs) {
+  for (const k in data.attrs) {
     const propName = k === "viewbox" ? "viewBox" : k;
-    (svgProps as unknown as Record<string, string>)[propName] = svgAttrs[k];
+    (svgProps as unknown as Record<string, string>)[propName] = data.attrs[k];
   }
 
   svgProps.role = "img";
@@ -154,7 +144,10 @@ export default function IconSvgMono({
     <svg
       className={className}
       {...svgProps}
-      dangerouslySetInnerHTML={{ __html: svgInner }}
+      dangerouslySetInnerHTML={{ __html: data.inner }}
     />
   );
 }
+
+const IconSvgMono = memo(IconSvgMonoBase);
+export default IconSvgMono;

@@ -336,7 +336,6 @@ export const DetailCard = () => {
                 )}
               </div>
               <div className={styles.order}>
-                v
                 <div className={styles.title}>
                   <h3>ออเดอร์ที่บรรทุก</h3>
                   <button

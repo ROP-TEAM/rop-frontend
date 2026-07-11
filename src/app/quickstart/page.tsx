@@ -688,7 +688,6 @@ Developed by **Computer Engineering students at Khon Kaen University**.
                       ></IconSvgMono>
                     </button>
                   </Tooltip>
-                  {/* <Link href="/map" prefetch={false}> */}
 
                   <Tooltip title="จำลองเส้นทาง">
                     <Link href="/map">

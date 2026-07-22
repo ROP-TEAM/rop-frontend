@@ -1,0 +1,231 @@
+.dashboard{
+    background-color: var(--primary-50);
+    height: 100%;
+    padding: 2rem 3rem;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    h1{
+        font-size: 1.25rem;
+        font-weight: 500;
+        padding-bottom:0.5rem;
+    }
+}
+.toggle{
+    display: flex;
+    gap: 1rem;
+    background-color: var(--primary-0);
+    padding: 0.1rem 1rem;
+    border-radius: 1rem;
+}
+.active{
+    background-color: var(--s-500);
+    padding: 0.3rem 1.4rem;
+    border-radius: 1rem;
+    color:var(--primary-0);
+    span{
+        color: var(--primary-0);
+        font-weight: 1000;
+    }
+}
+
+.inactive{
+    background-color: var(--primary-0);
+    padding: 0.3rem 1.4rem 0.3rem 0;
+    border-radius: 1rem;
+    span{
+        color: var(--s-500);
+        font-weight: 1000;
+    }
+}
+.info{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.infoBox{
+    background-color: var(--primary-0);
+    padding: 0.3rem 1.2rem;
+    border-radius: 1rem;
+    color:var(--primary-1000);
+    border: 0.115rem solid var(--s-400);
+}
+.predictBox{
+    background-color: var(--primary-0);
+    padding: 0.3rem 1.2rem;
+    border-radius: 1rem;
+    color:var(--primary-1000);
+    border: 0.115rem dashed #D99E44;
+}
+.cards{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.card{
+    background-color: var(--primary-0);
+    padding: 1rem;
+    border-radius: 1rem;
+    color:var(--primary-1000);
+    border-top: 0.2rem solid var(--s-400);
+    .number{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color:var(--s-700);
+    }
+    .percent{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--p-1000);
+    }
+    p{
+        font-size: 0.7rem;
+        color: var(--p-300);
+    }
+}
+.predictCard{
+    background-color: var(--primary-0);
+    padding: 1rem;
+    border-radius: 1rem;
+    color:var(--primary-1000);
+    border-top: 0.2rem dashed #D99E44;
+    .number{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color:#D99E44;
+    }
+    .percent{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--p-1000);
+    }
+    p{
+        font-size: 0.7rem;
+        color: var(--p-300);
+    }
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.chartCard {
+    background: var(--primary-0);
+    border: 1px solid var(--primary-0);
+    padding: 1.5rem;
+}
+
+.chartTitle {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--p-1000);
+    margin: 0 0 0.06rem 1.5rem;
+}
+
+.chartSubtitle {
+    font-size: 0.8rem;
+    color: var(--p-500);
+    margin: 0 0 1rem 1.5rem;
+}
+
+.donutWrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 3rem 2rem;
+}
+
+.legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    font-size: 1rem;
+    color: var(--p-500);
+    width: 100%;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+.dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.tableCard {
+    background: var(--primary-0);
+    border: 1px solid var(--primary-0);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 1rem;
+
+    th {
+        text-align: left;
+        font-size: 0.75rem;
+        color: var(--p-300);
+        font-weight: 400;
+        padding: 0.5rem 0.8rem;
+    }
+
+    td {
+        padding: 0.9rem 0.8rem;
+        font-size: 0.8125rem;
+        font-weight: 400;
+        border-bottom: 0.0625rem solid var(--primary-100);
+        vertical-align: middle;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+}
+
+.hospitalName {
+    font-weight: 500;
+    font-size: 1rem;
+    margin: 0 0 0.15rem 0;
+    color: var(--p-1000);
+}
+
+.hospitalDrugs {
+    font-size: 0.8rem;
+    color: var(--p-500);
+    margin: 0;
+}
+
+.priority {
+    font-weight: 500;
+    font-size: 0.8rem;
+
+    &.red {
+        color: #E24C4C;
+    }
+
+    &.green {
+        color: #2E9E44;
+    }
+
+    &.orange {
+        color: #D9A441;
+    }
+}

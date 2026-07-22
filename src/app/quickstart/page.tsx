@@ -630,6 +630,8 @@ Developed by **Computer Engineering students at Khon Kaen University**.
         timeLimitMS: WAITING_TIME * 1000,
         enableMultiTrip: true,
       };
+      console.log("Payload:", payload);
+console.log("Payload JSON:", JSON.stringify(payload, null, 2));
       await createOptimize(payload).unwrap();
       localStorage.setItem("vehicleCount", String(vehicleBases.length));
     } catch (err) {
